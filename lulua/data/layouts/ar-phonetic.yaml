@@ -1,0 +1,147 @@
+name: ar-phonetic
+layout:
+- layer:
+    Bl2: ''''
+    Bl3: "\u0662"
+    Bl4: "\u0663"
+    Bl5: "\u0664"
+    Bl6: "\u0665"
+    Bl7: "\u0666"
+    Br1: '='
+    Br2: '-'
+    Br3: "\u0660"
+    Br4: "\u0669"
+    Br5: "\u0668"
+    Br6: "\u0667"
+    Cl1: "\u0642"
+    Cl2: "\u0648"
+    Cl3: "\u0639"
+    Cl4: "\u0631"
+    Cl5: "\u062A"
+    #Cr0: \
+    Cr1: ']'
+    Cr2: '['
+    Cr3: "\u0671"
+    Cr4: "\u064F"
+    Cr5: "\u0650"
+    Cr6: "\u064E"
+    Cr7: "\u064A"
+    Dl1: "\u0627"
+    Dl2: "\u0633"
+    Dl3: "\u062F"
+    Dl4: "\u0641"
+    Dl5: "\u0621"
+    Dr2: '#'
+    Dr3: "\u061B"
+    Dr4: "\u0644"
+    Dr5: "\u0643"
+    Dr6: "\u0630"
+    Dr7: "\u0647"
+    El1: \
+    El2: "\u0632"
+    El3: "\u062B"
+    El4: "\u0635"
+    El5: "\u0652"
+    El6: "\u0628"
+    Er1: /
+    Er2: .
+    Er3: "\u060C"
+    Er4: "\u0645"
+    Er5: "\u0646"
+    Fl_space: ' '
+  modifier:
+  - []
+- layer:
+    Bl2: '"'
+    Bl3: '@'
+    Bl4: "\xA3"
+    Bl5: $
+    Bl6: '%'
+    Bl7: ^
+    Br1: +
+    Br2: _
+    Br3: )
+    Br4: (
+    Br5: '*'
+    Br6: '&'
+    Cl1: "\u064A\u0654"
+    Cl2: "\u0648\u0654"
+    Cl3: "\u0670"
+    Cl4: "\u0653"
+    Cl5: "\u0637"
+    #Cr0: '|'
+    Cr1: '}'
+    Cr2: '{'
+    Cr3: "\u0627\u0653"
+    Cr4: "\u064C"
+    Cr5: "\u064D"
+    Cr6: "\u064B"
+    Cr7: "\u0649"
+    Dl1: "\u0627\u0654"
+    Dl2: "\u0634"
+    Dl3: "\u0636"
+    Dl4: "\u0642"
+    Dl5: "\u063A"
+    Dr2: '~'
+    Dr3: ':'
+    Dr4: "\u0627\u0655"
+    Dr5: "\u062E"
+    Dr6: "\u062C"
+    Dr7: "\u062D"
+    El1: '|'
+    El2: "\u0638"
+    El3: "\u0629"
+    El4: "\u0654"
+    El5: "\u0651"
+    El6: "\u0640"
+    Er1: "\u061F"
+    Er2: '>'
+    Er3: <
+    Er4: "\u06E2"
+    Er5: "\u0655"
+    Fl_space: ' '
+    Fr_space: ' '
+  modifier:
+  - - El_shift
+  - - Er_shift
+- layer:
+    Bl2: "\u0627\u0655"
+    Bl3: "\u274A"
+    Bl4: "\u0610"
+    Bl5: "\u0611"
+    Bl6: "\u0613"
+    Bl7: "\u0612"
+    Br5: "\u0655"
+    Br6: "\u0654"
+    Cl1: "\u06D7"
+    Cl2: "\u06E5"
+    Cl3: "\u06D2"
+    Cl4: "\u0698"
+    Cl5: "\u0615"
+    #Cr0: "\u06DE"
+    Cr3: "\uFDFA"
+    Cr5: "\uFE8C"
+    Cr7: "\u06E6"
+    Dl1: "\u0627\u0655"
+    Dl2: "\u06DC"
+    Dl3: "\u0636"
+    Dl4: "\u06A4"
+    Dl5: "\u0639"
+    Dr2: "\u06DD"
+    Dr3: "\u061E"
+    Dr4: "\u06D9"
+    Dr5: "\u06AA"
+    Dr6: "\u06DA"
+    Dr7: "\uFBA9"
+    El1: "\uFDFB"
+    El2: "\uFDFB"
+    El3: "\u06DB"
+    El4: "\u06D6"
+    El5: "\u06E8"
+    El6: "\u067E"
+    Er2: "\xAB"
+    Er3: "\xBB"
+    Er4: "\uFEE3"
+    Er5: "\u06BD"
+  modifier:
+  - - Fr_altgr

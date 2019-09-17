@@ -1,0 +1,113 @@
+name: ar-asmo663
+layout:
+- layer:
+    #Bl1: "ذ" # unknown symbol
+    Bl2: "1"
+    Bl3: "2"
+    Bl4: "3"
+    Bl5: "4"
+    Bl6: "5"
+    Bl7: "6"
+    Br6: "7"
+    Br5: "8"
+    Br4: "9"
+    Br3: "0"
+    Br2: "-"
+    Br1: "^"
+
+    Cl1: "ض"
+    Cl2: "ص"
+    Cl3: "ث"
+    Cl4: "ق"
+    Cl5: "ف"
+    Cr7: "غ"
+    Cr6: "ع"
+    Cr5: "ه"
+    Cr4: "خ"
+    Cr3: "ح"
+    Cr2: "ج"
+    Cr1: "–" # not sure
+
+    CD_ret: "\n"
+
+    Dl1: "ش"
+    Dl2: "س"
+    Dl3: "ي"
+    Dl4: "ب"
+    Dl5: "ل"
+    Dr7: "ا"
+    Dr6: "ت"
+    Dr5: "ن"
+    Dr4: "م"
+    Dr3: "ك"
+    Dr2: "\u064f" # damma
+    Dr1: "ا\u0654" # composed: أ
+
+    El1: "ظ"
+    El2: "ط"
+    El3: "ذ"
+    El4: "د"
+    El5: "ز"
+    El6: "ر"
+    Er5: "\u064e" # fatha
+    Er4: "و"
+    Er3: "،"
+    Er2: "."
+    Er1: "\u0650" # kasra
+
+    Fl_space: " "
+    Fr_space: " "
+  modifier:
+  - []
+- layer:
+    Bl1: "@"
+    Bl2: "!"
+    Bl3: "\""
+    Bl4: "#"
+    #Bl5: "" # unnown symbol
+    Bl6: "%"
+    Bl7: "&"
+    Br6: "'"
+    Br5: "("
+    Br4: ")"
+    #Br3: ""
+    Br2: "="
+    #Br1: "" # unknown symbol
+
+    Cl1: "{"
+    Cl2: "["
+    Cl3: "\u064b" # fathatan
+    Cl4: "\u0651" # shadda
+    Cl5: "\u0652" # sukun
+    Cr2: "]"
+    Cr1: "}"
+
+    CD_ret: "\n"
+
+    Dl1: "\\"
+    Dl2: "\u064c" # dammatan
+    Dl3: "\u064a\u0654" # composed: ئ
+    #Dl4:
+    Dl5: "ا\u0655" # composed: إ
+    Dr7: "ء"
+    Dr6: "ة"
+    Dr5: "ى"
+    Dr4: "/"
+    Dr3: "+"
+    Dr2: "*"
+    Dr1: "ا\u0653" # composed: آ
+
+    El1: "|"
+    El2: "\u064d" # kasratan
+    #El3: ""
+    #El4: ""
+    #El5: ""
+    El6: "؛"
+    Er5: ":"
+    Er4: "\u0648\u0654" # composed: ؤ
+    Er3: "<"
+    Er2: ">"
+    Er1: "؟"
+  modifier:
+  - [El_shift]
+  - [Er_shift]

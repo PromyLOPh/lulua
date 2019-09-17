@@ -1,0 +1,132 @@
+name: ibmpc105
+description: Standard IBM PC 105 key layout (European)
+rows:
+- - - kind: letter
+      name: Bl1
+    - kind: letter
+      name: Bl2
+    - kind: letter
+      name: Bl3
+    - kind: letter
+      name: Bl4
+    - kind: letter
+      name: Bl5
+    - kind: letter
+      name: Bl6
+    - kind: letter
+      name: Bl7
+  - - kind: letter
+      name: Br6
+    - kind: letter
+      name: Br5
+    - kind: letter
+      name: Br4
+    - kind: letter
+      name: Br3
+    - kind: letter
+      name: Br2
+    - kind: letter
+      name: Br1
+    - name: Br_bs
+      width: 1.75
+- - - name: Cl_tab
+      width: 1.75
+    - kind: letter
+      name: Cl1
+    - kind: letter
+      name: Cl2
+    - kind: letter
+      name: Cl3
+    - kind: letter
+      name: Cl4
+    - kind: letter
+      name: Cl5
+  - - kind: letter
+      name: Cr7
+    - kind: letter
+      name: Cr6
+    - kind: letter
+      name: Cr5
+    - kind: letter
+      name: Cr4
+    - kind: letter
+      name: Cr3
+    - kind: letter
+      name: Cr2
+    - kind: letter
+      name: Cr1
+    - kind: multi
+      name: CD_ret
+      span: 2
+- - - name: Dl_caps
+      width: 2
+    - kind: letter
+      name: Dl1
+    - kind: letter
+      name: Dl2
+    - kind: letter
+      name: Dl3
+    - kind: letter
+      isMarked: true
+      name: Dl4
+    - kind: letter
+      name: Dl5
+  - - kind: letter
+      name: Dr7
+    - kind: letter
+      isMarked: true
+      name: Dr6
+    - kind: letter
+      name: Dr5
+    - kind: letter
+      name: Dr4
+    - kind: letter
+      name: Dr3
+    - kind: letter
+      name: Dr2
+    - kind: letter
+      name: Dr1
+- - - name: El_shift
+      width: 1.5
+    - kind: letter
+      name: El1
+    - kind: letter
+      name: El2
+    - kind: letter
+      name: El3
+    - kind: letter
+      name: El4
+    - kind: letter
+      name: El5
+    - kind: letter
+      name: El6
+  - - kind: letter
+      name: Er5
+    - kind: letter
+      name: Er4
+    - kind: letter
+      name: Er3
+    - kind: letter
+      name: Er2
+    - kind: letter
+      name: Er1
+    - name: Er_shift
+      width: 2.35
+- - - name: Fl_ctrl
+      width: 1.75
+    - name: Fl_win
+      width: 1.25
+    - name: Fl_alt
+      width: 1.25
+    - name: Fl_space
+      width: 3
+  - - name: Fr_space
+      width: 3
+    - name: Fr_altgr
+      width: 1.25
+    - name: Fr_win
+      width: 1.25
+    - name: Fr_menu
+      width: 1.25
+    - name: Fr_ctrl
+      width: 1.25

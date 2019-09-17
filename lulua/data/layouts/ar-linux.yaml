@@ -1,0 +1,119 @@
+name: ar-linux
+layout:
+- layer:
+    Bl1: "ذ"
+    Bl2: "١"
+    Bl3: "٢"
+    Bl4: "٣"
+    Bl5: "٤"
+    Bl6: "٥"
+    Bl7: "٦"
+    Br6: "٧"
+    Br5: "٨"
+    Br4: "٩"
+    Br3: "٠"
+    Br2: "-"
+    Br1: "="
+
+    Cl_tab: "\t"
+    Cl1: "ض"
+    Cl2: "ص"
+    Cl3: "ث"
+    Cl4: "ق"
+    Cl5: "ف"
+    Cr7: "غ"
+    Cr6: "ع"
+    Cr5: "ه"
+    Cr4: "خ"
+    Cr3: "ح"
+    Cr2: "ج"
+    Cr1: "د"
+
+    CD_ret: "\n"
+
+    Dl1: "ش"
+    Dl2: "س"
+    Dl3: "ي"
+    Dl4: "ب"
+    Dl5: "ل"
+    Dr7: "ا"
+    Dr6: "ت"
+    Dr5: "ن"
+    Dr4: "م"
+    Dr3: "ك"
+    Dr2: "ط"
+    Dr1: "\\"
+
+    El1: "|"
+    El2: "\u064a\u0654" # composed: ئ
+    El3: "ء"
+    El4: "\u0648\u0654" # composed: ؤ
+    El5: "ر"
+    El6: "لا" # composed: ﻻ
+    Er5: "ى"
+    Er4: "ة"
+    Er3: "و"
+    Er2: "ز"
+    Er1: "ظ"
+
+    Fl_space: " "
+    Fr_space: " "
+  modifier:
+  - []
+- layer:
+    Bl1: "\u0651" # shadda
+    Bl2: "!"
+    Bl3: "@"
+    Bl4: "#"
+    Bl5: "$"
+    Bl6: "٪"
+    Bl7: "^"
+    Br6: "&"
+    Br5: "*"
+    Br4: ")"
+    Br3: "("
+    Br2: "_"
+    Br1: "+"
+
+    Cl1: "\u064e" # fatha
+    Cl2: "\u064b" # fathatan
+    Cl3: "\u064f" # damma
+    Cl4: "\u064c" # dammatan
+    Cl5: "لا\u0655" # composed: ﻹ
+    Cr7: "ا\u0655" # composed: إ
+    Cr6: "`"
+    Cr5: "÷"
+    Cr4: "×"
+    Cr3: "؛"
+    Cr2: "<"
+    Cr1: ">"
+
+    CD_ret: "\n"
+
+    Dl1: "\u0650" # kasra
+    Dl2: "\u064d" # kasratan
+    Dl3: "]"
+    Dl4: "["
+    Dl5: "لا\u0654" # composed: ﻷ
+    Dr7: "ا\u0654" # composed: أ
+    Dr6: "ـ"
+    Dr5: "،"
+    Dr4: "/"
+    Dr3: ":"
+    Dr2: '"'
+    Dr1: "…"
+
+    El1: "¦"
+    El2: "~"
+    El3: "\u0652" # sukun
+    El4: "}"
+    El5: "{"
+    El6: "لا\u0653" # composed: ﻵ
+    Er5: "ا\u0653" # composed: آ
+    Er4: "'"
+    Er3: ","
+    Er2: "."
+    Er1: "؟"
+  modifier:
+  - [El_shift]
+  - [Er_shift]

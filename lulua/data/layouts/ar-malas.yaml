@@ -1,0 +1,123 @@
+name: ar-malas
+layout:
+- layer:
+    Bl2: "1"
+    Bl3: "2"
+    Bl4: "3"
+    Bl5: "4"
+    Bl6: "5"
+    Bl7: "6"
+    Br6: "7"
+    Br5: "8"
+    Br4: "9"
+    Br3: "0"
+    Br2: "-"
+    Br1: "="
+    #Br0: "\\" # extra key?
+
+    Cl_tab: "\t"
+    Cl1: "ق"
+    Cl2: "غ"
+    Cl3: "ع"
+    Cl4: "ي"
+    Cl5: "ة"
+    Cr7: "ف"
+    Cr6: "ط"
+    Cr5: "ر"
+    Cr4: "ص"
+    Cr3: "ب"
+    Cr2: "ش"
+    Cr1: "ض"
+
+    CD_ret: "\n"
+
+    Dl1: "ه"
+    Dl2: "ج"
+    Dl3: "ك"
+    Dl4: "ا"
+    Dl5: "و"
+    Dr7: "ت"
+    Dr6: "د"
+    Dr5: "ل"
+    Dr4: "ن"
+    Dr3: "م"
+    Dr2: "س"
+
+    El1: "\\"
+    El2: "خ"
+    El3: "ى"
+    El4: "ا\u0655" # composed: إ
+    El5: "ا\u0654"
+    El6: "ح"
+    Er5: "\u064a\u0654"
+    Er4: "ز"
+    Er3: "."
+    Er2: "ث"
+    Er1: "ذ"
+
+    Fl_space: " "
+    Fr_space: " "
+
+  modifier:
+  - []
+- layer:
+    Bl2: "!"
+    Bl3: "@"
+    Bl4: "#"
+    Bl5: "$"
+    Bl6: "%"
+    Bl7: "^"
+    Br6: "&"
+    Br5: "*"
+    Br4: "("
+    Br3: ")"
+    Br2: "_"
+    Br1: "+"
+    #Br0: "|" # extra key?
+
+    Cl_tab: "\t"
+    Cl1: "\u064e" # fatha
+    Cl2: "\u064b" # fathatan
+    Cl3: "\u064f" # damma
+    Cl4: "\u064c" # dammatan
+    Cl5: "\u0651" # shadda
+    #Cr7: ""
+    Cr6: "ظ"
+    Cr5: "÷"
+    Cr4: "×"
+    Cr3: "؛"
+    Cr2: ">"
+    Cr1: "<"
+
+    CD_ret: "\n"
+
+    Dl1: "\u0650" # kasra
+    Dl2: "\u064d" # kasratan
+    Dl3: "["
+    Dl4: "]"
+    Dl5: "\u0648\u0654" # composed: ؤ
+    #Dr7: ""
+    Dr6: "ـ"
+    Dr5: "،"
+    Dr4: "/"
+    Dr3: ":"
+    Dr2: "\""
+
+    El1: "|"
+    El2: "~"
+    El3: "\u0652" # sukun
+    El4: "ا\u0653" # composed: آ
+    El5: "ء"
+    El6: "{"
+    Er5: "}"
+    Er4: "‘"
+    Er3: "’"
+    Er2: ","
+    Er1: "؟"
+
+    Fl_space: " "
+    Fr_space: " "
+
+  modifier:
+  - [El_shift]
+  - [Er_shift]

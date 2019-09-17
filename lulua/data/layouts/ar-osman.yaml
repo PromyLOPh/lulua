@@ -1,0 +1,121 @@
+name: ar-osman
+layout:
+- layer:
+    Bl1: "\u0648\u0654" # composed: ؤ
+    Bl2: "1"
+    Bl3: "2"
+    Bl4: "3"
+    Bl5: "4"
+    Bl6: "5"
+    Bl7: "6"
+    Br6: "7"
+    Br5: "8"
+    Br4: "9"
+    Br3: "0"
+    Br2: "-"
+    Br1: "="
+
+    Cl1: "ظ"
+    Cl2: "ض"
+    Cl3: "ص"
+    Cl4: "ق"
+    Cl5: "ف"
+    Cr7: "غ"
+    Cr6: "ع"
+    Cr5: "ه"
+    Cr4: "ح"
+    Cr3: "ج"
+    Cr2: "خ"
+    Cr1: "ء"
+    #Cr0: "\\"
+
+    CD_ret: "\n"
+
+    Dl1: "ط"
+    Dl2: "ث"
+    Dl3: "ت"
+    Dl4: "ب"
+    Dl5: "ل"
+    Dr7: "ا"
+    Dr6: "ن"
+    Dr5: "م"
+    Dr4: "و"
+    Dr3: "س"
+    Dr2: "ش"
+    #Dr1: ""
+
+    #El1: ""
+    El2: "\u064a\u0654" # composed: ئ
+    El3: "ذ"
+    El4: "د"
+    El5: "لا"
+    El6: "ي"
+    Er5: "ى"
+    Er4: "ر"
+    Er3: "ز"
+    Er2: "ك"
+    Er1: "ة"
+
+    Fl_space: " "
+    Fr_space: " "
+  modifier:
+  - []
+- layer:
+    #Bl1: ""
+    Bl2: "!"
+    Bl3: "@"
+    Bl4: "#"
+    Bl5: "$"
+    Bl6: "%"
+    Bl7: "^"
+    Br6: "&"
+    Br5: "*"
+    Br4: "("
+    Br3: ")"
+    Br2: "_"
+    Br1: "+"
+
+    Cl1: "\u064e" # fatha
+    Cl2: "\u064b" # fathatan
+    Cl3: "\u064f" # damma
+    Cl4: "\u064c" # dammatan
+    Cl5: "لا\u0655" # composed: ﻹ
+    Cr7: "ا\u0655" # composed: إ
+    Cr6: "`"
+    Cr5: "÷"
+    Cr4: "×"
+    Cr3: "؛"
+    Cr2: ">"
+    Cr1: "<"
+    #Cr0: "|"
+
+    CD_ret: "\n"
+
+    Dl1: "\u0650" # kasra
+    Dl2: "\u064d" # kasratan
+    Dl3: "["
+    Dl4: "]"
+    Dl5: "لا\u0654" # composed: ﻷ
+    Dr7: "ا\u0654" # composed: أ
+    Dr6: "ـ"
+    Dr5: "،"
+    Dr4: "/"
+    Dr3: ":"
+    Dr2: '"'
+    #Dr1: "…"
+
+    #El1: "¦"
+    El2: "~"
+    El3: "\u0652" # sukun
+    El4: "{"
+    El5: "}"
+    El6: "لا\u0653" # composed: ﻵ
+    Er5: "ا\u0653" # composed: آ
+    Er4: "'"
+    Er3: "÷"
+    Er2: "×"
+    Er1: "؛"
+  modifier:
+  - [El_shift]
+  - [Er_shift]
+

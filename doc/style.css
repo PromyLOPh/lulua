@@ -1,0 +1,88 @@
+@font-face {
+  font-family: 'IBM Plex Arabic';
+  font-style: normal;
+  font-weight: 100;
+  src: local('IBM Plex Arabic Thin'), local('IBM Plex Arabic-Thin'), url('fonts/IBMPlexArabic-Thin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Arabic';
+  font-style: normal;
+  font-weight: 400;
+  src: local('IBM Plex Arabic Regular'), local('IBM Plex Arabic-Regular'), url('fonts/IBMPlexArabic-Regular.woff2') format('woff2');
+}
+
+body {
+	font-size: 14pt;
+	background-color: #eeeeec;
+	color: #2e3436;
+}
+/* is there a better way to select _both_ fonts at the same time? */
+:lang(ar) {
+	direction: rtl;
+	font-family: "IBM Plex Arabic";
+}
+/* inside ltr text */
+:lang(ar)[dir=ltr] {
+	direction: ltr;
+}
+:lang(en) {
+	direction: ltr;
+	font-family: "IBM Plex Sans";
+}
+h1, h2, h3 {
+	font-weight: 100;
+}
+h2 {
+	font-size: 3em;
+}
+figure {
+	max-width: 70em;
+	margin: 1.3em auto;
+}
+img {
+	width: 100%;
+}
+code {
+	font-family: "IBM Plex Mono", monospace !important; /* override :lang(*) font setting */
+}
+a:link, a:visited {
+	color: #555753;
+	text-decoration: none;
+}
+a:focus, a:hover {
+	background-color: #555753;
+	color: #eeeeec;
+	border-radius: 0.1em;
+}
+div.title-card {
+	background-color: #555753;
+	color: #eeeeec;
+	border-top: 1em solid #888a85;
+}
+div.title-card .lbox {
+	margin: 1em;
+}
+div.title-card h1 {
+	margin: 0;
+	padding: 1em;
+}
+div.title-card img.logo {
+	max-width: 20em;
+	display: block;
+	margin: 0 auto;
+}
+div.title-card .subtitle {
+	padding: 0 0.5em;
+	font-size: 1.5em;
+}
+div.title-card .layout img {
+	display: block;
+	margin: 0 auto;
+}
+.flexreverse {
+	flex-direction: row-reverse;
+}
+.lbox {
+	margin: 0 5vw;
+}

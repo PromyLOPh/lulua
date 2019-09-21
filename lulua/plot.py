@@ -128,19 +128,3 @@ def triadfreq (args):
 
     return 0
 
-def plot ():
-    plotKinds = {
-        'letterfreq': letterfreq,
-        'triadfreq': triadfreq,
-        }
-
-    parser = argparse.ArgumentParser (description='Plot stuff')
-    parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
-    parser.add_argument('kind', type=lambda x: plotKinds[x])
-
-    args = parser.parse_args()
-
-    logging.basicConfig (level=logging.INFO)
-
-    return args.kind (args)
-

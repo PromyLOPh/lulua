@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import sys, operator, pickle
+import sys, operator, pickle, argparse, logging
 from operator import itemgetter
 from itertools import chain, groupby, product
 from collections import defaultdict
@@ -27,6 +27,7 @@ from .layout import *
 from .keyboard import defaultKeyboards
 from .writer import SkipEvent, Writer
 from .carpalx import Carpalx, model01 as cmodel01
+from .plot import letterfreq, triadfreq
 
 def updateDictOp (a, b, op):
     """ Update dict a by adding items from b using op """
@@ -164,8 +165,8 @@ def unpickleAll (fd):
         except EOFError:
             break
 
-def combine ():
-    keyboard = defaultKeyboards['ibmpc105']
+def combine (args):
+    keyboard = defaultKeyboards[args.keyboard]
     layout = defaultLayouts['null'].specialize (keyboard)
     w = Writer (layout)
     combined = dict ((cls.name, cls(w)) for cls in allStats)
@@ -174,11 +175,11 @@ def combine ():
             combined[s.name].update (r[s.name])
     pickle.dump (combined, sys.stdout.buffer, pickle.HIGHEST_PROTOCOL)
 
-def pretty ():
+def pretty (args):
     stats = pickle.load (sys.stdin.buffer)
 
-    keyboard = defaultKeyboards['ibmpc105']
-    layout = defaultLayouts[sys.argv[1]].specialize (keyboard)
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
     writer = Writer (layout)
 
     buttonPresses = sum (stats['simple'].buttons.values ())
@@ -219,4 +220,24 @@ def pretty ():
     effort = Carpalx (cmodel01, writer)
     effort.addTriads (stats['triads'].triads)
     print ('total effort (carpalx)', effort.effort)
+
+def main ():
+    parser = argparse.ArgumentParser(description='Process statistics files.')
+    parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
+    parser.add_argument('-k', '--keyboard', metavar='KEYBOARD',
+            default='ibmpc105', help='Physical keyboard name')
+    subparsers = parser.add_subparsers()
+    sp = subparsers.add_parser('pretty')
+    sp.set_defaults (func=pretty)
+    sp = subparsers.add_parser('combine')
+    sp.set_defaults (func=combine)
+    sp = subparsers.add_parser('letterfreq')
+    sp.set_defaults (func=letterfreq)
+    sp = subparsers.add_parser('triadfreq')
+    sp.set_defaults (func=triadfreq)
+
+    logging.basicConfig (level=logging.INFO)
+    args = parser.parse_args()
+
+    return args.func (args)
 

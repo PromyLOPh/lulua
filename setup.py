@@ -28,7 +28,7 @@ setup(
     #url='https://6xq.net/crocoite/',
     packages=['lulua'],
     license='LICENSE.txt',
-    description='The monkey.',
+    description='Keyboard layout optimization',
     long_description=open('README.rst').read(),
     long_description_content_type='text/x-rst',
     install_requires=[
@@ -41,11 +41,9 @@ setup(
     ],
     entry_points={
     'console_scripts': [
-            'lulua-combine-stats = lulua.stats:combine',
-            'lulua-pretty-stats = lulua.stats:pretty',
+            'lulua-analyze = lulua.stats:main',
             'lulua-render = lulua.render:render',
-            'lulua-import-klc = lulua.model:importKlc',
-            'lulua-plot = lulua.plot:plot',
+            'lulua-import = lulua.layout:importFrom',
             'lulua-optimize = lulua.optimize:optimize',
             'lulua-write = lulua.text:write',
             ],

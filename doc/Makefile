@@ -1,7 +1,7 @@
 all: ar-lulua.xmodmap ar-lulua.svg
 
 #letterfreq.json: ../stats.pickle
-#	lulua-plot -l ar-lulua letterfreq < $< > $@
+#	lulua-analyze -l ar-lulua letterfreq < $< > $@
 
 ar-lulua.xmodmap:
 	lulua-render xmodmap -l ar-lulua $@

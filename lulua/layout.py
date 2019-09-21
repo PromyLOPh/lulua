@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import sys, re, unicodedata, copy
+import sys, re, unicodedata, copy, argparse, logging
 from enum import IntEnum, unique
 from collections import defaultdict, namedtuple
 from itertools import chain
@@ -343,9 +343,21 @@ class GenericLayout:
 
 defaultLayouts = YamlLoader ('data/layouts', GenericLayout.deserialize)
 
-def importKlc ():
-    with open (sys.argv[1], 'r', encoding='utf16') as fd:
-        layers, layerSwitches = Layout.fromKlc (fd)
+def importKlc (args):
+    with open (args.input, 'r', encoding='utf16') as fd:
+        layers, layerSwitches = GenericLayout.fromKlc (fd)
         data = {'name': None, 'layout': [{'layer': l, 'modifier': [list (x) for x in layerSwitches[i]]} for i, l in enumerate (layers)]}
         yaml.dump (data, sys.stdout)
+
+def importFrom ():
+    parser = argparse.ArgumentParser(description='Import keyboard layouts.')
+    parser.add_argument('input', metavar='FILE', help='Input file')
+    subparsers = parser.add_subparsers()
+    sp = subparsers.add_parser('klc', help='Import from Microsoft Keyboard Layout creator')
+    sp.set_defaults (func=importKlc)
+
+    logging.basicConfig (level=logging.INFO)
+    args = parser.parse_args()
+
+    return args.func (args)
 

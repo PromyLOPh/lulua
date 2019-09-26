@@ -16,9 +16,9 @@
 <body>
 
 <div class="title-card pure-g">
-	<div class="lbox">
 	<div class="pure-u-1 pure-u-lg-1-3">
-		<h1 lang="ar"><img class="logo" src="lulua-logo.svg"></h1>
+	<div class="lbox">
+		<h1 class="title"><img class="logo" src="lulua-logo.svg"></h1>
 		<div class="pure-g flexreverse">
 			<div class="pure-u-1 pure-u-sm-1-2">
 				<!--<h2 class="subtitle">لوحة مفاتيح العربية المريحة</h1>-->
@@ -28,7 +28,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="pure-u-1 pure-u-lg-2-3" lang="en">
+	</div>
+	<div class="pure-u-1 pure-u-lg-2-3">
+	<div class="lbox">
 		<div class="layout">
 			<img src="ar-lulua.svg" alt="لؤلؤة">
 		</div>
@@ -77,11 +79,289 @@
 		<h2>Usage</h2>
 		<dl>
 			<dt>Linux</dt>
-			<dd><code>xmodmap <a href="ar-lulua.xmodmap">ar-lulua.xmodmap</a></code></dd>
+			<dd>Run: <code>xmodmap <a href="ar-lulua.xmodmap">ar-lulua.xmodmap</a></code></dd>
 		</dl>
 	</div>
 	</div>
 </div>
+
+<div class="indepth-card">
+<div class="pure-g flexreverse">
+	<div class="pure-u-1 pure-u-md-1-2">
+	</div>
+	<div class="pure-u-1 pure-u-md-1-2" lang="en">
+	<div class="lbox">
+		<h1>Learn more</h1>
+	</div>
+	</div>
+</div>
+</div>
+
+<section>
+<div class="pure-g flexreverse">
+	<div class="pure-u-1 pure-u-md-1-2">
+	<div class="lbox">
+		<h2>الأبجدية العربية</h2>
+	</div>
+	</div>
+	<div class="pure-u-1 pure-u-md-1-2" lang="en">
+	<div class="lbox">
+		<h2>The Arabic Alphabet</h2>
+		<p>
+		There are 28 letters in the Arabic alphabet, plus quite a few extra
+		symbols required for proper text input, like the hamza in its different
+		shapes <bdo dir="ltr" lang="ar">أ إ آ ء ئ ؤ</bdo>, ta marbutah <bdo
+		dir="ltr" lang="ar">ة</bdo>, alif maqsurah <bdo dir="ltr"
+		lang="ar">ى</bdo> and various diacritics for vowelized texts.
+		<!-- -->
+		Since the usability of a keyboard layout depends on the text entered
+		it is necessary to study letter and letter combination frequencies first.
+		<!-- -->
+		The corpus used for the following analysis consists of
+		</p>
+		<ul>
+			<li>547,110 articles from
+			<a href="https://www.aljazeera.net/">aljazeera.net</a>, an
+			Arabic-language news site</li>
+			<li>149,901 articles from <a href="http://www.bbc.com/arabic">BBC
+			Arabic</a>, another Arabic-language news site</li>
+			<li><a href="https://dumps.wikimedia.org/arwiki/20190701/">a
+			dump</a> of the <a href="https://ar.wikipedia.org/">Arabic
+			Wikipedia</a> as of July 2019, extracted using
+			<a href="https://github.com/attardi/wikiextractor/tree/3162bb6c3c9ebd2d15be507aa11d6fa818a454ac">wikiextractor</a>
+			containing 857386 articles</li>
+			<li>and a plain-text copy of the Quran from <a
+			href="http://tanzil.net/docs/download">tanzil.net</a> using the
+			options Simple Enhanced and Text (for inclusion of diacritics)</li>
+		</ul>
+		<p>
+		summing up to roughly 1.5 billion characters.
+		<!-- -->
+		The plot below shows <bdo dir="ltr" lang="ar">ا ل ي و م ن</bdo> can be
+		considered the most frequently used letters in the Arabic language.
+		</p>
+	</div>
+	</div>
+</div>
+
+<figure id="letterfreq">
+<div class="lbox" lang="en">
+	<div id="letterfreq-div"></div>
+</div>
+<figcaption class="pure-g flexreverse">
+	<div class="pure-u-1 pure-u-md-1-2">
+	</div>
+	<div class="pure-u-1 pure-u-md-1-2" lang="en">
+	<div class="lbox">
+		<p>Arabic letter frequency distribution</p>
+	</div>
+	</div>
+</figcaption>
+</figure>
+</section>
+
+<section class="layoutgallery">
+	<div class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<h2>Related work</h2>
+		</div>
+		</div>
+	</div>
+
+	<figure id="ar-asmo663">
+	<div class="lbox">
+		<img src="ar-asmo663.svg">
+	</div>
+	<figcaption class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<p>
+			Trying to unify existing layouts, the Arab Standardization and
+			Meterology Organization (ASMO), now part of
+			<a href="https://www.aidmo.org/">AIDMO</a>, published an Arabic
+			keyboard layout in 1987 as
+			<a href="https://www.aidmo.org/smcacc/ar/index.php?option=com_sobi2&Itemid=2&limitstart=2150">standard 663</a>.
+			<!-- -->
+			This, however, turned out to be a failure, due to lack of adoption by
+			the typewriter industry.
+			</p>
+		</div>
+		</div>
+	</figcaption>
+	</figure>
+
+	<figure id="ar-linux">
+	<div class="lbox">
+		<img src="ar-linux.svg">
+	</div>
+	<figcaption class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<p>
+			Instead we’re currently using this layout (on Linux), which is
+			similar, but not quite the same.
+			<!-- -->
+			Most notably this layout arranges letters by their visual similarity.
+			<!-- -->
+			Thus it allocates suboptimal or even awkward positions to frequently
+			used letters like <bdo dir="ltr" lang="ar">ا ل</bdo> and
+			<bdo dir="ltr" lang="ar">ذ</bdo>.
+			</p>
+		</div>
+		</div>
+	</figcaption>
+	</figure>
+
+	<figure id="ar-malas">
+	<div class="lbox">
+		<img src="ar-malas.svg">
+	</div>
+	<figcaption class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<p>
+			The work by Malas et al. (2008),
+			<a href="https://pdfs.semanticscholar.org/1bf8/74dcaa7f21c2cc3c6c5e526b61a9ee352bba.pdf">Toward Optimal Arabic Keyboard Layout Using Genetic Algorithm</a>,
+			presents an alternative layout generated by a genetic algorithm.
+			<!-- -->
+			They used a snapshot of the Arabic Wikipedia probably from around 2008 and
+			optimized for typing speed only, claiming 35% faster typing compared
+			to the <a href="#ar-linux">currently used layouts</a>.
+			<!-- -->
+			However the choice to put <bdo dir="ltr" lang="ar">ي</bdo> in the top
+			row seems odd and suggests the authors did not take the time to review
+			the layout manually, given this letter is the third most frequent one
+			even in their own research.
+			</p>
+		</div>
+		</div>
+	</figcaption>
+	</figure>
+
+	<figure id="ar-osman">
+	<div class="lbox">
+		<img src="ar-osman.svg">
+	</div>
+	<figcaption class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<p>
+			In 2015 patent
+			<a href="https://patents.google.com/patent/US9041657B2/en">9,041,657 B2</a>
+			was filed in the US, presenting yet another computer-generated layout.
+			<!-- -->
+			Its genetic algorithm was seeded with just 54 Arabic e-books consisting
+			of 7 million characters in total.
+			<!-- -->
+			Overall it claims to be 9% faster than default layouts.
+			<!-- -->
+			This layout rips off most of the standard layout’s second layer,
+			but amusingly fails to include a question mark, while it does
+			provide <em>three</em> single-quote marks ’ and <em>two</em> Arabic
+			semicolon <bdo dir="ltr" lang="ar">؛</bdo>.
+			<!-- -->
+			Additionally it places <bdo dir="ltr" lang="ar">ي</bdo> in an even
+			worse position than Malas’ layout.
+			</p>
+		</div>
+		</div>
+	</figcaption>
+	</figure>
+
+	<figure>
+	<div class="lbox">
+		<img src="ar-khorshid.svg">
+	</div>
+	<figcaption class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<p>
+			In the paper
+			<a href="https://www.researchgate.net/publication/264837659_A_new_optimal_Arabic_keyboard_layout_using_genetic_algorithm">A new optimal Arabic keyboard layout using genetic algorithm</a>
+			Khorshid et al. present yet another
+			layout.
+			<!-- -->
+			They claim a 36% improvement over the standard keyboard based on
+			their criteria for ergonomic layouts.
+			<!-- -->
+			However in their layout from figure 8 both letters <bdo dir="ltr"
+			lang="ar">ب ر</bdo> are in suboptimal positions.
+			</p>
+		</div>
+		</div>
+	</figcaption>
+	</figure>
+
+	<figure>
+	<div class="lbox">
+		<img src="ar-phonetic.svg">
+	</div>
+	<figcaption class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<p>
+			The <a href="http://arabic.omaralzabir.com/home">Arabic Phonetic Keyboard</a>
+			simply maps the QWERTY layout to Arabic letters, based on their sound.
+			Thus Q becomes <bdo dir="ltr" lang="ar">ق</bdo>, Y becomes <bdo dir="ltr" lang="ar">ي</bdo> and so on.
+			It claims to be optimized for writing vowelized texts, especially
+			Quranic Arabic, and thus includes quite a few combining characters and
+			special symbols.
+			Although it claims to make frequently used letters easily available –
+			based on the work of Intellaren – it makes no effort to arrange letters
+			according to their usage frequency.
+			</p>
+		</div>
+		</div>
+	</figcaption>
+	</figure>
+
+	<div class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<p>
+			While technically speaking not a layout but alternative input
+			method, <a href="http://www.intellaren.com/intellark">Intellark</a> by
+			Intellaren is worth mentioning.
+			<!-- -->
+			It is based on repeatedly pressing the same button to modifiy the
+			current character.
+			<!-- -->
+			For example pressing A on the QWERTY keyboard cycles through the
+			alternatives <bdo dir="ltr" lang="ar">ا أ إ آ</bdo> and <bdo dir="ltr" lang="ar">ء</bdo>.
+			<!-- -->
+			Obviously this is slow, error-prone and violates Dvorak’s guidelines
+			for keyboard layout designs.
+			</p>
+		</div>
+		</div>
+	</div>
+</section>
+
+
+
+</div>
+<script>
+fetch('letterfreq.json')
+    .then(function(response) { return response.json(); })
+    .then(function(item) { Bokeh.embed.embed_item(item, 'letterfreq-div'); })
+</script>
 
 </body>
 </html>

@@ -3,3 +3,6 @@ __pycache__
 .eggs/
 .coverage
 .mypy_cache/
+doc/*.svg
+doc/*.xmodmap
+doc/letterfreq.json

@@ -89,9 +89,15 @@ def letterfreq (args):
     p.line ('letters', 'cumRel', source=source, y_range_name='cum', line_width=2)
     p.add_layout(LinearAxis(y_range_name="cum"), 'right')
 
+    # styling
     p.xgrid.grid_line_color = None
-    p.xaxis.major_label_text_font_size = "2em"
-    p.xaxis.major_label_text_font_size = "2em"
+    p.xaxis.major_label_text_font_size = "1.5em"
+    p.xaxis.major_label_text_font_size = "1.5em"
+    p.xaxis.major_label_text_font = 'IBM Plex Arabic'
+    p.yaxis.major_label_text_font = 'IBM Plex Arabic'
+    # no border fill
+    p.border_fill_color = None
+    p.background_fill_alpha = 0.5
 
     json.dump (json_item (p), sys.stdout)
 

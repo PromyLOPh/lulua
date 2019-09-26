@@ -1,3 +1,15 @@
+/*
+colorscheme derived from #EAE0C8, see https://en.wikipedia.org/wiki/Pearl_(color)
+using http://colormind.io/bootstrap/
+*/
+:root {
+	--light-shades: #EAE0C8;
+	--light-accent: #689CA9;
+	--main-brand: #A48A4E;
+	--dark-accent: #79796D;
+	--dark-shades: #1D251E;
+}
+
 @font-face {
   font-family: 'IBM Plex Arabic';
   font-style: normal;
@@ -14,8 +26,8 @@
 
 body {
 	font-size: 14pt;
-	background-color: #eeeeec;
-	color: #2e3436;
+	background-color: var(--light-shades);
+	color: var(--dark-shades);
 }
 /* is there a better way to select _both_ fonts at the same time? */
 :lang(ar) {
@@ -50,18 +62,17 @@ code {
 	font-family: "IBM Plex Mono", monospace !important; /* override :lang(*) font setting */
 }
 a:link, a:visited {
-	color: #555753;
+	color: var(--light-accent);
 	text-decoration: none;
 }
 a:focus, a:hover {
-	background-color: #555753;
-	color: #eeeeec;
+	background-color: var(--light-accent);
+	color: var(--light-shades);
 	border-radius: 0.1em;
 }
 div.title-card {
-	background-color: #555753;
-	color: #eeeeec;
-	border-top: 1em solid #888a85;
+	background-color: var(--dark-accent);
+	color: var(--light-shades);
 }
 div.title-card .lbox {
 	margin: 2vw;
@@ -86,8 +97,8 @@ div.title-card .layout img {
 div.indepth-card {
 	padding: 10vh 0;
 	margin: 1em 0;
-	background-color: #555753;
-	color: #eeeeec;
+	background-color: var(--dark-accent);
+	color: var(--light-shades);
 }
 .flexreverse {
 	flex-direction: row-reverse;

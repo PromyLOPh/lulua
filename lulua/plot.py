@@ -21,7 +21,7 @@
 import sys, argparse, json, unicodedata, pickle, logging
 from operator import itemgetter
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource
+from bokeh.models import ColumnDataSource, LinearAxis, Range1d
 from bokeh.embed import json_item
 
 from .layout import *
@@ -42,10 +42,6 @@ def letterfreq (args):
     keyboard = defaultKeyboards['ibmpc105']
     layout = defaultLayouts[args.layout].specialize (keyboard)
 
-    xdata = []
-    xlabel = []
-    ydata = []
-    ydataAbs = []
 
     # letter-based binning, in case multiple buttons are mapped to the same
     # letter.
@@ -59,15 +55,40 @@ def letterfreq (args):
     combinationTotal = sum (binned.values ())
     logging.info (f'total binned combinations {combinationTotal}')
 
+    xdata = []
+    xlabel = []
+    ydata = []
+    ydataAbs = []
+    ydataCumAbs = []
+    ydataCumRel = []
+
+    cumSum = combinationTotal
     for i, (k, v) in enumerate (sorted (binned.items (), key=itemgetter (1))):
         xdata.append (i)
         xlabel.append (k)
-        ydata.append (v/combinationTotal*100)
+        ydata.append (v/combinationTotal)
         ydataAbs.append (v)
 
-    source = ColumnDataSource(data=dict(x=xdata, letters=xlabel, rel=ydata, abs=ydataAbs))
-    p = figure(plot_width=1000, plot_height=500, x_range=xlabel, sizing_mode='scale_both', tooltips=[('frequency', '@rel%'), ('count', '@abs')])
+        # cumulative
+        ydataCumAbs.append (cumSum)
+        ydataCumRel.append (cumSum/combinationTotal)
+        cumSum -= v
+
+    source = ColumnDataSource(data=dict(x=xdata, letters=xlabel, rel=ydata, abs=ydataAbs, cum=ydataCumAbs, cumRel=ydataCumRel))
+    p = figure(
+            plot_width=1000,
+            plot_height=500,
+            x_range=xlabel,
+            y_range=(0, max (ydata)),
+            sizing_mode='scale_both',
+            tooltips=[('frequency', '@rel'), ('cumulative', '@cumRel'), ('count', '@abs')],
+            )
     p.vbar(x='letters', width=0.5, top='rel', color="#dc322f", source=source)
+
+    p.extra_y_ranges = {"cum": Range1d()}
+    p.line ('letters', 'cumRel', source=source, y_range_name='cum', line_width=2)
+    p.add_layout(LinearAxis(y_range_name="cum"), 'right')
+
     p.xgrid.grid_line_color = None
     p.xaxis.major_label_text_font_size = "2em"
     p.xaxis.major_label_text_font_size = "2em"

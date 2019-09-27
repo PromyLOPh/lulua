@@ -1,34 +1,149 @@
 layout:
-- layer: {CD_ret: "\n", Cl1: "\u062B", Cl2: "\u0637", Cl3: "\u0641", Cl4: "\u0629", Cl5: "\u0654",
-    Cl_tab: "\t", Cr1: "\u0638", Cr2: "\u0621", Cr3: "\u0636", Cr4: "\u062D", Cr5: "\u0639",
-    Cr6: "\u062F", Cr7: "\u0642", Dl1: "\u0628", Dl2: "\u0645", Dl3: "\u0627", Dl4: "\u0648",
-    Dl5: "\u062A", Dr2: "\u0635", Dr3: "\u0633", Dr4: "\u0646", Dr5: "\u064A", Dr6: "\u0644",
-    Dr7: "\u0631", El2: "\u0630", El3: "\u0649", El4: "\u062C", El5: "\u0634", El6: "\u0655",
-    Er1: "\u063A", Er2: "\u062E", Er3: "\u0643", Er4: "\u0632", Er5: "\u0647", Fl_space: ' ',
-    Fr_space: ' '}
+- layer:
+    Cl_tab: "\t"
+    Cl1: "ث"
+    Cl2: "ط"
+    Cl3: "ف"
+    Cl4: "ة"
+    Cl5: "\u0654" # ARABIC HAMZA ABOVE
+    Cr7: "ق"
+    Cr6: "د"
+    Cr5: "ع"
+    Cr4: "ح"
+    Cr3: "ض"
+    Cr2: "ء"
+    Cr1: "ظ"
+    CD_ret: "\n"
+
+    Dl1: "ب"
+    Dl2: "م"
+    Dl3: "ا"
+    Dl4: "و"
+    Dl5: "ت"
+    Dr7: "ر"
+    Dr6: "ل"
+    Dr5: "ي"
+    Dr4: "ن"
+    Dr3: "س"
+    Dr2: "ص"
+
+    El2: "ذ"
+    El3: "ى"
+    El4: "ج"
+    El5: "ش"
+    El6: "\u0655" # ARABIC HAMZA BELOW
+    Er5: "ه"
+    Er4: "ز"
+    Er3: "ك"
+    Er2: "خ"
+    Er1: "غ"
+
+    Fl_space: ' '
+    Fr_space: ' '
   modifier:
   - []
-- layer: {Bl2: "\u203A", Bl7: $, Br4: "\u2039", Br6: '%', Cl2: +, Cl3: ']', Cl4: '!',
-    Cl5: '*', Cr2: '&', Cr3: "\u2026", Cr4: '}', Cr5: "\u061F", Cr6: '[', Cr7: "\xAB",
-    Dl1: "\u061B", Dl2: ':', Dl3: '"', Dl4: '-', Dl5: _, Dr2: '@', Dr3: /, Dr4: ),
-    Dr5: "\u060C", Dr6: ., Dr7: (, El3: '~', El4: '>', El5: '=', El6: '{', Er2: ^,
-    Er3: "\xBB", Er4: <, Er5: '#'}
+- layer:
+    Bl2: "›" # SINGLE RIGHT-POINTING ANGLE QUOTATIONMARK
+    Bl7: '$'
+    Br4: "‹" # SINGLE LEFT-POINTING ANGLE QUOTATIONMARK
+    Br6: '%'
+
+    Cl2: '+'
+    Cl3: ']'
+    Cl4: '!'
+    Cl5: '*'
+    Cr7: "«" # LEFT-POINTING DOUBLE ANGLE QUOTATIONMARK
+    Cr6: '['
+    Cr5: "؟" # ARABIC QUESTION MARK
+    Cr4: '}'
+    Cr3: "…" # HORIZONTAL ELLIPSIS
+    Cr2: '&'
+
+    Dl1: "؛" # ARABIC SEMICOLON
+    Dl2: ':'
+    Dl3: '"'
+    Dl4: '-'
+    Dl5: '_'
+    Dr7: '('
+    Dr6: '.'
+    Dr5: "،" # ARABIC COMMA
+    Dr4: ')'
+    Dr3: '/'
+    Dr2: '@'
+
+    El3: '~'
+    El4: '>'
+    El5: '='
+    El6: '{'
+    Er5: '#'
+    Er4: '<'
+    Er3: "»" # RIGHT-POINTING DOUBLE ANGLE QUOTATIONMARK
+    Er2: '^'
   modifier:
   - [El_shift]
   - [Er_shift]
-- layer: {Bl1: "\u06E6", Bl2: "\u06D8", Bl4: "\u06E4", Bl6: "\u06E8", Bl7: "\u06DB",
-    Br1: "\u06E2", Br2: "\u06DF", Br3: "\u06DE", Br4: "\u061C", Br6: "\u2067", Cl2: "\u06D9",
-    Cl3: "\u2066", Cl4: "\u0671", Cr1: "\u06E5", Cr2: "\u06DA", Cr4: "\u06DD", Cr5: "\u0652",
-    Cr6: "\u064C", Dl1: "\u06DC", Dl2: "\u064D", Dl3: "\u064E", Dl4: "\u0640", Dl5: "\u0650",
-    Dr2: "\u2069", Dr3: "\u06D7", Dr4: "\u064F", Dr5: "\u0651", Dr6: "\u064B", Dr7: "\u0653",
-    El2: "\u06E7", El3: "\u06E0", El4: "\u066D", El5: "\u06E3", Er1: "\u06D6", Er3: "\u0670",
-    Er4: "\u06E9", Er5: "\u06ED"}
+- layer:
+    # https://www.w3.org/International/questions/qa-bidi-unicode-controls
+    # suggest using RLI/LRI
+    Bl1: "\u06E6" # ARABIC SMALL YEH
+    Bl2: "\u06D8" # ARABIC SMALL HIGH MEEM INITIAL FORM
+    Bl4: "\u06E4" # ARABIC SMALL HIGH MADDA
+    Bl6: "\u06E8" # ARABIC SMALL HIGH NOON
+    Bl7: "\u06DB" # ARABIC SMALL HIGH THREE DOTS
+    Br6: "\u2067" # RIGHT-TO-LEFT ISOLATE (RLI)
+    Br4: "\u061C" # ARABIC LETTER MARK (ALM)
+    Br3: "\u06DE" # ARABIC START OF RUB EL HIZB
+    Br2: "\u06DF" # ARABIC SMALL HIGH ROUNDED ZERO
+    Br1: "\u06E2" # ARABIC SMALL HIGH MEEM ISOLATED FORM
+
+    Cl2: "\u06D9" # ARABIC SMALL HIGH LAM ALEF
+    Cl3: "\u2066" # LEFT-TO-RIGHT ISOLATE (LRI)
+    Cl4: "\u0671" # ARABIC LETTER ALEF WASLA
+    Cr6: "\u064C" # ARABIC DAMMATAN
+    Cr5: "\u0652" # ARABIC SUKUN
+    Cr4: "\u06DD" # ARABIC END OF AYAH
+    Cr2: "\u06DA" # ARABIC SMALL HIGH JEEM
+    Cr1: "\u06E5" # ARABIC SMALL WAW
+
+    Dl1: "\u06DC" # ARABIC SMALL HIGH SEEN
+    Dl2: "\u064D" # ARABIC KASRATAN
+    Dl3: "\u064E" # ARABIC FATHA
+    Dl4: "\u0640" # ARABIC TATWEEL
+    Dl5: "\u0650" # ARABIC KASRA
+    Dr7: "\u0653" # ARABIC MADDAH ABOVE
+    Dr6: "\u064B" # ARABIC FATHATAN
+    Dr5: "\u0651" # ARABIC SHADDA
+    Dr4: "\u064F" # ARABIC DAMMA
+    Dr3: "\u06D7" # ARABIC SMALL HIGH LIGATURE QAF WITH LAM WITH ALEF MAKSURA
+    Dr2: "\u2069" # POP DIRECTIONAL ISOLATE
+
+    El2: "\u06E7" # ARABIC SMALL HIGH YEH
+    El3: "\u06E0" # ARABIC SMALL HIGH UPRIGHT RECTANGULAR ZERO
+    El4: "\u066D" # ARABIC FIVE POINTED STAR
+    El5: "\u06E3" # ARABIC SMALL LOW SEEN
+    Er5: "\u06ED" # ARABIC SMALL LOW MEEM
+    Er4: "\u06E9" # ARABIC PLACE OF SAJDAH
+    Er3: "\u0670" # ARABIC LETTER SUPERSCRIPT ALEF
+    Er1: "\u06D6" # ARABIC SMALL HIGH LIGATURE SAD WITH LAM WITH ALEF MAKSURA
   modifier:
   - [Dl_caps]
   - [Dr1]
-- layer: {Cl1: "\u0663", Cl2: "\u0662", Cl3: "\u0661", Cl4: "\u0660", Cl5: "\u066A",
-    Dl1: "\u0667", Dl2: "\u0666", Dl3: "\u0665", Dl4: "\u0664", Dl5: "\u2212", El2: "\u066C",
-    El3: "\u066B", El4: "\u0669", El5: "\u0668", El6: "\u0609"}
+- layer:
+    Cl1: "٣"
+    Cl2: "٢"
+    Cl3: "١"
+    Cl4: "٠"
+    Cl5: "٪"
+    Dl1: "٧"
+    Dl2: "٦"
+    Dl3: "٥"
+    Dl4: "٤"
+    Dl5: "\u2212"
+    El2: "٬" # ARABIC THOUSANDS SEPARATOR
+    El3: "٫" # ARABIC DECIMAL SEPARATOR
+    El4: "٩"
+    El5: "٨"
+    El6: "؉"
   modifier:
   - [Fr_altgr]
   - [El1]

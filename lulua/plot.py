@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import sys, argparse, json, unicodedata, pickle, logging
+import sys, argparse, json, unicodedata, pickle, logging, math
 from operator import itemgetter
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, LinearAxis, Range1d
@@ -26,7 +26,7 @@ from bokeh.embed import json_item
 
 from .layout import *
 from .keyboard import defaultKeyboards
-from .util import limit
+from .util import limit, displayText
 from .writer import Writer
 from .carpalx import Carpalx, model01
 
@@ -104,6 +104,17 @@ def letterfreq (args):
     return 0
 
 def triadfreq (args):
+    """ Dump triad frequency stats to stdout """
+    sorter = dict (
+        weight=lambda x: x['weight'],
+        effort=lambda x: x['effort'].effort,
+        # increase impact of extremely “bad” triads using math.pow
+        combined=lambda x: (x['weight']/weightSum)*math.pow (x['effort'].effort, 2)
+        )
+    def noLimit (l, n):
+        yield from l
+    limiter = limit if args.limit > 0 else noLimit
+
     stats = pickle.load (sys.stdin.buffer)
 
     # XXX: add layout to stats?
@@ -126,32 +137,19 @@ def triadfreq (args):
 
     # triads that contribute to x% of the weight
     topTriads = list ()
-    topTriadsCutoff = 0.50
     topTriadsWeight = 0
     for data in sorted (binned.values (), key=lambda x: x['weight'], reverse=True):
-        if topTriadsWeight < weightSum*topTriadsCutoff:
+        if topTriadsWeight < weightSum*args.cutoff:
             topTriads.append (data)
             topTriadsWeight += data['weight']
 
-    # get top triads (by weight)
-    print ('by weight')
-    for data in limit (sorted (binned.values (), key=lambda x: x['weight'], reverse=True), 20):
-        print (data['textTriad'], data['weight'], data['effort'].effort)
+    logging.info (f'{len (topTriads)}/{len (stats["triads"].triads)} triads '
+            'contribute to {args.cutoff*100}% of the typing')
 
-    logging.info (f'{len (topTriads)}/{len (stats["triads"].triads)} triads contribute to {topTriadsCutoff*100}% of the typing')
-
-    print ('by effort')
-    # only base layer
-    includeBaseLayer = iter (topTriads)
-    sortByEffort = sorted (includeBaseLayer, key=lambda x: x['effort'].effort, reverse=True)
-    for data in limit (sortByEffort, 20):
-        print (data['textTriad'], data['weight'], data['effort'].effort)
-
-    print ('by effort and weight')
-    includeBaseLayer = iter (topTriads)
-    sortByEffortWeight = sorted (includeBaseLayer, key=lambda x: (x['weight']/weightSum)*x['effort'].effort, reverse=True)
-    for data in limit (sortByEffortWeight, 20):
-        print (data['textTriad'], data['weight'], data['effort'].effort)
+    # final output
+    sortByEffort = sorted (iter (topTriads), key=sorter[args.sort], reverse=args.reverse)
+    for data in limiter (sortByEffort, args.limit):
+        print (''.join (map (displayText, data['textTriad'])), data['weight'], data['effort'].effort)
 
     return 0
 

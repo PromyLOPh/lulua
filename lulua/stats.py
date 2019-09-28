@@ -234,6 +234,10 @@ def main ():
     sp = subparsers.add_parser('letterfreq')
     sp.set_defaults (func=letterfreq)
     sp = subparsers.add_parser('triadfreq')
+    sp.add_argument('-c', '--cutoff', type=float, default=0.5, help='Only include the top x% of all triads')
+    sp.add_argument('-r', '--reverse', action='store_true', help='Reverse sorting order')
+    sp.add_argument('-s', '--sort', choices={'weight', 'effort', 'combined'}, default='weight', help='Sorter')
+    sp.add_argument('-n', '--limit', type=int, default=0, help='Sorter')
     sp.set_defaults (func=triadfreq)
 
     logging.basicConfig (level=logging.INFO)

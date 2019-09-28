@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import argparse, sys, unicodedata, logging
+import argparse, sys, logging
 from collections import namedtuple, defaultdict
 from operator import attrgetter
 from datetime import datetime
@@ -30,7 +30,7 @@ import yaml
 from .layout import LITTLE, RING, MIDDLE, INDEX, THUMB, GenericLayout, defaultLayouts
 from .writer import Writer
 from .keyboard import defaultKeyboards
-from .util import first
+from .util import first, displayText
 
 RendererSettings = namedtuple ('RendererSetting', ['buttonMargin', 'middleGap', 'buttonWidth', 'rounded', 'shadowOffset'])
 
@@ -99,25 +99,6 @@ class Renderer:
         return btn.width * self.settings.buttonWidth
 
     def _addButton (self, btn):
-        def toDisplayText (text):
-            if text is None:
-                return text
-            if len (text) == 1 and unicodedata.combining (text) != 0:
-                # add circle if combining
-                return '\u25cc' + text
-            invMap = {
-                '\t': '⭾',
-                '\n': '↳',
-                ' ': '\u2423',
-                '\u200e': '[LRM]', # left to right mark
-                '\u061c': '[ALM]', # arabic letter mark
-                '\u202c': '[PDF]', # pop directional formatting
-                "\u2066": '[LRI]', # left-to-right isolate (lri)
-                "\u2067": '[RLI]', # right-to-left isolate (rli)
-                "\u2069": '[PDI]', # pop directional isolate (pdi)
-                }
-            return invMap.get (text, text)
-
         xoff, yoff = self.cursor
         settings = self.settings
         width = self.buttonWidth (btn)
@@ -137,7 +118,7 @@ class Renderer:
             buttonText = [layerToArrow[i]]
             gclass.append ('modifier')
         else:
-            buttonText = list (map (toDisplayText, self.layout.getButtonText (btn)))
+            buttonText = list (map (displayText, self.layout.getButtonText (btn)))
 
         # background rect
         if any (buttonText):

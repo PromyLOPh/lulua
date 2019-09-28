@@ -22,11 +22,12 @@
 Misc utilities
 """
 
-import os, yaml, pkg_resources
+import os, yaml, pkg_resources, unicodedata
 
 first = lambda x: next (iter (x))
 
 def limit (l, n):
+    """ Limit the number of items drawn from iterable l to n. """
     it = iter (l)
     for i in range (n):
         yield next (it)
@@ -65,3 +66,23 @@ class YamlLoader:
         for res in pkg_resources.resource_listdir (__package__, self.defaultDir):
             yield self.__getitem__ (res, onlyRes=True)
 
+def displayText (text):
+    """ Convert text into a string that is always renderable without combining,
+    control or invisible characters """
+    if text is None:
+        return text
+    if len (text) == 1 and unicodedata.combining (text) != 0:
+        # add circle if combining
+        return '\u25cc' + text
+    invMap = {
+        '\t': '⭾',
+        '\n': '↳',
+        ' ': '\u2423',
+        '\u200e': '[LRM]', # left to right mark
+        '\u061c': '[ALM]', # arabic letter mark
+        '\u202c': '[PDF]', # pop directional formatting
+        "\u2066": '[LRI]', # left-to-right isolate (lri)
+        "\u2067": '[RLI]', # right-to-left isolate (rli)
+        "\u2069": '[PDI]', # pop directional isolate (pdi)
+        }
+    return invMap.get (text, text)

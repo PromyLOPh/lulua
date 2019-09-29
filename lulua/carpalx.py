@@ -43,8 +43,9 @@ from .keyboard import Button
 ModelParams = namedtuple ('ModelParams', ['kBPS', 'k123S',
         'w0HRF', 'pHand', 'pRow', 'pFinger', 'fHRF', 'baselineEffort'])
 
+models = dict (
 # model parameters mod_01 from http://mkweb.bcgsc.ca/carpalx/?model_parameters
-model01 = ModelParams (
+mod01 = ModelParams (
     # k_b, k_p, k_s
     kBPS = (0.3555, 0.6423, 0.4268),
     # k_1, k_2, k_3 plus extension k_S (weight for simultaneous key presses)
@@ -132,7 +133,105 @@ model01 = ModelParams (
 
         'Fr_altgr': 4.0, # XXX: dito
         },
-    )
+    ),
+
+# from paper “Ergonomic Keyboard Layout Designed for the Filipino Language”
+salvo = ModelParams (
+    # k_b, k_p, k_s
+    # XXX: unchanged from original?
+    kBPS = (0.3555, 0.6423, 0.4268),
+    # k_1, k_2, k_3 plus extension k_S (weight for simultaneous key presses)
+    # XXX: unchanged from original?
+    k123S = (1.0, 0.367, 0.235, 1.0),
+    # w0, wHand, wRow, wFinger
+    # XXX: unchanged from original?
+    w0HRF = (0.0, 1.0, 1.3088, 2.5948),
+    pHand = {LEFT: 0.0, RIGHT: 0.0},
+    # numbers, top, base, bottom, control (XXX not part of original model)
+    # XXX: unchanged from original?
+    pRow = (1.5, 0.5, 0.0, 1.0, 1.5),
+    # symmetric penalties
+    # normalized as suggested by https://normanlayout.info/about.html
+    pFinger = {
+        LEFT: {
+            THUMB: 0.0, # XXX: not part of the original model
+            INDEX: 1-(6.09/6.57),
+            MIDDLE: 1-(5.65/6.57),
+            RING: 1-(4.54/6.57),
+            LITTLE: 1-(3.77/6.57),
+            },
+        RIGHT: {
+            THUMB: 0.0, # XXX: not part of the original model
+            INDEX: 1-(6.57/6.57),
+            MIDDLE: 1-(6.37/6.57),
+            RING: 1-(5.08/6.57),
+            LITTLE: 1-(4.27/6.57),
+            },
+        },
+    # fHand, fRow, fFinger
+    fHRF = (1.0, 0.3, 0.3),
+    # baseline key effort
+    baselineEffort = {
+        # XXX: from model 01, not part of the paper
+        'Bl1': 5.0,
+        'Bl2': 5.0,
+        'Bl3': 4.0,
+        'Bl4': 4.0,
+        'Bl5': 4.0,
+        'Bl6': 3.5,
+        'Bl7': 4.5,
+        'Br6': 4.0,
+        'Br5': 4.0,
+        'Br4': 4.0,
+        'Br3': 4.0,
+        'Br2': 4.0,
+        'Br1': 4.5,
+
+        'Cl1': 2.0,
+        'Cl2': 2.0,
+        'Cl3': 2.0,
+        'Cl4': 2.0,
+        'Cl5': 2.3,
+        'Cr7': 3.0,
+        'Cr6': 1.9,
+        'Cr5': 2.0,
+        'Cr4': 2.0,
+        'Cr3': 2.2,
+        'Cr2': 4.0, # XXX: dito
+        'Cr1': 6.0,
+
+        'Dl_caps': 2.0, # XXX: dito
+        'Dl1': 0.0,
+        'Dl2': 0.0,
+        'Dl3': 0.0,
+        'Dl4': 0.0,
+        'Dl5': 1.8,
+        'Dr7': 1.8,
+        'Dr6': 0.0,
+        'Dr5': 0.0,
+        'Dr4': 0.0,
+        'Dr3': 0.0,
+        'Dr2': 2.0, # XXX: dito
+        'Dr1': 4.0, # XXX: dito
+
+        'El_shift': 4.0,  # XXX: dito
+        'El1': 4.0, # XXX: dito
+        'El2': 2.0,
+        'El3': 2.0,
+        'El4': 2.0,
+        'El5': 2.0,
+        'El6': 3.5,
+        'Er5': 2.0,
+        'Er4': 2.0,
+        'Er3': 2.0,
+        'Er2': 2.0,
+        'Er1': 2.0,
+        'Er_shift': 4.0, # XXX: dito
+
+        'Fr_altgr': 4.0, # XXX: dito
+        },
+    ),
+)
 
 def madd (a, b):
     """ Given indexables a and b, computes a[0]*b[0]+a[1]*b[1]+… """

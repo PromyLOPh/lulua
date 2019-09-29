@@ -28,7 +28,7 @@ from .layout import *
 from .keyboard import defaultKeyboards
 from .util import limit, displayText
 from .writer import Writer
-from .carpalx import Carpalx, model01
+from .carpalx import Carpalx, models
 
 def letterfreq (args):
     """ Map key combinations to their text, bin it and plot sorted distribution """
@@ -124,7 +124,7 @@ def triadfreq (args):
 
     # letter-based binning, in case multiple buttons are mapped to the same
     # letter.
-    binned = defaultdict (lambda: dict (weight=0, effort=Carpalx (model01, writer), textTriad=None))
+    binned = defaultdict (lambda: dict (weight=0, effort=Carpalx (models['mod01'], writer), textTriad=None))
     weightSum = 0
     for triad, weight in stats['triads'].triads.items ():
         textTriad = tuple (layout.getText (t) for t in triad)

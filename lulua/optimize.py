@@ -32,8 +32,7 @@ tqdm.get_lock().locks = []
 import yaml
 
 from .layout import defaultLayouts, ButtonCombination, Layer, KeyboardLayout, GenericLayout
-from .carpalx import Carpalx
-from .carpalx import model01 as cmodel01
+from .carpalx import Carpalx, models, ModelParams
 from .writer import Writer
 from .util import first
 from .keyboard import defaultKeyboards, LetterButton
@@ -147,8 +146,9 @@ class LayoutOptimizer (Annealer):
             triads: List[Tuple[ButtonCombination]],
             layout: KeyboardLayout,
             pins: FrozenSet[Tuple[int, Optional[Text]]],
-            writer: Writer):
-        carpalx = Carpalx (cmodel01, writer)
+            writer: Writer,
+            model: ModelParams):
+        carpalx = Carpalx (model, writer)
         super ().__init__ (LayoutOptimizerState (carpalx, buttonMap))
 
         self.triads = triads
@@ -256,6 +256,7 @@ def optimize ():
     parser.add_argument('-n', '--steps', type=int, default=10000, help='Number of iterations')
     parser.add_argument('-r', '--randomize', action='store_true', help='Randomize layout before optimizing')
     parser.add_argument('-p', '--pin', type=parsePin, help='Pin these layers/buttons')
+    parser.add_argument('-m', '--model', choices=list (models.keys()), default='mod01', help='Carpalx model')
 
     args = parser.parse_args()
 
@@ -296,7 +297,7 @@ def optimize ():
 
     pins = [(x, keyboard[y] if y else None) for x, y in args.pin]
 
-    opt = LayoutOptimizer (buttonMap, triads, layout, pins, writer)
+    opt = LayoutOptimizer (buttonMap, triads, layout, pins, writer, model=models[args.model])
     if args.randomize:
         logging.info ('randomizing initial layout')
         for i in range (len (buttonMap)*2):

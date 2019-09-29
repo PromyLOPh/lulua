@@ -5,6 +5,7 @@ WIKIEXTRACTOR:=../3rdparty/wikiextractor/WikiExtractor.py
 OPTROUNDS=100000
 # pin layers, keep hand-optimized numbers, keep top row free
 OPTPINS='0;1;2;0,Bl1;0,Bl2;0,Bl3;0,Bl4;0,Bl5;0,Bl6;0,Bl7;0,Br6;0,Br5;0,Br4;0,Br3;0,Br2;0,Br1;3,Cl4;3,Cl3;3,Cl2;3,Cl1;3,Dl4;3,Dl3;3,Dl2;3,Dl1;3,El5;3,El4;3,El3;3,El2;3,Dl5;3,Cl5;3,El6'
+OPTMODEL=mod01
 
 all: ar-lulua.xmodmap ar-lulua.svg ar-asmo663.svg ar-linux.svg ar-malas.svg ar-phonetic.svg ar-osman.svg letterfreq.json ar-khorshid.svg
 
@@ -56,5 +57,5 @@ $(STATSDIR)/stats.pickle: $(STATSDIR)/stats-arwiki.pickle \
 
 ### optimization ###
 optimized.yaml: $(STATSDIR)/stats.pickle
-	lulua-optimize -n $(OPTROUNDS) -r -p $(OPTPINS) -l ar-lulua < $< > $@
+	lulua-optimize -n $(OPTROUNDS) -r -p $(OPTPINS) -l ar-lulua -m $(OPTMODEL) < $< > $@
 

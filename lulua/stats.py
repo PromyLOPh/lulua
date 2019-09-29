@@ -26,7 +26,7 @@ from collections import defaultdict
 from .layout import *
 from .keyboard import defaultKeyboards
 from .writer import SkipEvent, Writer
-from .carpalx import Carpalx, model01 as cmodel01
+from .carpalx import Carpalx, models
 from .plot import letterfreq, triadfreq
 
 def updateDictOp (a, b, op):
@@ -217,7 +217,7 @@ def pretty (args):
 
     for triad, count in sorted (stats['triads'].triads.items (), key=itemgetter (1)):
         print (f'{triad} {count:10d}')
-    effort = Carpalx (cmodel01, writer)
+    effort = Carpalx (models['mod01'], writer)
     effort.addTriads (stats['triads'].triads)
     print ('total effort (carpalx)', effort.effort)
 

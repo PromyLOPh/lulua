@@ -20,7 +20,7 @@
 
 import pytest
 
-from .carpalx import Carpalx, model01, ModelParams
+from .carpalx import Carpalx, models, ModelParams
 from .keyboard import defaultKeyboards
 from .layout import defaultLayouts, LEFT, RIGHT, INDEX, MIDDLE, RING, LITTLE
 from .writer import Writer
@@ -101,7 +101,7 @@ def test_strokePath (t, i, expect):
     keyboard = defaultKeyboards['ibmpc105']
     layout = defaultLayouts['ar-linux'].specialize (keyboard)
     writer = Writer (layout)
-    c = Carpalx (model01, writer)
+    c = Carpalx (models['mod01'], writer)
     t = tuple (map (keyboard.find, t))
     assert c._strokePath (t)[i] == expect
 

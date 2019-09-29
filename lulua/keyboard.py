@@ -91,6 +91,72 @@ _buttonToXorgKeycode = {
     'Fr_ctrl': 105,
     }
 
+_buttonToKeyman = {
+    'Bl1': 'K_BKSLASH',
+    'Bl2': 'K_1',
+    'Bl3': 'K_2',
+    'Bl4': 'K_3',
+    'Bl5': 'K_4',
+    'Bl6': 'K_5',
+    'Bl7': 'K_6',
+    'Br6': 'K_7',
+    'Br5': 'K_8',
+    'Br4': 'K_9',
+    'Br3': 'K_0',
+    'Br2': 'K_LBRKT',
+    'Br1': 'K_RBRKT',
+    'Br_bs': 'K_BKSP',
+    'Cl_tab': 'K_TAB',
+    'Cl1': 'K_Q',
+    'Cl2': 'K_W',
+    'Cl3': 'K_E',
+    'Cl4': 'K_R',
+    'Cl5': 'K_T',
+    'Cr7': 'K_Z',
+    'Cr6': 'K_U',
+    'Cr5': 'K_I',
+    'Cr4': 'K_O',
+    'Cr3': 'K_P',
+    'Cr2': 'K_COLON',
+    'Cr1': 'K_EQUAL',
+    'CD_ret': 'K_ENTER',
+    'Dl_caps': 'CAPS',
+    'Dl1': 'K_A',
+    'Dl2': 'K_S',
+    'Dl3': 'K_D',
+    'Dl4': 'K_F',
+    'Dl5': 'K_G',
+    'Dr7': 'K_H',
+    'Dr6': 'K_J',
+    'Dr5': 'K_K',
+    'Dr4': 'K_L',
+    'Dr3': 'K_BKQUOTE',
+    'Dr2': 'K_QUOTE',
+    'Dr1': 'K_SLASH',
+    'El_shift': 'SHIFT', # XXX: there is no distinction between left/right
+    'El1': 'K_oE2',
+    'El2': 'K_Y',
+    'El3': 'K_X',
+    'El4': 'K_C',
+    'El5': 'K_V',
+    'El6': 'K_B',
+    'Er5': 'K_N',
+    'Er4': 'K_M',
+    'Er3': 'K_COMMA',
+    'Er2': 'K_PERIOD',
+    'Er1': 'K_HYPHEN',
+    'Er_shift': 'SHIFT',
+    'Fl_ctrl': 'LCTRL',
+    'Fl_win': 'K_?5B',
+    'Fl_alt': 'LALT',
+    'Fl_space': 'K_SPACE',
+    'Fr_space': 'K_SPACE',
+    'Fr_altgr': 'RALT',
+    'Fr_win': 'K_?5C',
+    'Fr_menu': 'K_?5D',
+    'Fr_ctrl': 'RCTRL',
+    }
+
 class Button:
     __slots__ = ('width', 'isMarked', 'i')
     _idToName : Dict[int, Text] = {}
@@ -128,6 +194,10 @@ class Button:
     @property
     def xorgKeycode (self):
         return _buttonToXorgKeycode[self.name]
+
+    @property
+    def keymanCode (self):
+        return _buttonToKeyman[self.name]
 
     @classmethod
     def deserialize (self, data: Dict):

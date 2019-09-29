@@ -325,6 +325,40 @@ def renderXmodmap (args):
             fd.write (f'!! {btn.name}\nkeycode {btn.xorgKeycode} = {v}\n')
         fd.write ('\n'.join (['add Mod3 = ISO_First_Group', 'add Mod5 = ISO_Level3_Shift', '']))
 
+def renderKeyman (args):
+    """ Rudimentary keyman script generation. Note that keyman is somewhat
+    unflexible when it comes to shift states and therefore layouts with
+    non-standard shift keys/states won’t work. """
+
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+
+    with open (args.output, 'w') as fd:
+        fd.write ('\n'.join ([
+            'c Auto-generated file for Keyman 11.0',
+            f'c layout: {layout.name}',
+            f'c generated: {datetime.utcnow ()}',
+            '',
+            'store(&version) "9.0"',
+            f'store(&name)    "{layout.name}"',
+            'store(&mnemoniclayout) "0"',
+            'store(&targets) "any"',
+            '',
+            'begin Unicode > use(main)',
+            'group(main) using keys',
+            '',
+            ]))
+        for i, l in enumerate (layout.layers):
+            for m in l.modifier:
+                for x in m:
+                    if x.keymanCode.startswith ('K_') or x.keymanCode == 'CAPS':
+                        logging.error (f'Keyman does not support custom modifier like {m}. Your layout will not work correctly.')
+                        break
+                for btn, text in l.layout.items ():
+                    comb = ' '.join ([x.keymanCode for x in m] + [btn.keymanCode])
+                    text = ' '.join ([f'U+{ord (x):04X}' for x in text])
+                    fd.write (f'+ [{comb}] > {text}\n')
+
 def render ():
     parser = argparse.ArgumentParser(description='Render keyboard into output format.')
     parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
@@ -335,6 +369,8 @@ def render ():
     sp.set_defaults (func=renderSvg)
     sp = subparsers.add_parser('xmodmap')
     sp.set_defaults (func=renderXmodmap)
+    sp = subparsers.add_parser('keyman')
+    sp.set_defaults (func=renderKeyman)
     parser.add_argument('output', metavar='FILE', help='Output file')
 
     logging.basicConfig (level=logging.INFO)

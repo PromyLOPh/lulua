@@ -12,7 +12,7 @@ layout:
     Br5: "٨"
     Br4: "٩"
     Br3: "."
-    Br2: "ئ"
+    Br2: "\u064A\u0654" # composed: ئ
 
     Cl1: "ض"
     Cl2: "ص"

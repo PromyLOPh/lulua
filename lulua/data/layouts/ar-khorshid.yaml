@@ -16,11 +16,11 @@ layout:
     Br1: "="
 
     Cl1: "ف"
-    Cl2: "ئ"
+    Cl2: "\u064A\u0654" # composed: ئ
     Cl3: "ش"
-    Cl4: "لا"
+    Cl4: "لا" # composed: ﻻ
     Cl5: "ط"
-    Cr7: "ؤ"
+    Cr7: "\u0648\u0654" # composed: ؤ
     Cr6: "ث"
     Cr5: "س"
     Cr4: "ص"

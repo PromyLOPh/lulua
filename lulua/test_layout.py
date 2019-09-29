@@ -29,13 +29,13 @@ from .keyboard import defaultKeyboards
 @pytest.mark.parametrize("layout", defaultLayouts, ids=[l.name for l in defaultLayouts])
 def test_atomic (layout):
     """ Make sure layout text strings are atomic (i.e. not decomposeable) """
-    for _, text in layout.buttons ():
+    for btn, text in layout.buttons ():
         assert isinstance (text, str)
         for char in text:
             d = unicodedata.decomposition (char)
             # allow compat decompositions like … -> ...
             if not d.startswith ('<compat> ') and not d.startswith ('<isolated> ') and not d.startswith ('<medial> ') and not d.startswith ('<initial> '):
-                assert d == '', char
+                assert d == '', (char, btn)
 
 @pytest.mark.parametrize("layout", defaultLayouts, ids=[l.name for l in defaultLayouts])
 def test_genericlayout_len (layout):

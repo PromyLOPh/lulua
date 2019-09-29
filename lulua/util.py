@@ -60,11 +60,13 @@ class YamlLoader:
             except yaml.reader.ReaderError:
                 pass
 
-        raise KeyError
+        raise KeyError (k)
 
     def __iter__ (self):
         for res in pkg_resources.resource_listdir (__package__, self.defaultDir):
-            yield self.__getitem__ (res, onlyRes=True)
+            # ignore dotfiles, only include yaml
+            if not res.startswith ('.') and res.endswith ('.yaml'):
+                yield self.__getitem__ (res, onlyRes=True)
 
 def displayText (text):
     """ Convert text into a string that is always renderable without combining,

@@ -195,140 +195,150 @@ class Renderer:
 def unique (l, key):
     return dict ((key (v), v) for v in l).values ()
 
+def renderSvg (args):
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+    writer = Writer (layout)
+
+    style = """
+            svg {
+                font-family: "IBM Plex Arabic";
+                font-size: 25pt;
+            }
+            .button.unused {
+                opacity: 0.6;
+            }
+            .button .label .layer-1 {
+            }
+            .button.modifier .label .layer-1 {
+                font-size: 80%;
+            }
+            .button .label .layer-2, .button .label .layer-3, .button .label .layer-4 {
+                font-size: 80%;
+                font-weight: 200;
+            }
+            .button .label .controlchar {
+            font-size: 40%; font-family: sans-serif;
+            }
+            .button .cap {
+                fill: #eee8d5;
+            }
+            .button.finger-little .shadow {
+                fill: #dc322f; /* red */
+            }
+            .button.finger-ring .shadow {
+                fill: #268bd2; /* blue */
+            }
+            .button.finger-middle .shadow {
+                fill: #d33682; /* magenta */
+            }
+            .button.finger-index .shadow {
+                fill: #6c71c4; /* violet */
+            }
+            .button.finger-thumb .shadow {
+                fill: #2aa198; /* cyan */
+            }
+            .button .label {
+                fill: #657b83;
+            }
+            .button .controllabel {
+                stroke: #657b83;
+                fill: none;
+            }
+            .button .marker-shadow {
+                stroke: #93a1a1;
+            }
+            .button .marker {
+                stroke: #fdf6e3;
+            }
+            """
+    r = Renderer (keyboard, layout=layout, writer=writer)
+    rendered, (w, h) = r.render ()
+    d = svgwrite.Drawing(args.output, size=(w*em, h*em), profile='full')
+    d.defs.add (d.style (style))
+    d.add (rendered)
+    d.save()
+
+def renderXmodmap (args):
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+
+    with open (args.output, 'w') as fd:
+        # inspired by https://neo-layout.org/neo_de.xmodmap
+        fd.write ('\n'.join ([
+            '!! auto-generated xmodmap',
+            f'!! layout: {layout.name}',
+            f'!! generated: {datetime.utcnow ()}',
+            '',
+            'clear Lock',
+            'clear Mod2',
+            'clear Mod3',
+            'clear Mod5',
+            '',
+            ]))
+
+        keycodeMap = defaultdict (list)
+        # XXX: this is an ugly quirk to get layer 4 working
+        # layers: 1, 2, 3, 5, 4, None, 6, 7
+        for i in (0, 1, 2, 4, 3, 99999, 5, 6):
+            if i >= len (layout.layers):
+                for btn in unique (keyboard.keys (), key=attrgetter ('xorgKeycode')):
+                    keycodeMap[btn].append ('NoSymbol')
+                continue
+            l = layout.layers[i]
+            # space button shares the same keycode and must be removed
+            for btn in unique (keyboard.keys (), key=attrgetter ('xorgKeycode')):
+                if not layout.isModifier (frozenset ([btn])):
+                    text = l.layout.get (btn)
+                    if not text:
+                        if btn.name == 'Br_bs' and i == 0:
+                            text = 'BackSpace'
+                        else:
+                            text = 'NoSymbol'
+                    else:
+                        # some keys cannot be represented by unicode
+                        # characters and must be mapped
+                        specialMap = {
+                            '\t': 'Tab',
+                            '\n': 'Return',
+                            ' ': 'space',
+                            }
+                        text = specialMap.get (text, f'U{ord (text):04X}')
+                    keycodeMap[btn].append (text)
+        # XXX layer modmap functionality is fixed for now
+        layerMap = [
+            [],
+            ['Shift_L', 'Shift_Lock'],
+            ['ISO_Group_Shift', 'ISO_Group_Shift', 'ISO_First_Group', 'NoSymbol'],
+            ['ISO_Level3_Shift', 'ISO_Level3_Shift', 'ISO_Group_Shift', 'ISO_Group_Shift', 'ISO_Level3_Lock', 'NoSymbol'],
+            ]
+        for i, l in enumerate (layout.layers):
+            for m in l.modifier:
+                assert len (m) <= 1, ('multi-key modifier not supported', m)
+                if not m:
+                    continue
+                btn = first (m)
+                keycodeMap[btn] = layerMap[i]
+
+        for btn, v in keycodeMap.items ():
+            v = '\t'.join (v)
+            fd.write (f'!! {btn.name}\nkeycode {btn.xorgKeycode} = {v}\n')
+        fd.write ('\n'.join (['add Mod3 = ISO_First_Group', 'add Mod5 = ISO_Level3_Shift', '']))
+
 def render ():
     parser = argparse.ArgumentParser(description='Render keyboard into output format.')
     parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
     parser.add_argument('-k', '--keyboard', metavar='KEYBOARD',
             default='ibmpc105', help='Physical keyboard name')
-    parser.add_argument('format', metavar='FORMAT', choices={'svg', 'xmodmap'}, help='Output format')
+    subparsers = parser.add_subparsers()
+    sp = subparsers.add_parser('svg')
+    sp.set_defaults (func=renderSvg)
+    sp = subparsers.add_parser('xmodmap')
+    sp.set_defaults (func=renderXmodmap)
     parser.add_argument('output', metavar='FILE', help='Output file')
 
     logging.basicConfig (level=logging.INFO)
     args = parser.parse_args()
 
-    keyboard = defaultKeyboards[args.keyboard]
-    layout = defaultLayouts[args.layout].specialize (keyboard)
-    writer = Writer (layout)
-
-    if args.format == 'svg':
-        style = """
-                svg {
-                    font-family: "IBM Plex Arabic";
-                    font-size: 25pt;
-                }
-                .button.unused {
-                    opacity: 0.6;
-                }
-                .button .label .layer-1 {
-                }
-                .button.modifier .label .layer-1 {
-                    font-size: 80%;
-                }
-                .button .label .layer-2, .button .label .layer-3, .button .label .layer-4 {
-                    font-size: 80%;
-                    font-weight: 200;
-                }
-                .button .label .controlchar {
-                font-size: 40%; font-family: sans-serif;
-                }
-                .button .cap {
-                    fill: #eee8d5;
-                }
-                .button.finger-little .shadow {
-                    fill: #dc322f; /* red */
-                }
-                .button.finger-ring .shadow {
-                    fill: #268bd2; /* blue */
-                }
-                .button.finger-middle .shadow {
-                    fill: #d33682; /* magenta */
-                }
-                .button.finger-index .shadow {
-                    fill: #6c71c4; /* violet */
-                }
-                .button.finger-thumb .shadow {
-                    fill: #2aa198; /* cyan */
-                }
-                .button .label {
-                    fill: #657b83;
-                }
-                .button .controllabel {
-                    stroke: #657b83;
-                    fill: none;
-                }
-                .button .marker-shadow {
-                    stroke: #93a1a1;
-                }
-                .button .marker {
-                    stroke: #fdf6e3;
-                }
-                """
-        r = Renderer (keyboard, layout=layout, writer=writer)
-        rendered, (w, h) = r.render ()
-        d = svgwrite.Drawing(args.output, size=(w*em, h*em), profile='full')
-        d.defs.add (d.style (style))
-        d.add (rendered)
-        d.save()
-    elif args.format == 'xmodmap':
-        with open (args.output, 'w') as fd:
-            # inspired by https://neo-layout.org/neo_de.xmodmap
-            fd.write ('\n'.join ([
-                '!! auto-generated xmodmap',
-                f'!! layout: {layout.name}',
-                f'!! generated: {datetime.utcnow ()}',
-                '',
-                'clear Lock',
-                'clear Mod2',
-                'clear Mod3',
-                'clear Mod5',
-                '',
-                ]))
-
-            keycodeMap = defaultdict (list)
-            # XXX: this is an ugly quirk to get layer 4 working
-            # layers: 1, 2, 3, 5, 4, None, 6, 7
-            for i in (0, 1, 2, 4, 3, 99999, 5, 6):
-                if i >= len (layout.layers):
-                    for btn in unique (keyboard.keys (), key=attrgetter ('xorgKeycode')):
-                        keycodeMap[btn].append ('NoSymbol')
-                    continue
-                l = layout.layers[i]
-                # space button shares the same keycode and must be removed
-                for btn in unique (keyboard.keys (), key=attrgetter ('xorgKeycode')):
-                    if not layout.isModifier (frozenset ([btn])):
-                        text = l.layout.get (btn)
-                        if not text:
-                            if btn.name == 'Br_bs' and i == 0:
-                                text = 'BackSpace'
-                            else:
-                                text = 'NoSymbol'
-                        else:
-                            # some keys cannot be represented by unicode
-                            # characters and must be mapped
-                            specialMap = {
-                                '\t': 'Tab',
-                                '\n': 'Return',
-                                ' ': 'space',
-                                }
-                            text = specialMap.get (text, f'U{ord (text):04X}')
-                        keycodeMap[btn].append (text)
-            # XXX layer modmap functionality is fixed for now
-            layerMap = [
-                [],
-                ['Shift_L', 'Shift_Lock'],
-                ['ISO_Group_Shift', 'ISO_Group_Shift', 'ISO_First_Group', 'NoSymbol'],
-                ['ISO_Level3_Shift', 'ISO_Level3_Shift', 'ISO_Group_Shift', 'ISO_Group_Shift', 'ISO_Level3_Lock', 'NoSymbol'],
-                ]
-            for i, l in enumerate (layout.layers):
-                for m in l.modifier:
-                    assert len (m) <= 1, ('multi-key modifier not supported', m)
-                    if not m:
-                        continue
-                    btn = first (m)
-                    keycodeMap[btn] = layerMap[i]
-
-            for btn, v in keycodeMap.items ():
-                v = '\t'.join (v)
-                fd.write (f'!! {btn.name}\nkeycode {btn.xorgKeycode} = {v}\n')
-            fd.write ('\n'.join (['add Mod3 = ISO_First_Group', 'add Mod5 = ISO_Level3_Shift', '']))
+    return args.func (args)
 

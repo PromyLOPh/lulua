@@ -15,41 +15,48 @@ svg {
 	font-weight: 200;
 }
 .button .label .controlchar {
-font-size: 40%; font-family: sans-serif;
+	font-size: 40%;
+	font-family: sans-serif;
 }
 .button .cap {
 	fill: #eee8d5;
 }
-.button .highlight {
+.button .cap.highlight {
 	fill: #dc322f; /* red */
 	filter: blur(0.5em);
 }
-.button.finger-little .shadow {
+.button.finger-little .cap.shadow {
 	fill: #dc322f; /* red */
 }
-.button.finger-ring .shadow {
+.button.finger-ring .cap.shadow {
 	fill: #268bd2; /* blue */
 }
-.button.finger-middle .shadow {
+.button.finger-middle .cap.shadow {
 	fill: #d33682; /* magenta */
 }
-.button.finger-index .shadow {
+.button.finger-index .cap.shadow {
 	fill: #6c71c4; /* violet */
 }
-.button.finger-thumb .shadow {
+.button.finger-thumb .cap.shadow {
 	fill: #2aa198; /* cyan */
 }
 .button .label {
 	fill: #657b83;
 }
+.button .label.shadow {
+	fill: #fdf6e3;
+}
 .button .controllabel {
 	stroke: #657b83;
 	fill: none;
 }
-.button .marker-shadow {
-	stroke: #93a1a1;
+.button .controllabel.shadow {
+	stroke: #fdf6e3;
+	fill: none;
 }
 .button .marker {
 	stroke: #fdf6e3;
 }
-
+.button .marker.shadow {
+	stroke: #93a1a1;
+}

@@ -128,7 +128,7 @@ class Renderer:
                     size=(width*em, settings.buttonWidth*em),
                     rx=settings.rounded*em,
                     ry=settings.rounded*em,
-                    class_='shadow')
+                    class_='cap shadow')
             g.add (b)
         else:
             gclass.append ('unused')
@@ -152,7 +152,7 @@ class Renderer:
                     map (lambda x: (x+settings.shadowOffset)*em, start),
                     map (lambda x: (x+settings.shadowOffset)*em, end),
                     stroke_width=0.07*em,
-                    class_='marker-shadow')
+                    class_='marker shadow')
             g.add (l)
             # the marker itself
             l = svgwrite.shapes.Line (
@@ -169,7 +169,7 @@ class Renderer:
                 size=(width*em, settings.buttonWidth*em),
                 rx=settings.rounded*em,
                 ry=settings.rounded*em,
-                class_='highlight',
+                class_='cap highlight',
                 style=f'opacity: {highlight}')
         g.add (b)
 
@@ -180,28 +180,35 @@ class Renderer:
             (0.5, -1/3, 'layer-3'),
             (0.5, 2/3, 'layer-4'),
             ]
-        for text, (txoff, tyoff, style) in zip (buttonText, textParam):
-            if text is None:
-                continue
-            # actual text must be inside tspan, so we can apply smaller font size
-            # without affecting element position
-            t = svgwrite.text.Text ('',
-                    insert=((xoff+width/2+txoff)*em, (yoff+settings.buttonWidth/2+tyoff)*em),
-                    text_anchor='middle',
-                    class_='label')
-            if text.startswith ('[') and text.endswith (']'):
-                t.add (svgwrite.text.TSpan (text[1:-1],
-                        class_='controlchar',
-                        direction='ltr'))
-                g.add (svgwrite.shapes.Rect (
-                        insert=((xoff+width/2+txoff-0.4)*em, (yoff+settings.buttonWidth/2+tyoff-0.4)*em),
-                        size=(0.8*em, 0.5*em),
-                        stroke_width=0.05*em,
-                        stroke_dasharray='5,3',
-                        class_='controllabel'))
-            else:
-                t.add (svgwrite.text.TSpan (text, class_=style, direction='rtl'))
-            g.add (t)
+        # XXX: could probably def/use these
+        for extraclass, morexoff, moreyoff in [(['shadow'], settings.shadowOffset, settings.shadowOffset), ([], 0, 0)]:
+            class_ = ['label'] + extraclass
+            controlclass_ = ['controllabel'] + extraclass
+            for text, (txoff, tyoff, style) in zip (buttonText, textParam):
+                if text is None:
+                    continue
+                txoff += morexoff
+                tyoff += moreyoff
+                # actual text must be inside tspan, so we can apply smaller font size
+                # without affecting element position
+                t = svgwrite.text.Text ('',
+                        insert=((xoff+width/2+txoff)*em, (yoff+settings.buttonWidth/2+tyoff)*em),
+                        text_anchor='middle',
+                        class_=' '.join (class_))
+                if text.startswith ('[') and text.endswith (']'):
+                    # XXX: should find us a font which has glyphs for control chars
+                    t.add (svgwrite.text.TSpan (text[1:-1],
+                            class_='controlchar',
+                            direction='ltr'))
+                    g.add (svgwrite.shapes.Rect (
+                            insert=((xoff+width/2+txoff-0.4)*em, (yoff+settings.buttonWidth/2+tyoff-0.4)*em),
+                            size=(0.8*em, 0.5*em),
+                            stroke_width=0.05*em,
+                            stroke_dasharray='5,3',
+                            class_=' '.join (controlclass_)))
+                else:
+                    t.add (svgwrite.text.TSpan (text, class_=style, direction='rtl'))
+                g.add (t)
 
         return g, width
 

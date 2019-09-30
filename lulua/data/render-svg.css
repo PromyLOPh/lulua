@@ -20,6 +20,10 @@ font-size: 40%; font-family: sans-serif;
 .button .cap {
 	fill: #eee8d5;
 }
+.button .highlight {
+	fill: #dc322f; /* red */
+	filter: blur(0.5em);
+}
 .button.finger-little .shadow {
 	fill: #dc322f; /* red */
 }

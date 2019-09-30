@@ -37,7 +37,7 @@ RendererSettings = namedtuple ('RendererSetting', ['buttonMargin', 'middleGap', 
 class Renderer:
     """ Keyboard to SVG renderer """
 
-    __slots__ = ('keyboard', 'layout', 'settings', 'cursor', 'writer')
+    __slots__ = ('keyboard', 'layout', 'settings', 'cursor', 'writer', 'keyHighlight')
 
     defaultSettings = RendererSettings (
             buttonMargin=0.2,
@@ -47,11 +47,12 @@ class Renderer:
             shadowOffset=0.05,
             )
 
-    def __init__ (self, keyboard, layout=None, writer=None, settings=None):
+    def __init__ (self, keyboard, layout=None, writer=None, settings=None, keyHighlight=None):
         self.keyboard = keyboard
         self.layout = layout
         self.writer = writer
         self.settings = settings or self.defaultSettings
+        self.keyHighlight = keyHighlight or {}
 
         self.cursor = [0, 0]
 
@@ -120,7 +121,7 @@ class Renderer:
         else:
             buttonText = list (map (displayText, self.layout.getButtonText (btn)))
 
-        # background rect
+        # background rect if any text
         if any (buttonText):
             b = svgwrite.shapes.Rect (
                     insert=((xoff+settings.shadowOffset)*em, (yoff+settings.shadowOffset)*em),
@@ -131,6 +132,7 @@ class Renderer:
             g.add (b)
         else:
             gclass.append ('unused')
+        # main key rect
         b = svgwrite.shapes.Rect (
                 insert=(xoff*em, yoff*em),
                 size=(width*em, settings.buttonWidth*em),
@@ -159,6 +161,17 @@ class Renderer:
                     stroke_width=0.07*em,
                     class_='marker')
             g.add (l)
+
+        # highlight rect
+        highlight = self.keyHighlight.get (btn.name, 0)
+        b = svgwrite.shapes.Rect (
+                insert=(xoff*em, yoff*em),
+                size=(width*em, settings.buttonWidth*em),
+                rx=settings.rounded*em,
+                ry=settings.rounded*em,
+                class_='highlight',
+                style=f'opacity: {highlight}')
+        g.add (b)
 
         # clock-wise from bottom-left to bottom-right
         textParam = [
@@ -200,7 +213,12 @@ def renderSvg (args):
     layout = defaultLayouts[args.layout].specialize (keyboard)
     writer = Writer (layout)
 
-    r = Renderer (keyboard, layout=layout, writer=writer)
+    keyHeat = {}
+    if args.heatmap:
+        maxHeat = max (args.heatmap['buttons'].values ())
+        keyHeat = dict ((k, v/maxHeat) for k, v in args.heatmap['buttons'].items ())
+
+    r = Renderer (keyboard, layout=layout, writer=writer, keyHighlight=keyHeat)
     rendered, (w, h) = r.render ()
     d = svgwrite.Drawing(args.output, size=(w*em, h*em), profile='full')
     d.defs.add (d.style (args.style.read ().decode ('utf-8')))
@@ -307,6 +325,13 @@ def renderKeyman (args):
                     text = ' '.join ([f'U+{ord (x):04X}' for x in text])
                     fd.write (f'+ [{comb}] > {text}\n')
 
+def yamlload (s):
+    try:
+        with open (s) as fd:
+            return yaml.safe_load (fd)
+    except FileNotFoundError:
+        raise argparse.ArgumentTypeError(f'Cannot open file {s}')
+
 def render ():
     parser = argparse.ArgumentParser(description='Render keyboard into output format.')
     parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
@@ -321,6 +346,10 @@ def render ():
             # ourselves
             type=argparse.FileType('rb'),
             help='Include external stylesheet into SVG')
+    sp.add_argument('--heatmap',
+            metavar='FILE',
+            type=yamlload,
+            help='Highlight keys based on heatmap data')
     sp.set_defaults (func=renderSvg)
     sp = subparsers.add_parser('xmodmap')
     sp.set_defaults (func=renderXmodmap)

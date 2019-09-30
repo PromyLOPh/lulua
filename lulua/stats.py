@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import sys, operator, pickle, argparse, logging
+import sys, operator, pickle, argparse, logging, yaml
 from operator import itemgetter
 from itertools import chain, groupby, product
 from collections import defaultdict
@@ -221,6 +221,21 @@ def pretty (args):
     effort.addTriads (stats['triads'].triads)
     print ('total effort (carpalx)', effort.effort)
 
+def keyHeatmap (args):
+    stats = pickle.load (sys.stdin.buffer)
+
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+    writer = Writer (layout)
+
+    buttons = {}
+    buttonPresses = sum (stats['simple'].buttons.values ())
+    data = {'total': buttonPresses, 'buttons': buttons}
+    for k, v in sorted (stats['simple'].buttons.items (), key=itemgetter (1)):
+        assert k.name not in data
+        buttons[k.name] = v
+    yaml.dump (data, sys.stdout)
+
 def main ():
     parser = argparse.ArgumentParser(description='Process statistics files.')
     parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
@@ -239,6 +254,8 @@ def main ():
     sp.add_argument('-s', '--sort', choices={'weight', 'effort', 'combined'}, default='weight', help='Sorter')
     sp.add_argument('-n', '--limit', type=int, default=0, help='Sorter')
     sp.set_defaults (func=triadfreq)
+    sp = subparsers.add_parser('keyheatmap')
+    sp.set_defaults (func=keyHeatmap)
 
     logging.basicConfig (level=logging.INFO)
     args = parser.parse_args()

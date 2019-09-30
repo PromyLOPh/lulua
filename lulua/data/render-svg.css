@@ -1,0 +1,51 @@
+svg {
+	font-family: "IBM Plex Arabic";
+	font-size: 25pt;
+}
+.button.unused {
+	opacity: 0.6;
+}
+.button .label .layer-1 {
+}
+.button.modifier .label .layer-1 {
+	font-size: 80%;
+}
+.button .label .layer-2, .button .label .layer-3, .button .label .layer-4 {
+	font-size: 80%;
+	font-weight: 200;
+}
+.button .label .controlchar {
+font-size: 40%; font-family: sans-serif;
+}
+.button .cap {
+	fill: #eee8d5;
+}
+.button.finger-little .shadow {
+	fill: #dc322f; /* red */
+}
+.button.finger-ring .shadow {
+	fill: #268bd2; /* blue */
+}
+.button.finger-middle .shadow {
+	fill: #d33682; /* magenta */
+}
+.button.finger-index .shadow {
+	fill: #6c71c4; /* violet */
+}
+.button.finger-thumb .shadow {
+	fill: #2aa198; /* cyan */
+}
+.button .label {
+	fill: #657b83;
+}
+.button .controllabel {
+	stroke: #657b83;
+	fill: none;
+}
+.button .marker-shadow {
+	stroke: #93a1a1;
+}
+.button .marker {
+	stroke: #fdf6e3;
+}
+

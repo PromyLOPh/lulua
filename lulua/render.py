@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import argparse, sys, logging
+import argparse, sys, logging, pkg_resources
 from collections import namedtuple, defaultdict
 from operator import attrgetter
 from datetime import datetime
@@ -200,62 +200,10 @@ def renderSvg (args):
     layout = defaultLayouts[args.layout].specialize (keyboard)
     writer = Writer (layout)
 
-    style = """
-            svg {
-                font-family: "IBM Plex Arabic";
-                font-size: 25pt;
-            }
-            .button.unused {
-                opacity: 0.6;
-            }
-            .button .label .layer-1 {
-            }
-            .button.modifier .label .layer-1 {
-                font-size: 80%;
-            }
-            .button .label .layer-2, .button .label .layer-3, .button .label .layer-4 {
-                font-size: 80%;
-                font-weight: 200;
-            }
-            .button .label .controlchar {
-            font-size: 40%; font-family: sans-serif;
-            }
-            .button .cap {
-                fill: #eee8d5;
-            }
-            .button.finger-little .shadow {
-                fill: #dc322f; /* red */
-            }
-            .button.finger-ring .shadow {
-                fill: #268bd2; /* blue */
-            }
-            .button.finger-middle .shadow {
-                fill: #d33682; /* magenta */
-            }
-            .button.finger-index .shadow {
-                fill: #6c71c4; /* violet */
-            }
-            .button.finger-thumb .shadow {
-                fill: #2aa198; /* cyan */
-            }
-            .button .label {
-                fill: #657b83;
-            }
-            .button .controllabel {
-                stroke: #657b83;
-                fill: none;
-            }
-            .button .marker-shadow {
-                stroke: #93a1a1;
-            }
-            .button .marker {
-                stroke: #fdf6e3;
-            }
-            """
     r = Renderer (keyboard, layout=layout, writer=writer)
     rendered, (w, h) = r.render ()
     d = svgwrite.Drawing(args.output, size=(w*em, h*em), profile='full')
-    d.defs.add (d.style (style))
+    d.defs.add (d.style (args.style.read ().decode ('utf-8')))
     d.add (rendered)
     d.save()
 
@@ -366,6 +314,13 @@ def render ():
             default='ibmpc105', help='Physical keyboard name')
     subparsers = parser.add_subparsers()
     sp = subparsers.add_parser('svg')
+    sp.add_argument('-s', '--style',
+            metavar='FILE',
+            default=pkg_resources.resource_stream (__package__, 'data/render-svg.css'),
+            # pkg_resources returns bytes(), so we’ll need to decode to unicode
+            # ourselves
+            type=argparse.FileType('rb'),
+            help='Include external stylesheet into SVG')
     sp.set_defaults (func=renderSvg)
     sp = subparsers.add_parser('xmodmap')
     sp.set_defaults (func=renderXmodmap)

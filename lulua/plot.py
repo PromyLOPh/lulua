@@ -79,15 +79,15 @@ def letterfreq (args):
             plot_width=1000,
             plot_height=500,
             x_range=xlabel,
-            y_range=(0, max (ydata)),
+            y_range=(0, 1),
             sizing_mode='scale_both',
             tooltips=[('frequency', '@rel'), ('cumulative', '@cumRel'), ('count', '@abs')],
             )
-    p.vbar(x='letters', width=0.5, top='rel', color="#dc322f", source=source)
+    p.line ('letters', 'cumRel', source=source, line_width=2)
 
-    p.extra_y_ranges = {"cum": Range1d()}
-    p.line ('letters', 'cumRel', source=source, y_range_name='cum', line_width=2)
-    p.add_layout(LinearAxis(y_range_name="cum"), 'right')
+    p.extra_y_ranges = {"single": Range1d (0, max (ydata))}
+    p.vbar(x='letters', width=0.5, top='rel', color="#dc322f", source=source, y_range_name='single')
+    p.add_layout(LinearAxis(y_range_name="single"), 'right')
 
     # styling
     p.xgrid.grid_line_color = None

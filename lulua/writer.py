@@ -186,7 +186,7 @@ class Writer:
 
             try:
                 match, combinations = self.layout (buf)
-                assert len (match) > 0, match
+                assert len (match) > 0, (match, combinations, buf)
 
                 comb = self.chooseCombination (combinations)
 

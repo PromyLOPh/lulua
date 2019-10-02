@@ -28,9 +28,10 @@ from .keyboard import defaultKeyboards
 
 @pytest.mark.parametrize("layout", defaultLayouts, ids=[l.name for l in defaultLayouts])
 def test_atomic (layout):
-    """ Make sure layout text strings are atomic (i.e. not decomposeable) """
+    """ Make sure layout text strings are atomic (i.e. not decomposeable) and not empty """
     for btn, text in layout.buttons ():
         assert isinstance (text, str)
+        assert text != '', (btn, )
         for char in text:
             d = unicodedata.decomposition (char)
             # allow compat decompositions like … -> ...

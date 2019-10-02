@@ -179,39 +179,44 @@ charMap = {
     }
 
 def writeWorker (args, inq, outq):
-    keyboard = defaultKeyboards['ibmpc105']
-    layout = defaultLayouts['null'].specialize (keyboard)
-    w = Writer (layout)
-    combined = dict ((cls.name, cls(w)) for cls in allStats)
-
-    while True:
-        keyboard = defaultKeyboards[args.keyboard]
-        layout = defaultLayouts[args.layout].specialize (keyboard)
+    try:
+        keyboard = defaultKeyboards['ibmpc105']
+        layout = defaultLayouts['null'].specialize (keyboard)
         w = Writer (layout)
+        combined = dict ((cls.name, cls(w)) for cls in allStats)
 
-        item = inq.get ()
-        if item is None:
-            break
+        while True:
+            keyboard = defaultKeyboards[args.keyboard]
+            layout = defaultLayouts[args.layout].specialize (keyboard)
+            w = Writer (layout)
 
-        # extract
-        text = sources[args.source] (item)
-        text = ''.join (map (lambda x: charMap.get (x, x), text))
-        # XXX sanity checks, disable
-        for c in charMap.keys ():
-            if c in text:
-                #print (c, 'is in text', file=sys.stderr)
-                assert False, c
+            item = inq.get ()
+            if item is None:
+                break
 
-        # stats
-        stats = [cls(w) for cls in allStats]
-        for match, event in w.type (StringIO (text)):
+            # extract
+            text = sources[args.source] (item)
+            text = ''.join (map (lambda x: charMap.get (x, x), text))
+            # XXX sanity checks, disable
+            for c in charMap.keys ():
+                if c in text:
+                    #print (c, 'is in text', file=sys.stderr)
+                    assert False, c
+
+            # stats
+            stats = [cls(w) for cls in allStats]
+            for match, event in w.type (StringIO (text)):
+                for s in stats:
+                    s.process (event)
+
             for s in stats:
-                s.process (event)
+                combined[s.name].update (s)
 
-        for s in stats:
-            combined[s.name].update (s)
-
-    outq.put (combined)
+        outq.put (combined)
+    except Exception as e:
+        # async exceptions
+        outq.put (None)
+        raise
 
 def write ():
     """ Extract corpus source file, convert to plain text, map chars and create stats """
@@ -244,6 +249,10 @@ def write ():
             for l in sys.stdin:
                 inq.put (l)
                 bar.update (n=1)
+
+                # something is wrong
+                if not outq.empty ():
+                    return 1
     except KeyboardInterrupt:
         pass
 
@@ -257,4 +266,5 @@ def write ():
     for w in workers:
         w.join ()
 
+    return 0
 

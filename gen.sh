@@ -64,9 +64,28 @@ rule mkdir
 rule letterfreq
     command = lulua-analyze -l ar-lulua letterfreq < \$in > \$out
 
-### build targets ###
-build \$docdir/letterfreq.json: letterfreq \$statsdir/ar-lulua/all.pickle
+rule analyze-fingerhand
+    command = lulua-analyze -l \$layout fingerhand < \$in > \$out
 
+rule cpp
+    command = gcc -E -x c -nostdinc -MMD -MF \$out.d -C -P -I \$docdir/_temp \$in -o \$out
+    depfile = \$out.d
+    deps = gcc
+
+rule cp
+    command = cp \$in \$out
+
+### build targets ###
+build \$docdir/_build: mkdir
+build \$docdir/_build/fonts: mkdir
+build \$docdir/_temp: mkdir
+
+build \$docdir/_build/index.html: cpp \$docdir/index.html || \$docdir/_build
+build \$docdir/_build/letterfreq.json: letterfreq \$statsdir/ar-lulua/all.pickle || \$docdir/_build
+build \$docdir/_build/style.css: cp \$docdir/style.css || \$docdir/_build
+build \$docdir/_build/lulua-logo.svg: cp \$docdir/lulua-logo.svg || \$docdir/_build
+build \$docdir/_build/fonts/IBMPlexArabic-Regular.woff2: cp \$docdir/fonts/IBMPlexArabic-Regular.woff2 || \$docdir/_build/fonts
+build \$docdir/_build/fonts/IBMPlexArabic-Thin.woff2: cp \$docdir/fonts/IBMPlexArabic-Thin.woff2 || \$docdir/_build/fonts
 EOF
 
 for l in $layouts; do
@@ -87,13 +106,16 @@ build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-2019
 
 build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil.pickle \$statsdir/${l}/arwiki.pickle || \$statsdir/${l}
 
-build \$docdir/${l}.svg: render-svg
+build \$docdir/_build/${l}.svg: render-svg || \$docdir/_build
     layout = ${l}
 
-build \$docdir/${l}-heat.yaml: analyze-heat \$statsdir/${l}/all.pickle
+build \$docdir/_temp/${l}-heat.yaml: analyze-heat \$statsdir/${l}/all.pickle || \$docdir/_temp
     layout = ${l}
 
-build \$docdir/${l}-heat.svg: render-svg-heat \$docdir/${l}-heat.yaml
+build \$docdir/_build/${l}-heat.svg: render-svg-heat \$docdir/_temp/${l}-heat.yaml || \$docdir/_build
+    layout = ${l}
+
+build \$docdir/_temp/${l}-fingerhand.html: analyze-fingerhand \$statsdir/${l}/all.pickle || \$docdir/_temp
     layout = ${l}
 
 EOF
@@ -101,7 +123,7 @@ done
 
 for l in $layoutsXmodmap; do
 cat <<EOF
-build \$docdir/${l}.xmodmap: render-xmodmap
+build \$docdir/_build/${l}.xmodmap: render-xmodmap || \$docdir/_build
     layout = ${l}
 
 EOF

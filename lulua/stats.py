@@ -194,15 +194,6 @@ def pretty (args):
     for k, v in sorted (stats['simple'].unknown.items (), key=itemgetter (1)):
         print (f'{k!r} {v:10d}')
 
-    #print ('fingers')
-    #for k, v in sorted (stats['simple'].fingers.items (), key=itemgetter (0)):
-    #    print (f'{k[0].name:5s} {k[1].name:6s} {v:10d} {v/buttonPresses*100:5.1f}%')
-
-    #print ('hands')
-    #for hand, fingers in groupby (sorted (stats['simple'].fingers.keys ()), key=itemgetter (0)):
-    #    used = sum (map (lambda x: stats['simple'].fingers[x], fingers))
-    #    print (f'{hand.name:5s} {used:10d} {used/buttonPresses*100:5.1f}%')
-
     combined = defaultdict (int)
     for hand, dist in stats['runlen'].perHandRunlenDist.items ():
         print (hand)
@@ -236,6 +227,35 @@ def keyHeatmap (args):
         buttons[k.name] = v
     yaml.dump (data, sys.stdout)
 
+def fingerHand (args):
+    stats = pickle.load (sys.stdin.buffer)
+
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+    writer = Writer (layout)
+
+    hands = defaultdict (int)
+    fingers = defaultdict (int)
+    buttonPresses = sum (stats['simple'].buttons.values ())
+    for btn, count in stats['simple'].buttons.items ():
+        hand, finger = writer.getHandFinger (btn)
+        hands[hand] += count
+        fingers[(hand, finger)] += count
+
+    print ('<div class="fingerhandstats" dir="ltr" lang="en">')
+    fingerOrder = {LEFT: list (FingerType), RIGHT: reversed (FingerType)}
+    for hand in Direction:
+        handpct = hands[hand]/buttonPresses*100
+        print (f'<div class="{hand.name.lower()}" style="width: {handpct:.3f}%;">\n\t<div class="hand">{handpct:.2f}%</div>')
+        print ('\t<div class="fingers">')
+        for finger in fingerOrder[hand]:
+            fingerpct = fingers[(hand, finger)]/buttonPresses*100
+            # finger width is relative to parent (i.e. hand)
+            fingerwidth = fingers[(hand, finger)]/hands[hand]*100
+            print (f'\t\t<div class="{finger.name.lower()}" style="width: {fingerwidth:.3f}%;">{fingerpct:.2f}</div>')
+        print ('\t</div>\n\t</div>')
+    print ('</div>')
+
 def main ():
     parser = argparse.ArgumentParser(description='Process statistics files.')
     parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
@@ -256,6 +276,8 @@ def main ():
     sp.set_defaults (func=triadfreq)
     sp = subparsers.add_parser('keyheatmap')
     sp.set_defaults (func=keyHeatmap)
+    sp = subparsers.add_parser('fingerhand')
+    sp.set_defaults (func=fingerHand)
 
     logging.basicConfig (level=logging.INFO)
     args = parser.parse_args()

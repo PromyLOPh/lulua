@@ -3,10 +3,8 @@ __pycache__
 .eggs/
 .coverage
 .mypy_cache/
-doc/*.svg
-doc/*.yaml
-doc/*.xmodmap
-doc/letterfreq.json
+doc/_build
+doc/_temp
 .ninja_*
 build.ninja
 stats/

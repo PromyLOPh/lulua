@@ -106,3 +106,38 @@ div.indepth-card {
 .lbox {
 	margin: 0 5vw;
 }
+/* for hand/finger stats */
+div.fingerhandstats {
+	text-align: center;
+	display: flex;
+}
+div.fingerhandstats div.fingers {
+	display: flex;
+}
+div.fingerhandstats div.fingers div {
+	margin: 0.1em;
+	overflow: hidden;
+}
+div.fingerhandstats .left {
+	margin-right: 0.5em;
+}
+div.fingerhandstats .right {
+	margin-left: 0.5em;
+}
+/* keep in sync with render-svg.css */
+div.fingerhandstats .fingers .little {
+	border: 0.1em solid #dc322f; /* red */
+}
+div.fingerhandstats .fingers .ring {
+	border: 0.1em solid #268bd2; /* blue */
+}
+div.fingerhandstats .fingers .middle  {
+	border: 0.1em solid #d33682; /* magenta */
+}
+div.fingerhandstats .fingers .index {
+	border: 0.1em solid #6c71c4; /* violet */
+}
+div.fingerhandstats .fingers .thumb {
+	border: 0.1em solid #2aa198; /* cyan */
+}
+

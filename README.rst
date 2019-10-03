@@ -17,7 +17,7 @@ choosing:
 
 .. code:: bash
 
-    ls corpus/*.txt.lz | lulua-write text my-layout.yaml | lulua-stats combine > stats.pickle
+    find corpus/*.txt.lz | lulua-write text my-layout.yaml | lulua-analyze combine > stats.pickle
 
 Now you can optimize your layout using:
 
@@ -34,6 +34,21 @@ To get a pretty picture (SVG) of your layout render it:
 It is highly recommended to use pypy3_ instead of CPython.
 
 .. _pypy3: http://pypy.org/
+
+Building documentation
+----------------------
+
+This essentially means building the website_ and reproducing my results. You’ll
+need to obtain the corpora from me_, which are not public due to copyright
+issues. Then simply run
+
+.. code:: bash
+
+   ./gen.sh > build.ninja && ninja
+
+to analyze them and create pretty pictures as well as statistics in ``doc/``.
+
+.. _me: lars+lulua@6xq.net
 
 Acknowledgements
 ----------------

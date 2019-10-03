@@ -4,5 +4,10 @@ __pycache__
 .coverage
 .mypy_cache/
 doc/*.svg
+doc/*.yaml
 doc/*.xmodmap
 doc/letterfreq.json
+.ninja_*
+build.ninja
+stats/
+corpus/

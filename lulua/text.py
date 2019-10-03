@@ -28,6 +28,8 @@ from functools import partial
 from multiprocessing import Process, Queue, cpu_count, current_process
 from subprocess import Popen, PIPE
 from tqdm import tqdm
+import ebooklib
+from ebooklib import epub
 
 import html5lib
 from html5lib.filters.base import Filter
@@ -137,20 +139,35 @@ def sourceHtml (selectFunc, item):
         walker = html5lib.getTreeWalker("etree")
         stream = walker (document)
         s = HTMLSerializer()
-        return ''.join (s.serialize(Select (stream, selectFunc)))
+        yield ''.join (s.serialize(Select (stream, selectFunc)))
+
+def sourceEpub (item):
+    """ epub reader """
+    book = epub.read_epub (item.rstrip ())
+    logging.debug (f'reading ebook {item}')
+    for item in book.get_items_of_type (ebooklib.ITEM_DOCUMENT):
+        logging.debug (f'got item {item.get_name ()}')
+        # XXX: in theory html5lib should be able to detect the encoding of
+        # bytes(), but it does not.
+        document = html5lib.parse (item.get_content ().decode ('utf-8'))
+        walker = html5lib.getTreeWalker("etree")
+        stream = walker (document)
+        s = HTMLSerializer()
+        yield ''.join (s.serialize (stream))
 
 def sourceText (item):
     with LzipFile (item.rstrip ()) as fd:
-        return fd.read ().decode ('utf-8')
+        yield fd.read ().decode ('utf-8')
 
 def sourceJson (item):
-    return json.loads (item)
+    yield json.loads (item)
 
 sources = dict(
     aljazeera=partial(sourceHtml, f['aljazeera']),
     bbcarabic=partial(sourceHtml, f['bbcarabic']),
     text=sourceText,
     json=sourceJson,
+    epub=sourceEpub,
     )
 
 charMap = {
@@ -184,6 +201,7 @@ def writeWorker (args, inq, outq):
         layout = defaultLayouts['null'].specialize (keyboard)
         w = Writer (layout)
         combined = dict ((cls.name, cls(w)) for cls in allStats)
+        itemsProcessed = 0
 
         while True:
             keyboard = defaultKeyboards[args.keyboard]
@@ -194,25 +212,30 @@ def writeWorker (args, inq, outq):
             if item is None:
                 break
 
-            # extract
-            text = sources[args.source] (item)
-            text = ''.join (map (lambda x: charMap.get (x, x), text))
-            # XXX sanity checks, disable
-            for c in charMap.keys ():
-                if c in text:
-                    #print (c, 'is in text', file=sys.stderr)
-                    assert False, c
+            # extract (can be multiple items per source)
+            for text in  sources[args.source] (item):
+                text = ''.join (map (lambda x: charMap.get (x, x), text))
+                # XXX sanity checks, disable
+                for c in charMap.keys ():
+                    if c in text:
+                        #print (c, 'is in text', file=sys.stderr)
+                        assert False, c
 
-            # stats
-            stats = [cls(w) for cls in allStats]
-            for match, event in w.type (StringIO (text)):
+                # stats
+                stats = [cls(w) for cls in allStats]
+                for match, event in w.type (StringIO (text)):
+                    for s in stats:
+                        s.process (event)
+
                 for s in stats:
-                    s.process (event)
+                    combined[s.name].update (s)
 
-            for s in stats:
-                combined[s.name].update (s)
+            itemsProcessed += 1
 
-        outq.put (combined)
+        if itemsProcessed > 0:
+            outq.put (combined)
+        else:
+            outq.put (None)
     except Exception as e:
         # async exceptions
         outq.put (None)
@@ -222,6 +245,7 @@ def write ():
     """ Extract corpus source file, convert to plain text, map chars and create stats """
 
     parser = argparse.ArgumentParser(description='Import text and create stats.')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Enable debugging output')
     parser.add_argument('-k', '--keyboard', metavar='KEYBOARD',
             default='ibmpc105', help='Physical keyboard name')
     parser.add_argument('-j', '--jobs', metavar='NUM',
@@ -231,7 +255,10 @@ def write ():
 
     args = parser.parse_args()
 
-    logging.basicConfig (level=logging.INFO)
+    if args.verbose:
+        logging.basicConfig (level=logging.DEBUG)
+    else:
+        logging.basicConfig (level=logging.INFO)
 
     # limit queue sizes to limit memory usage
     inq = Queue (args.jobs*2)
@@ -260,7 +287,9 @@ def write ():
     # every one of them will consume exactly one item and write one in return
     for w in workers:
         inq.put (None)
-        pickle.dump (outq.get (), sys.stdout.buffer, pickle.HIGHEST_PROTOCOL)
+        item = outq.get ()
+        if item is not None:
+            pickle.dump (item, sys.stdout.buffer, pickle.HIGHEST_PROTOCOL)
     assert outq.empty ()
     # and then we can kill them
     for w in workers:

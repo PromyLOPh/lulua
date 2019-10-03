@@ -38,6 +38,7 @@ setup(
         'bokeh',
         'tqdm',
         'html5lib',
+        'ebooklib',
     ],
     entry_points={
     'console_scripts': [

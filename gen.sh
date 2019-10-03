@@ -39,12 +39,17 @@ rule render-xmodmap
 rule analyze-heat
     command = lulua-analyze -l \$layout keyheatmap < \$in > \$out
 
+# XXX: add lulua-analyze combine here
 rule write-bbcarabic
     command = find \$in -type f | lulua-write bbcarabic \$layout > \$out
     pool = write
 
 rule write-aljazeera
     command = find \$in -type f | lulua-write aljazeera \$layout > \$out
+    pool = write
+
+rule write-epub
+    command = find \$in -type f | lulua-write epub \$layout | lulua-analyze combine > \$out
     pool = write
 
 rule write-tanzil
@@ -98,13 +103,16 @@ build \$statsdir/${l}/bbcarabic.pickle: write-bbcarabic \$corpusdir/bbcarabic/ra
 build \$statsdir/${l}/aljazeera.pickle: write-aljazeera \$corpusdir/aljazeera/raw || \$statsdir/${l}
     layout = ${l}
 
+build \$statsdir/${l}/hindawi.pickle: write-epub \$corpusdir/hindawi/raw || \$statsdir/${l}
+    layout = ${l}
+
 build \$statsdir/${l}/tanzil.pickle: write-tanzil \$corpusdir/tanzil-quaran/plain.txt.lz || \$statsdir/${l}
     layout = ${l}
 
 build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-20190701-pages-articles.xml.bz2 || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil.pickle \$statsdir/${l}/arwiki.pickle || \$statsdir/${l}
+build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/hindawi.pickle || \$statsdir/${l}
 
 build \$docdir/_build/${l}.svg: render-svg || \$docdir/_build
     layout = ${l}

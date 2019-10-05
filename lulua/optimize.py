@@ -19,6 +19,7 @@
 # THE SOFTWARE.
 
 import pickle, sys, random, time, logging, argparse
+from fnmatch import fnmatch
 from copy import deepcopy
 from typing import List, Tuple, Optional, Text, FrozenSet
 from abc import abstractmethod
@@ -237,7 +238,20 @@ class LayoutOptimizer (Annealer):
         return super().run (steps)
 
 def parsePin (s: Text):
-    """ Parse --pin argument """
+    """
+    Parse --pin argument
+
+    Synax: <layer>[;<button>]
+    Examples:
+    0
+    (keeps all buttons on the first layer on this layer)
+    1;Bl1
+    (keeps Bl1 on layer 1 in place)
+    2;B*
+    (pins all buttons matching B* on layer 2 in place)
+
+    (Expansion is performed when the keyboard is known)
+    """
     pins = []
     for p in s.split (';'):
         p = p.split (',', 1)
@@ -289,13 +303,23 @@ def optimize ():
             # mutate modifier key positions.
             # XXX: only works for single-button-modifier
             if not isinstance (k, LetterButton) or layout.isModifier (frozenset ([k])):
-                logging.info (f'ignoring {k}')
+                logging.info (f'not mutating {k}')
                 continue
             keys.append ((i, k))
             values.append ((i, k))
     buttonMap = dict (zip (keys, values))
 
-    pins = [(x, keyboard[y] if y else None) for x, y in args.pin]
+    pins = []
+    for layer, match in args.pin:
+        # special pin, which just keeps buttons on the same layer
+        if match is None:
+            pins.append ((layer, match))
+            continue
+        # wildcard matches
+        for k in keyboard.keys ():
+            if fnmatch (k.name, match):
+                pins.append ((layer, k))
+                logging.info (f'pinning layer {layer} {k}')
 
     opt = LayoutOptimizer (buttonMap, triads, layout, pins, writer, model=models[args.model])
     if args.randomize:

@@ -14,7 +14,7 @@ docdir=doc
 wikiextractor=3rdparty/wikiextractor/WikiExtractor.py
 optrounds=100000
 # pin layers, keep hand-optimized numbers, keep top row free
-optpins=0;1;2;0,Bl1;0,Bl2;0,Bl3;0,Bl4;0,Bl5;0,Bl6;0,Bl7;0,Br6;0,Br5;0,Br4;0,Br3;0,Br2;0,Br1;3,Cl4;3,Cl3;3,Cl2;3,Cl1;3,Dl4;3,Dl3;3,Dl2;3,Dl1;3,El5;3,El4;3,El3;3,El2;3,Dl5;3,Cl5;3,El6
+optpins=0;1;2;0,B*;3,*
 optmodel=mod01
 
 ### pools ###

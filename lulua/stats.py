@@ -28,6 +28,7 @@ from .keyboard import defaultKeyboards
 from .writer import SkipEvent, Writer
 from .carpalx import Carpalx, models
 from .plot import letterfreq, triadfreq
+from .util import displayText
 
 def updateDictOp (a, b, op):
     """ Update dict a by adding items from b using op """
@@ -188,7 +189,7 @@ def pretty (args):
     print ('combinations')
     combinationTotal = sum (stats['simple'].combinations.values ())
     for k, v in sorted (stats['simple'].combinations.items (), key=itemgetter (1)):
-        t = layout.getText (k)
+        t = displayText (layout.getText (k))
         print (f'{t:4s} {k} {v:10d} {v/combinationTotal*100:5.1f}%')
     print ('unknown')
     for k, v in sorted (stats['simple'].unknown.items (), key=itemgetter (1)):

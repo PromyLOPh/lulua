@@ -207,7 +207,8 @@ class Renderer:
                             stroke_dasharray='5,3',
                             class_=' '.join (controlclass_)))
                 else:
-                    t.add (svgwrite.text.TSpan (text, class_=style, direction='rtl'))
+                    RLI = "\u2067" # RIGHT-TO-LEFT ISOLATE (RLI)
+                    t.add (svgwrite.text.TSpan (RLI + text, class_=style, direction='rtl'))
                 g.add (t)
 
         return g, width

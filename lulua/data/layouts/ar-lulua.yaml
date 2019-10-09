@@ -43,88 +43,90 @@ layout:
   modifier:
   - []
 - layer:
-    Bl2: "›" # SINGLE RIGHT-POINTING ANGLE QUOTATIONMARK
-    Bl7: '$'
-    Br4: "‹" # SINGLE LEFT-POINTING ANGLE QUOTATIONMARK
-    Br6: '%'
+    #Bl2: "›" # SINGLE RIGHT-POINTING ANGLE QUOTATIONMARK
+    #Bl7: '$'
+    #Br4: "‹" # SINGLE LEFT-POINTING ANGLE QUOTATIONMARK
+    #Br6: '%'
 
-    Cl2: '+'
-    Cl3: ']'
-    Cl4: '!'
-    Cl5: '*'
-    Cr7: "«" # LEFT-POINTING DOUBLE ANGLE QUOTATIONMARK
-    Cr6: '['
-    Cr5: "؟" # ARABIC QUESTION MARK
-    Cr4: '}'
+    #Cl2: '+'
+    #Cl3: ']'
+    Cl4: '-'
+    #Cl5: '*'
+    #Cr6: '['
+    Cr6: '!'
+    #Cr4: '}'
     Cr3: "…" # HORIZONTAL ELLIPSIS
-    Cr2: '&'
+    #Cr2: '&'
 
-    Dl1: "؛" # ARABIC SEMICOLON
-    Dl2: ':'
-    Dl3: '"'
-    Dl4: '-'
-    Dl5: '_'
-    Dr7: '('
+    Dl1: ':'
+    Dl2: '('
+    Dl3: "؛" # ARABIC SEMICOLON
+    Dl4: "؟" # ARABIC QUESTION MARK
+    #Dl3: '"'
+    #Dl5: '_'
+    Dl5: "«" # LEFT-POINTING DOUBLE ANGLE QUOTATIONMARK
+    Dr7: "»" # RIGHT-POINTING DOUBLE ANGLE QUOTATIONMARK
     Dr6: '.'
     Dr5: "،" # ARABIC COMMA
     Dr4: ')'
-    Dr3: '/'
-    Dr2: '@'
+    #Dr3: '/'
+    #Dr2: '@'
 
-    El3: '~'
-    El4: '>'
-    El5: '='
-    El6: '{'
-    Er5: '#'
-    Er4: '<'
-    Er3: "»" # RIGHT-POINTING DOUBLE ANGLE QUOTATIONMARK
-    Er2: '^'
+    #El3: '~'
+    #El4: '>'
+    #El5: '='
+    #El6: '{'
+    #Er5: '#'
+    #Er4: '<'
+    #Er2: '^'
   modifier:
   - [El_shift]
   - [Er_shift]
 - layer:
     # https://www.w3.org/International/questions/qa-bidi-unicode-controls
     # suggest using RLI/LRI
-    Bl1: "\u06E6" # ARABIC SMALL YEH
-    Bl2: "\u06D8" # ARABIC SMALL HIGH MEEM INITIAL FORM
-    Bl4: "\u06E4" # ARABIC SMALL HIGH MADDA
-    Bl6: "\u06E8" # ARABIC SMALL HIGH NOON
-    Bl7: "\u06DB" # ARABIC SMALL HIGH THREE DOTS
-    Br6: "\u2067" # RIGHT-TO-LEFT ISOLATE (RLI)
-    Br4: "\u061C" # ARABIC LETTER MARK (ALM)
-    Br3: "\u06DE" # ARABIC START OF RUB EL HIZB
-    Br2: "\u06DF" # ARABIC SMALL HIGH ROUNDED ZERO
-    Br1: "\u06E2" # ARABIC SMALL HIGH MEEM ISOLATED FORM
+    #Bl1: "\u06E6" # ARABIC SMALL YEH
+    #Bl2: "\u06D8" # ARABIC SMALL HIGH MEEM INITIAL FORM
+    #Bl4: "\u06E4" # ARABIC SMALL HIGH MADDA
+    #Bl6: "\u06E8" # ARABIC SMALL HIGH NOON
+    #Bl7: "\u06DB" # ARABIC SMALL HIGH THREE DOTS
+    #Br4: "\u061C" # ARABIC LETTER MARK (ALM)
+    #Br3: "\u06DE" # ARABIC START OF RUB EL HIZB
+    #Br2: "\u06DF" # ARABIC SMALL HIGH ROUNDED ZERO
+    #Br1: "\u06E2" # ARABIC SMALL HIGH MEEM ISOLATED FORM
 
-    Cl2: "\u06D9" # ARABIC SMALL HIGH LAM ALEF
-    Cl3: "\u2066" # LEFT-TO-RIGHT ISOLATE (LRI)
-    Cl4: "\u0671" # ARABIC LETTER ALEF WASLA
+    #Cl2: "\u06D9" # ARABIC SMALL HIGH LAM ALEF
+    # above ordinary ALEF
+    Cl3: "\u0671" # ARABIC LETTER ALEF WASLA
+    # same key as the dash
+    Cl4: "\u0640" # ARABIC TATWEEL
+    #Cr4: "\u06DD" # ARABIC END OF AYAH
+    #Cr2: "\u06DA" # ARABIC SMALL HIGH JEEM
+    #Cr1: "\u06E5" # ARABIC SMALL WAW
+
+    # above damma, fatha and kasra
     Cr6: "\u064C" # ARABIC DAMMATAN
-    Cr5: "\u0652" # ARABIC SUKUN
-    Cr4: "\u06DD" # ARABIC END OF AYAH
-    Cr2: "\u06DA" # ARABIC SMALL HIGH JEEM
-    Cr1: "\u06E5" # ARABIC SMALL WAW
+    Cr5: "\u064B" # ARABIC FATHATAN
+    Cr4: "\u064D" # ARABIC KASRATAN
 
-    Dl1: "\u06DC" # ARABIC SMALL HIGH SEEN
-    Dl2: "\u064D" # ARABIC KASRATAN
-    Dl3: "\u064E" # ARABIC FATHA
-    Dl4: "\u0640" # ARABIC TATWEEL
-    Dl5: "\u0650" # ARABIC KASRA
+    Dl3: "\u0652" # ARABIC SUKUN
+    Dl4: "\u0651" # ARABIC SHADDA
+    Dl5: "\u0670" # ARABIC LETTER SUPERSCRIPT ALEF
     Dr7: "\u0653" # ARABIC MADDAH ABOVE
-    Dr6: "\u064B" # ARABIC FATHATAN
-    Dr5: "\u0651" # ARABIC SHADDA
-    Dr4: "\u064F" # ARABIC DAMMA
-    Dr3: "\u06D7" # ARABIC SMALL HIGH LIGATURE QAF WITH LAM WITH ALEF MAKSURA
-    Dr2: "\u2069" # POP DIRECTIONAL ISOLATE
+    Dr6: "\u064F" # ARABIC DAMMA
+    Dr5: "\u064E" # ARABIC FATHA
+    Dr4: "\u0650" # ARABIC KASRA
 
-    El2: "\u06E7" # ARABIC SMALL HIGH YEH
-    El3: "\u06E0" # ARABIC SMALL HIGH UPRIGHT RECTANGULAR ZERO
-    El4: "\u066D" # ARABIC FIVE POINTED STAR
-    El5: "\u06E3" # ARABIC SMALL LOW SEEN
-    Er5: "\u06ED" # ARABIC SMALL LOW MEEM
-    Er4: "\u06E9" # ARABIC PLACE OF SAJDAH
-    Er3: "\u0670" # ARABIC LETTER SUPERSCRIPT ALEF
-    Er1: "\u06D6" # ARABIC SMALL HIGH LIGATURE SAD WITH LAM WITH ALEF MAKSURA
+    #Dl1: "\u06DC" # ARABIC SMALL HIGH SEEN
+    #Dr3: "\u06D7" # ARABIC SMALL HIGH LIGATURE QAF WITH LAM WITH ALEF MAKSURA
+
+    #El2: "\u06E7" # ARABIC SMALL HIGH YEH
+    #El3: "\u06E0" # ARABIC SMALL HIGH UPRIGHT RECTANGULAR ZERO
+    #El4: "\u066D" # ARABIC FIVE POINTED STAR
+    #El5: "\u06E3" # ARABIC SMALL LOW SEEN
+    #Er5: "\u06ED" # ARABIC SMALL LOW MEEM
+    #Er4: "\u06E9" # ARABIC PLACE OF SAJDAH
+    #Er1: "\u06D6" # ARABIC SMALL HIGH LIGATURE SAD WITH LAM WITH ALEF MAKSURA
   modifier:
   - [Dl_caps]
   - [Dr1]
@@ -144,9 +146,13 @@ layout:
     El4: "٩"
     El5: "٨"
     El6: "؉"
+
+    Cr2: "\u2067" # RIGHT-TO-LEFT ISOLATE (RLI)
+    Cr1: "\u2066" # LEFT-TO-RIGHT ISOLATE (LRI)
+    Dr2: "\u2069" # POP DIRECTIONAL ISOLATE (PDI)
   modifier:
   - [Fr_altgr]
   - [El1]
 name: ar-lulua
-version: 0.1
-date: 2019-09-15
+version: 0.2
+date: 2019-10-06

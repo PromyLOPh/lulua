@@ -1,3 +1,6 @@
 [submodule "3rdparty/wikiextractor"]
 	path = 3rdparty/wikiextractor
 	url = https://github.com/attardi/wikiextractor.git
+[submodule "3rdparty/plex"]
+	path = 3rdparty/plex
+	url = https://github.com/IBM/plex.git

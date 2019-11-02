@@ -1,6 +1,8 @@
-svg {
+/* inkscape-compatibility, explicitly apply font settings to .label */
+svg, .button .label {
 	font-family: "IBM Plex Arabic";
-	font-size: 25pt;
+	font-size: 90px;
+	font-weight: 400;
 }
 .button.unused {
 	opacity: 0.6;
@@ -12,7 +14,7 @@ svg {
 }
 .button .label .layer-2, .button .label .layer-3, .button .label .layer-4 {
 	font-size: 80%;
-	font-weight: 200;
+	font-weight: 100;
 }
 .button .label .controlchar {
 	font-size: 40%;
@@ -23,7 +25,7 @@ svg {
 }
 .button .cap.highlight {
 	fill: #dc322f; /* red */
-	filter: blur(0.5em);
+	filter: blur(50px);
 }
 .button.finger-little .cap.shadow {
 	fill: #dc322f; /* red */

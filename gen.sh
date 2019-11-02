@@ -12,6 +12,7 @@ corpusdir=corpus
 statsdir=stats
 docdir=doc
 wikiextractor=3rdparty/wikiextractor/WikiExtractor.py
+fontdir=3rdparty/plex/IBM-Plex-Arabic/fonts/complete/woff2/
 optrounds=100000
 # pin layers, keep hand-optimized numbers, keep top row free
 optpins=0;1;2;0,B*;3,*
@@ -84,13 +85,14 @@ rule cp
 build \$docdir/_build: mkdir
 build \$docdir/_build/fonts: mkdir
 build \$docdir/_temp: mkdir
-
 build \$docdir/_build/index.html: cpp \$docdir/index.html || \$docdir/_build
 build \$docdir/_build/letterfreq.json: letterfreq \$statsdir/ar-lulua/all.pickle || \$docdir/_build
 build \$docdir/_build/style.css: cp \$docdir/style.css || \$docdir/_build
 build \$docdir/_build/lulua-logo.svg: cp \$docdir/lulua-logo.svg || \$docdir/_build
-build \$docdir/_build/fonts/IBMPlexArabic-Regular.woff2: cp \$docdir/fonts/IBMPlexArabic-Regular.woff2 || \$docdir/_build/fonts
-build \$docdir/_build/fonts/IBMPlexArabic-Thin.woff2: cp \$docdir/fonts/IBMPlexArabic-Thin.woff2 || \$docdir/_build/fonts
+
+
+build \$docdir/_build/fonts/IBMPlexArabic-Regular.woff2: cp \$fontdir/IBMPlexArabic-Regular.woff2 || \$docdir/_build/fonts
+build \$docdir/_build/fonts/IBMPlexArabic-Thin.woff2: cp \$fontdir/IBMPlexArabic-Thin.woff2 || \$docdir/_build/fonts
 EOF
 
 for l in $layouts; do

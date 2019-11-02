@@ -11,17 +11,17 @@ using http://colormind.io/bootstrap/
 }
 
 @font-face {
-  font-family: 'IBM Plex Arabic';
-  font-style: normal;
-  font-weight: 100;
-  src: local('IBM Plex Arabic Thin'), local('IBM Plex Arabic-Thin'), url('fonts/IBMPlexArabic-Thin.woff2') format('woff2');
+	font-family: 'IBM Plex Arabic';
+	font-style: normal;
+	font-weight: 100;
+	src: local('IBM Plex Arabic Thin'), local('IBMPlexArabic-Thin'), url('fonts/IBMPlexArabic-Thin.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'IBM Plex Arabic';
-  font-style: normal;
-  font-weight: 400;
-  src: local('IBM Plex Arabic Regular'), local('IBM Plex Arabic-Regular'), url('fonts/IBMPlexArabic-Regular.woff2') format('woff2');
+	font-family: 'IBM Plex Arabic';
+	font-style: normal;
+	font-weight: 400;
+	src: local('IBM Plex Arabic Regular'), local('IBMPlexArabic-Regular'), url('fonts/IBMPlexArabic-Regular.woff2') format('woff2');
 }
 
 body {

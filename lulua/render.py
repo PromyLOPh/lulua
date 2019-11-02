@@ -18,13 +18,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import argparse, sys, logging, pkg_resources
+import argparse, sys, logging, pkg_resources, base64
 from collections import namedtuple, defaultdict
 from operator import attrgetter
 from datetime import datetime
 
 import svgwrite
-from svgwrite import em
 import yaml
 
 from .layout import LITTLE, RING, MIDDLE, INDEX, THUMB, GenericLayout, defaultLayouts
@@ -32,7 +31,7 @@ from .writer import Writer
 from .keyboard import defaultKeyboards
 from .util import first, displayText
 
-RendererSettings = namedtuple ('RendererSetting', ['buttonMargin', 'middleGap', 'buttonWidth', 'rounded', 'shadowOffset'])
+RendererSettings = namedtuple ('RendererSetting', ['buttonMargin', 'middleGap', 'buttonWidth', 'rounded', 'shadowOffset', 'markerStroke'])
 
 class Renderer:
     """ Keyboard to SVG renderer """
@@ -40,11 +39,12 @@ class Renderer:
     __slots__ = ('keyboard', 'layout', 'settings', 'cursor', 'writer', 'keyHighlight')
 
     defaultSettings = RendererSettings (
-            buttonMargin=0.2,
-            middleGap=0.1,
-            buttonWidth=2,
-            rounded=0.1,
-            shadowOffset=0.05,
+            buttonMargin=20,
+            middleGap=10,
+            buttonWidth=200,
+            rounded=10,
+            shadowOffset=5,
+            markerStroke=7,
             )
 
     def __init__ (self, keyboard, layout=None, writer=None, settings=None, keyHighlight=None):
@@ -124,20 +124,20 @@ class Renderer:
         # background rect if any text
         if any (buttonText):
             b = svgwrite.shapes.Rect (
-                    insert=((xoff+settings.shadowOffset)*em, (yoff+settings.shadowOffset)*em),
-                    size=(width*em, settings.buttonWidth*em),
-                    rx=settings.rounded*em,
-                    ry=settings.rounded*em,
+                    insert=((xoff+settings.shadowOffset), (yoff+settings.shadowOffset)),
+                    size=(width, settings.buttonWidth),
+                    rx=settings.rounded,
+                    ry=settings.rounded,
                     class_='cap shadow')
             g.add (b)
         else:
             gclass.append ('unused')
         # main key rect
         b = svgwrite.shapes.Rect (
-                insert=(xoff*em, yoff*em),
-                size=(width*em, settings.buttonWidth*em),
-                rx=settings.rounded*em,
-                ry=settings.rounded*em,
+                insert=(xoff, yoff),
+                size=(width, settings.buttonWidth),
+                rx=settings.rounded,
+                ry=settings.rounded,
                 class_='cap')
         g.add (b)
 
@@ -149,36 +149,36 @@ class Renderer:
             end = (xoff+width*0.7, yoff+settings.buttonWidth*0.9)
             # its shadow
             l = svgwrite.shapes.Line (
-                    map (lambda x: (x+settings.shadowOffset)*em, start),
-                    map (lambda x: (x+settings.shadowOffset)*em, end),
-                    stroke_width=0.07*em,
+                    map (lambda x: (x+settings.shadowOffset), start),
+                    map (lambda x: (x+settings.shadowOffset), end),
+                    stroke_width=settings.markerStroke,
                     class_='marker shadow')
             g.add (l)
             # the marker itself
             l = svgwrite.shapes.Line (
-                    map (em, start),
-                    map (em, end),
-                    stroke_width=0.07*em,
+                    start,
+                    end,
+                    stroke_width=settings.markerStroke,
                     class_='marker')
             g.add (l)
 
         # highlight rect
         highlight = self.keyHighlight.get (btn.name, 0)
         b = svgwrite.shapes.Rect (
-                insert=(xoff*em, yoff*em),
-                size=(width*em, settings.buttonWidth*em),
-                rx=settings.rounded*em,
-                ry=settings.rounded*em,
+                insert=(xoff, yoff),
+                size=(width, settings.buttonWidth),
+                rx=settings.rounded,
+                ry=settings.rounded,
                 class_='cap highlight',
                 style=f'opacity: {highlight}')
         g.add (b)
 
-        # clock-wise from bottom-left to bottom-right
+        # clock-wise from bottom-left to bottom-right, offsets are relative to buttonWidth and button center
         textParam = [
-            (-0.5, 0.6, 'layer-1'),
-            (-0.5, -1/3, 'layer-2'),
-            (0.5, -1/3, 'layer-3'),
-            (0.5, 2/3, 'layer-4'),
+            (-0.25, 0.3, 'layer-1'),
+            (-0.25, -0.15, 'layer-2'),
+            (0.25, -0.15, 'layer-3'),
+            (0.25, 0.3, 'layer-4'),
             ]
         # XXX: could probably def/use these
         for extraclass, morexoff, moreyoff in [(['shadow'], settings.shadowOffset, settings.shadowOffset), ([], 0, 0)]:
@@ -187,12 +187,12 @@ class Renderer:
             for text, (txoff, tyoff, style) in zip (buttonText, textParam):
                 if text is None:
                     continue
-                txoff += morexoff
-                tyoff += moreyoff
+                txoff = txoff*settings.buttonWidth + morexoff
+                tyoff = tyoff*settings.buttonWidth + moreyoff
                 # actual text must be inside tspan, so we can apply smaller font size
                 # without affecting element position
                 t = svgwrite.text.Text ('',
-                        insert=((xoff+width/2+txoff)*em, (yoff+settings.buttonWidth/2+tyoff)*em),
+                        insert=((xoff+width/2+txoff), (yoff+settings.buttonWidth/2+tyoff)),
                         text_anchor='middle',
                         class_=' '.join (class_))
                 if text.startswith ('[') and text.endswith (']'):
@@ -201,14 +201,13 @@ class Renderer:
                             class_='controlchar',
                             direction='ltr'))
                     g.add (svgwrite.shapes.Rect (
-                            insert=((xoff+width/2+txoff-0.4)*em, (yoff+settings.buttonWidth/2+tyoff-0.4)*em),
-                            size=(0.8*em, 0.5*em),
-                            stroke_width=0.05*em,
-                            stroke_dasharray='5,3',
+                            insert=((xoff+width/2+txoff-40), (yoff+settings.buttonWidth/2+tyoff-40)),
+                            size=(80, 50),
+                            stroke_width=2,
+                            stroke_dasharray='15,8',
                             class_=' '.join (controlclass_)))
                 else:
-                    RLI = "\u2067" # RIGHT-TO-LEFT ISOLATE (RLI)
-                    t.add (svgwrite.text.TSpan (RLI + text, class_=style, direction='rtl'))
+                    t.add (svgwrite.text.TSpan (text, class_=style, direction='rtl'))
                 g.add (t)
 
         return g, width
@@ -228,10 +227,34 @@ def renderSvg (args):
 
     r = Renderer (keyboard, layout=layout, writer=writer, keyHighlight=keyHeat)
     rendered, (w, h) = r.render ()
-    d = svgwrite.Drawing(args.output, size=(w*em, h*em), profile='full')
-    d.defs.add (d.style (args.style.read ().decode ('utf-8')))
+    d = svgwrite.Drawing(args.output, size=(w, h), profile='full')
+
+    # using fonts via url() only works in stand-alone documents, not when
+    # embedding into a website
+    # see https://github.com/mozman/svgwrite/blob/master/examples/using_fonts.py#L36
+    # which we cannot use since it does not support font-weight
+    style = ''
+    fonts = [
+            ('IBM Plex Arabic', 100, '3rdparty/plex/IBM-Plex-Arabic/fonts/complete/woff2/IBMPlexArabic-Thin.woff2'),
+            ('IBM Plex Arabic', 400, '3rdparty/plex/IBM-Plex-Arabic/fonts/complete/woff2/IBMPlexArabic-Regular.woff2')
+            ]
+    for font, weight, path in fonts:
+        with open (path, 'rb') as fd:
+            data = base64.b64encode (fd.read ()).decode ('utf-8')
+        style += f"""
+                @font-face {{
+                font-family: '{font}';
+                font-style: normal;
+                font-weight: {weight};
+                src: url("data:application/font-woff2;charset=utf-8;base64,{data}") format('woff2');
+                }}
+                """
+
+    style += args.style.read ().decode ('utf-8')
+    d.defs.add (d.style (style))
+
     d.add (rendered)
-    d.save()
+    d.save (pretty=True)
 
 def renderXmodmap (args):
     keyboard = defaultKeyboards[args.keyboard]

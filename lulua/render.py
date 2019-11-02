@@ -18,17 +18,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import argparse, sys, logging, pkg_resources, base64
+import argparse, sys, logging, pkg_resources, base64, unicodedata
 from collections import namedtuple, defaultdict
+from itertools import chain
 from operator import attrgetter
 from datetime import datetime
+from xml.etree import ElementTree
 
 import svgwrite
 import yaml
 
 from .layout import LITTLE, RING, MIDDLE, INDEX, THUMB, GenericLayout, defaultLayouts
 from .writer import Writer
-from .keyboard import defaultKeyboards
+from .keyboard import defaultKeyboards, LetterButton
 from .util import first, displayText
 
 RendererSettings = namedtuple ('RendererSetting', ['buttonMargin', 'middleGap', 'buttonWidth', 'rounded', 'shadowOffset', 'markerStroke'])
@@ -356,6 +358,74 @@ def renderKeyman (args):
                     text = ' '.join ([f'U+{ord (x):04X}' for x in text])
                     fd.write (f'+ [{comb}] > {text}\n')
 
+def renderAsk (args):
+    """
+    Render keyboard to Anysoft Keyboard XML layout file
+
+    Can be packaged/used by including them into a language pack:
+    https://github.com/AnySoftKeyboard/LanguagePack
+
+    Put the resulting file into
+    languages/<lang>/pack/src/main/res/xml/<layout>.xml and edit the project
+    accordingly.
+    """
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+
+    ET = ElementTree
+    namespaces = {
+            'xmlns:android': 'http://schemas.android.com/apk/res/android',
+            'xmlns:ask': 'http://schemas.android.com/apk/res-auto',
+            }
+    kbdelem = ET.Element ('Keyboard', attrib=namespaces)
+    for l, r in keyboard:
+        # exclude special buttons
+        buttons = list (filter (lambda x: isinstance (x, LetterButton) and not layout.isModifier (frozenset ([x])), chain (l, r)))
+        if not buttons:
+            continue
+
+        i = keyboard.getRow (buttons[0])
+        attrib = {'android:keyWidth': f'{100/len (buttons):.2f}%p'}
+        if i == len (keyboard.rows)-1:
+            # ignore the bottom row (mostly control characters), generic row is provided below
+            continue
+        elif i == 0:
+            # special top row
+            attrib['android:rowEdgeFlags'] = 'top'
+            attrib['android:keyHeight'] = '@integer/key_short_height'
+        rowelem = ET.SubElement (kbdelem, 'Row', attrib=attrib)
+
+        for btn in buttons:
+            # android cannot process multiple characters per button, thus find
+            # a composed version (NFC) if possible
+            buttonText = [unicodedata.normalize ('NFC', x) if x is not None else '' for x in layout.getButtonText (btn)]
+            for t in buttonText:
+                if len (t) > 1:
+                    logging.info (f'button {btn} has text with len>1 {t}, verify output')
+            attrib = {
+                    'android:codes': ','.join (map (lambda x: str (ord (x)), buttonText[0])),
+                    'android:keyLabel': buttonText[0],
+                    'android:popupCharacters': ''.join (buttonText[1:]),
+                    # limit the number of hint characters shown
+                    'ask:hintLabel': ''.join (buttonText[1:3]),
+                    }
+            keyelem = ET.SubElement (rowelem, 'Key', attrib=attrib)
+
+    # add generic bottom row
+    rowelem = ET.SubElement (kbdelem, 'Row', {'android:rowEdgeFlags': 'bottom', 'android:keyHeight': '@integer/key_normal_height'})
+    for attrib in [
+            # return
+            {'ask:isFunctional': 'true', 'android:keyWidth': '25%p', 'android:codes': '10', 'android:keyEdgeFlags': 'left'},
+            # space
+            {'ask:isFunctional': 'true', 'android:keyWidth': '50%p', 'android:codes': '32'},
+            # backspace
+            {'ask:isFunctional': 'true', 'android:keyWidth': '25%p', 'android:codes': '-5', 'android:keyEdgeFlags': 'right', 'android:isRepeatable': 'true'},
+            ]:
+        ET.SubElement (rowelem, 'Key', )
+
+    tree = ET.ElementTree (kbdelem)
+    tree.write (args.output, encoding='utf-8', xml_declaration=True)
+
 def yamlload (s):
     try:
         with open (s) as fd:
@@ -386,6 +456,8 @@ def render ():
     sp.set_defaults (func=renderXmodmap)
     sp = subparsers.add_parser('keyman')
     sp.set_defaults (func=renderKeyman)
+    sp = subparsers.add_parser('ask')
+    sp.set_defaults (func=renderAsk)
     parser.add_argument('output', metavar='FILE', help='Output file')
 
     logging.basicConfig (level=logging.INFO)

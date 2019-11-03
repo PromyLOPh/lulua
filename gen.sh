@@ -40,13 +40,12 @@ rule render-xmodmap
 rule analyze-heat
     command = lulua-analyze -l \$layout keyheatmap < \$in > \$out
 
-# XXX: add lulua-analyze combine here
 rule write-bbcarabic
-    command = find \$in -type f | lulua-write bbcarabic \$layout > \$out
+    command = find \$in -type f | lulua-write bbcarabic \$layout | lulua-analyze combine > \$out
     pool = write
 
 rule write-aljazeera
-    command = find \$in -type f | lulua-write aljazeera \$layout > \$out
+    command = find \$in -type f | lulua-write aljazeera \$layout | lulua-analyze combine > \$out
     pool = write
 
 rule write-epub
@@ -73,6 +72,9 @@ rule letterfreq
 rule analyze-fingerhand
     command = lulua-analyze -l \$layout fingerhand < \$in > \$out
 
+rule wordlist
+    command = lulua-analyze -l ar-lulua latinime < \$in > \$out
+
 rule cpp
     command = gcc -E -x c -nostdinc -MMD -MF \$out.d -C -P -I \$docdir/_temp \$in -o \$out
     depfile = \$out.d
@@ -80,6 +82,9 @@ rule cpp
 
 rule cp
     command = cp \$in \$out
+
+rule gz
+    command = gzip -c \$in > \$out
 
 ### build targets ###
 build \$docdir/_build: mkdir
@@ -89,6 +94,9 @@ build \$docdir/_build/index.html: cpp \$docdir/index.html || \$docdir/_build
 build \$docdir/_build/letterfreq.json: letterfreq \$statsdir/ar-lulua/all.pickle || \$docdir/_build
 build \$docdir/_build/style.css: cp \$docdir/style.css || \$docdir/_build
 build \$docdir/_build/lulua-logo.svg: cp \$docdir/lulua-logo.svg || \$docdir/_build
+# wordlist
+build \$docdir/_temp/lulua.combined: wordlist \$statsdir/ar-lulua/all.pickle || \$docdir/_temp
+build \$docdir/_build/lulua.combined.gz: gz \$docdir/_temp/lulua.combined || \$docdir/_build
 
 
 build \$docdir/_build/fonts/IBMPlexArabic-Regular.woff2: cp \$fontdir/IBMPlexArabic-Regular.woff2 || \$docdir/_build/fonts

@@ -31,7 +31,8 @@ To get a pretty picture (SVG) of your layout render it:
 
    lulua-render -l evolved.yaml svg evolved.svg
 
-It is highly recommended to use pypy3_ instead of CPython.
+It is highly recommended to use pypy3_ instead of CPython and a machine with
+lots of RAM (at least 16 GB).
 
 .. _pypy3: http://pypy.org/
 

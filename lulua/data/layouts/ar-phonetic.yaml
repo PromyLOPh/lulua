@@ -19,6 +19,7 @@ layout:
     Cl4: "\u0631"
     Cl5: "\u062A"
     #Cr0: \
+    CD_ret: "\n"
     Cr1: ']'
     Cr2: '['
     Cr3: "\u0671"

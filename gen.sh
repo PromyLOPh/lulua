@@ -56,6 +56,10 @@ rule write-tanzil
     command = echo \$in | lulua-write text \$layout | lulua-analyze combine > \$out
     pool = write
 
+rule write-tei2
+    command = find \$in -type f -name '*.xml' | lulua-write tei2 \$layout | lulua-analyze combine > \$out
+    pool = write
+
 rule write-arwiki
     command = \$wikiextractor -ns 0 --json -o - \$in 2>/dev/null | jq .text | lulua-write json \$layout | lulua-analyze combine > \$out
     pool = write
@@ -122,7 +126,10 @@ build \$statsdir/${l}/tanzil.pickle: write-tanzil \$corpusdir/tanzil-quaran/plai
 build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-20190701-pages-articles.xml.bz2 || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/hindawi.pickle || \$statsdir/${l}
+build \$statsdir/${l}/un-v1.0-tei.pickle: write-tei2 \$corpusdir/un-v1.0-tei || \$statsdir/${l}
+    layout = ${l}
+
+build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/hindawi.pickle \$statsdir/${l}/un-v1.0-tei.pickle || \$statsdir/${l}
 
 build \$docdir/_build/${l}.svg: render-svg || \$docdir/_build
     layout = ${l}

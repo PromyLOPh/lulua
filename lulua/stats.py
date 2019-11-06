@@ -218,13 +218,16 @@ def pretty (args):
     writer = Writer (layout)
 
     buttonPresses = sum (stats['simple'].buttons.values ())
+    print ('button presses', buttonPresses)
     for k, v in sorted (stats['simple'].buttons.items (), key=itemgetter (1)):
         print (f'{k} {v:10d} {v/buttonPresses*100:5.1f}%')
-    print ('combinations')
+
     combinationTotal = sum (stats['simple'].combinations.values ())
+    print ('combinations', combinationTotal)
     for k, v in sorted (stats['simple'].combinations.items (), key=itemgetter (1)):
         t = displayText (layout.getText (k))
         print (f'{t:4s} {k} {v:10d} {v/combinationTotal*100:5.1f}%')
+
     print ('unknown')
     for k, v in sorted (stats['simple'].unknown.items (), key=itemgetter (1)):
         print (f'{k!r} {v:10d}')
@@ -245,9 +248,10 @@ def pretty (args):
     for triad, count in sorted (stats['triads'].triads.items (), key=itemgetter (1)):
         print (f'{triad} {count:10d}')
 
-    print ('words')
+    totalWords = sum (stats['words'].words.values ())
+    print ('words', totalWords)
     for word, count in sorted (stats['words'].words.items (), key=itemgetter (1)):
-        print (f'{word} {count:10d}')
+        print (f'{word:20s} {count/totalWords*100:2.5f} {count:10d}')
 
     effort = Carpalx (models['mod01'], writer)
     effort.addTriads (stats['triads'].triads)

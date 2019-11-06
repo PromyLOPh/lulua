@@ -22,7 +22,7 @@
 Text/corpus handling tools
 """
 
-import sys, argparse, pickle, json, logging
+import sys, argparse, pickle, json, logging, xml.dom.minidom
 from io import StringIO
 from functools import partial
 from multiprocessing import Process, Queue, cpu_count, current_process
@@ -162,12 +162,36 @@ def sourceText (item):
 def sourceJson (item):
     yield json.loads (item)
 
+def getText (nodelist):
+    rc = []
+    for node in nodelist:
+        if node.nodeType == node.TEXT_NODE:
+            rc.append(node.data)
+    return ''.join(rc)
+
+def sourceTEI2 (item):
+    """ TEI.2 format used for United Nations parallel corpus """
+    with open (item.rstrip (), 'rb') as fd:
+        try:
+            out = []
+            doc = xml.dom.minidom.parse (fd)
+            for text in doc.getElementsByTagName ('text'):
+                for body in text.getElementsByTagName ('body'):
+                    for p in body.getElementsByTagName ('p'):
+                        for s in p.getElementsByTagName ('s'):
+                            out.append (getText (s.childNodes))
+                        out.append ('')
+            yield '\n'.join (out)
+        except Exception:
+            logging.error (f'invalid xml document {item}')
+
 sources = dict(
     aljazeera=partial(sourceHtml, f['aljazeera']),
     bbcarabic=partial(sourceHtml, f['bbcarabic']),
     text=sourceText,
     json=sourceJson,
     epub=sourceEpub,
+    tei2=sourceTEI2,
     )
 
 charMap = {
@@ -191,6 +215,8 @@ charMap = {
     '9': '٩',
     '?': '؟',
     ';': '؛',
+    'ﻹ': 'لإ',
+    'ﻷ': 'لأ',
     # nbsp
     '\u00a0': ' ',
     }

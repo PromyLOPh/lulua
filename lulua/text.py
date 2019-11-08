@@ -185,6 +185,23 @@ def sourceTEI2 (item):
         except Exception:
             logging.error (f'invalid xml document {item}')
 
+def sourceOpenSubtitles (item):
+    """
+    XML-based format used by the (raw!) OpenSubtitles dump found here:
+    http://opus.nlpl.eu/OpenSubtitles-v2018.php
+    """
+    with open (item.rstrip (), 'rb') as fd:
+        try:
+            out = []
+            doc = xml.dom.minidom.parse (fd)
+            for s in doc.getElementsByTagName ('s'):
+                # strip newlines, which are mostly unintentional due to
+                # pretty-printed xml structure
+                out.append (getText (s.childNodes).strip ())
+            yield '\n'.join (out)
+        except Exception as e:
+            logging.error (f'invalid xml document {item} {e}')
+
 sources = dict(
     aljazeera=partial(sourceHtml, f['aljazeera']),
     bbcarabic=partial(sourceHtml, f['bbcarabic']),
@@ -192,6 +209,7 @@ sources = dict(
     json=sourceJson,
     epub=sourceEpub,
     tei2=sourceTEI2,
+    opensubtitles=sourceOpenSubtitles,
     )
 
 charMap = {

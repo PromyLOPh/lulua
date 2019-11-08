@@ -60,6 +60,10 @@ rule write-tei2
     command = find \$in -type f -name '*.xml' | lulua-write tei2 \$layout | lulua-analyze combine > \$out
     pool = write
 
+rule write-opensubtitles
+    command = find \$in -type f -name '*.xml' | lulua-write opensubtitles \$layout | lulua-analyze combine > \$out
+    pool = write
+
 rule write-arwiki
     command = \$wikiextractor -ns 0 --json -o - \$in 2>/dev/null | jq .text | lulua-write json \$layout | lulua-analyze combine > \$out
     pool = write
@@ -129,7 +133,10 @@ build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-2019
 build \$statsdir/${l}/un-v1.0-tei.pickle: write-tei2 \$corpusdir/un-v1.0-tei || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/hindawi.pickle \$statsdir/${l}/un-v1.0-tei.pickle || \$statsdir/${l}
+build \$statsdir/${l}/opensubtitles-2018.pickle: write-opensubtitles \$corpusdir/opensubtitles-2018 || \$statsdir/${l}
+    layout = ${l}
+
+build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/hindawi.pickle \$statsdir/${l}/un-v1.0-tei.pickle \$statsdir/${l}/opensubtitles-2018.pickle || \$statsdir/${l}
 
 build \$docdir/_build/${l}.svg: render-svg || \$docdir/_build
     layout = ${l}

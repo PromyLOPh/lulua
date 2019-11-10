@@ -21,7 +21,7 @@
 import operator
 import pytest
 
-from .stats import updateDictOp
+from .stats import updateDictOp, approx
 
 def test_updateDictOp ():
     a = {1: 3}
@@ -36,4 +36,17 @@ def test_updateDictOp ():
     updateDictOp (a, b, operator.add)
     assert a == {'foo': {1: 3+7}}
     assert b == {'foo': {1: 7}}
+
+def test_approx ():
+    assert approx (0) == (0, 0, '')
+    assert approx (0.01) == (0, 0, '')
+    assert approx (0.05) == (0, 1, '')
+    assert approx (1) == (1, 0, '')
+    assert approx (100) == (100, 0, '')
+    assert approx (999.9) == (999, 9, '')
+
+    assert approx (10**3) == (1, 0, 'thousand')
+    assert approx (10**6) == (1, 0, 'million')
+    assert approx (10**9) == (1, 0, 'billion')
+    assert approx (10**12) == (1000, 0, 'billion')
 

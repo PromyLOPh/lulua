@@ -90,10 +90,8 @@ rule analyze-corpushtml
 rule wordlist
     command = lulua-analyze -l ar-lulua latinime < \$in > \$out
 
-rule cpp
-    command = gcc -E -x c -nostdinc -MMD -MF \$out.d -C -P -I \$docdir/_temp \$in -o \$out
-    depfile = \$out.d
-    deps = gcc
+rule html
+    command = m4 -I \$docdir/_temp \$template > \$out
 
 rule cp
     command = cp \$in \$out
@@ -105,7 +103,6 @@ rule gz
 build \$docdir/_build: mkdir
 build \$docdir/_build/fonts: mkdir
 build \$docdir/_temp: mkdir
-build \$docdir/_build/index.html: cpp \$docdir/index.html || \$docdir/_build
 build \$docdir/_build/letterfreq.json: letterfreq \$statsdir/ar-lulua/all.pickle || \$docdir/_build
 build \$docdir/_build/style.css: cp \$docdir/style.css || \$docdir/_build
 build \$docdir/_build/lulua-logo.svg: cp \$docdir/lulua-logo.svg || \$docdir/_build
@@ -116,6 +113,7 @@ build \$docdir/_build/lulua.combined.gz: gz \$docdir/_temp/lulua.combined || \$d
 
 build \$docdir/_build/fonts/IBMPlexArabic-Regular.woff2: cp \$fontdir/IBMPlexArabic-Regular.woff2 || \$docdir/_build/fonts
 build \$docdir/_build/fonts/IBMPlexArabic-Thin.woff2: cp \$fontdir/IBMPlexArabic-Thin.woff2 || \$docdir/_build/fonts
+
 EOF
 
 # targets for every layout
@@ -138,10 +136,10 @@ build \$statsdir/${l}/tanzil-quaran.pickle: write-tanzil \$corpusdir/tanzil-quar
 build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-20190701-pages-articles.xml.bz2 || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/un-v1.0-tei.pickle: write-tei2 \$corpusdir/un-v1.0-tei || \$statsdir/${l}
+build \$statsdir/${l}/un-v1.0-tei.pickle: write-tei2 \$corpusdir/un-v1.0-tei/raw || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/opensubtitles-2018.pickle: write-opensubtitles \$corpusdir/opensubtitles-2018 || \$statsdir/${l}
+build \$statsdir/${l}/opensubtitles-2018.pickle: write-opensubtitles \$corpusdir/opensubtitles-2018/raw || \$statsdir/${l}
     layout = ${l}
 
 build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil-quaran.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/hindawi.pickle \$statsdir/${l}/un-v1.0-tei.pickle \$statsdir/${l}/opensubtitles-2018.pickle || \$statsdir/${l}
@@ -159,6 +157,8 @@ build \$docdir/_temp/${l}-fingerhand.html: analyze-fingerhand \$statsdir/${l}/al
     layout = ${l}
 
 EOF
+# included by index.html and thus must be its dependencies
+fingerhandfiles+=" \$docdir/_temp/${l}-fingerhand.html"
 done
 
 # layouts with xmodmap support
@@ -177,11 +177,20 @@ cat <<EOF
 build \$docdir/_temp/metadata-$c.yaml: analyze-corpusstats \$statsdir/ar-lulua/$c.pickle \$corpusdir/$c/metadata.yaml || \$docdir/_temp \$corpusdir/$c/metadata.yaml
     metadata = \$corpusdir/$c/metadata.yaml
     stats = \$statsdir/ar-lulua/$c.pickle
+
 EOF
 outfiles+=" \$docdir/_temp/metadata-$c.yaml"
 done
 
 cat <<EOF
 build \$docdir/_temp/corpus.html: analyze-corpushtml $outfiles || \$docdir/_temp
+
+EOF
+
+# html, which depends on several other files generated above
+cat <<EOF
+build \$docdir/_build/index.html: html \$docdir/index.html \$docdir/_temp/corpus.html $fingerhandfiles || \$docdir/_build
+    template = \$docdir/index.html
+
 EOF
 

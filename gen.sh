@@ -13,6 +13,7 @@ corpusdir=corpus
 statsdir=stats
 docdir=doc
 wikiextractor=3rdparty/wikiextractor/WikiExtractor.py
+osmconvert=3rdparty/osmctools/src/osmconvert
 fontdir=3rdparty/plex/IBM-Plex-Arabic/fonts/complete/woff2/
 optrounds=100000
 # pin layers, keep hand-optimized numbers, keep top row free
@@ -69,6 +70,10 @@ rule write-arwiki
     command = \$wikiextractor -ns 0 --json -o - \$in 2>/dev/null | jq .text | lulua-write json \$layout | lulua-analyze combine > \$out
     pool = write
 
+rule write-osm
+    command = \$osmconvert --csv='name:ar' \$in | sort -u | lulua-write lines \$layout | lulua-analyze combine > \$out
+    pool = write
+
 rule combine
     command = cat \$in | lulua-analyze combine > \$out
 
@@ -99,6 +104,9 @@ rule cp
 rule gz
     command = gzip -c \$in > \$out
 
+rule configure-make
+    command = cd \$in && autoreconf --install && ./configure && make
+
 ### build targets ###
 build \$docdir/_build: mkdir
 build \$docdir/_build/fonts: mkdir
@@ -114,6 +122,8 @@ build \$docdir/_build/lulua.combined.gz: gz \$docdir/_temp/lulua.combined || \$d
 build \$docdir/_build/fonts/IBMPlexArabic-Regular.woff2: cp \$fontdir/IBMPlexArabic-Regular.woff2 || \$docdir/_build/fonts
 build \$docdir/_build/fonts/IBMPlexArabic-Thin.woff2: cp \$fontdir/IBMPlexArabic-Thin.woff2 || \$docdir/_build/fonts
 
+# build osmconvert
+build \$osmconvert: configure-make 3rdparty/osmctools
 EOF
 
 # targets for every layout
@@ -136,13 +146,16 @@ build \$statsdir/${l}/tanzil-quaran.pickle: write-tanzil \$corpusdir/tanzil-quar
 build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-20190701-pages-articles.xml.bz2 || \$statsdir/${l}
     layout = ${l}
 
+build \$statsdir/${l}/osm.pickle: write-osm \$corpusdir/osm/planet-191104.osm.pbf || \$statsdir/${l} \$osmconvert
+    layout = ${l}
+
 build \$statsdir/${l}/un-v1.0-tei.pickle: write-tei2 \$corpusdir/un-v1.0-tei/raw || \$statsdir/${l}
     layout = ${l}
 
 build \$statsdir/${l}/opensubtitles-2018.pickle: write-opensubtitles \$corpusdir/opensubtitles-2018/raw || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil-quaran.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/hindawi.pickle \$statsdir/${l}/un-v1.0-tei.pickle \$statsdir/${l}/opensubtitles-2018.pickle || \$statsdir/${l}
+build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil-quaran.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/osm.pickle \$statsdir/${l}/hindawi.pickle \$statsdir/${l}/un-v1.0-tei.pickle \$statsdir/${l}/opensubtitles-2018.pickle || \$statsdir/${l}
 
 build \$docdir/_build/${l}.svg: render-svg || \$docdir/_build
     layout = ${l}

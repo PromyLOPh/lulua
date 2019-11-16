@@ -159,6 +159,10 @@ def sourceText (item):
     with LzipFile (item.rstrip ()) as fd:
         yield fd.read ().decode ('utf-8')
 
+def sourceLines (item):
+    """ Read items (i.e. lines) as is """
+    yield item
+
 def sourceJson (item):
     yield json.loads (item)
 
@@ -210,6 +214,7 @@ sources = dict(
     epub=sourceEpub,
     tei2=sourceTEI2,
     opensubtitles=sourceOpenSubtitles,
+    lines=sourceLines,
     )
 
 charMap = {

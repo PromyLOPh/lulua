@@ -21,7 +21,10 @@
 import operator
 import pytest
 
-from .stats import updateDictOp, approx
+from .stats import updateDictOp, approx, SimpleStats, TriadStats, allStats
+from .keyboard import defaultKeyboards
+from .layout import defaultLayouts, ButtonCombination
+from .writer import Writer, SkipEvent
 
 def test_updateDictOp ():
     a = {1: 3}
@@ -49,4 +52,87 @@ def test_approx ():
     assert approx (10**6) == (1, 0, 'million')
     assert approx (10**9) == (1, 0, 'billion')
     assert approx (10**12) == (1000, 0, 'billion')
+
+@pytest.fixture
+def writer ():
+    """ Return a default, safe writer with known properties for a fixed layout """
+    keyboard = defaultKeyboards['ibmpc105']
+    layout = defaultLayouts['ar-lulua'].specialize (keyboard)
+    return Writer (layout)
+    
+def test_simplestats (writer):
+    keyboard = writer.layout.keyboard
+
+    s = SimpleStats (writer)
+    assert not s.unknown
+    assert not s.combinations
+    assert not s.buttons
+
+    s.process (SkipEvent ('a'))
+    assert len (s.unknown) == 1 and s.unknown['a'] == 1
+    # no change for those
+    assert not s.combinations
+    assert not s.buttons
+
+    dlcaps = keyboard['Dl_caps']
+    bl1 = keyboard['Bl1']
+    comb = ButtonCombination (frozenset ([dlcaps]), frozenset ([bl1]))
+    s.process (comb)
+    assert s.buttons[dlcaps] == 1
+    assert s.buttons[bl1] == 1
+    assert s.combinations[comb] == 1
+    # no change
+    assert len (s.unknown) == 1 and s.unknown['a'] == 1
+
+    s2 = SimpleStats (writer)
+    s2.update (s)
+    assert s2 == s
+
+def test_triadstats (writer):
+    keyboard = writer.layout.keyboard
+
+    s = TriadStats (writer)
+    assert not s.triads
+
+    s.process (SkipEvent ('a'))
+    # should not change anything
+    assert not s.triads
+
+    dlcaps = keyboard['Dl_caps']
+    bl1 = keyboard['Bl1']
+    comb = ButtonCombination (frozenset ([dlcaps]), frozenset ([bl1]))
+    for i in range (3):
+        s.process (comb)
+    assert len (s.triads) == 1 and s.triads[(comb, comb, comb)] == 1
+
+    # sliding window -> increase
+    s.process (comb)
+    assert len (s.triads) == 1 and s.triads[(comb, comb, comb)] == 2
+
+    # clear sliding window
+    s.process (SkipEvent ('a'))
+    assert len (s.triads) == 1 and s.triads[(comb, comb, comb)] == 2
+
+    # thus no change here
+    for i in range (2):
+        s.process (comb)
+    assert len (s.triads) == 1 and s.triads[(comb, comb, comb)] == 2
+
+    # but here
+    s.process (comb)
+    assert len (s.triads) == 1 and s.triads[(comb, comb, comb)] == 3
+
+def test_stats_process_value (writer):
+    """ Make sure stats classes reject invalid values for .process() """
+
+    for cls in allStats:
+        s = cls (writer)
+        with pytest.raises (ValueError):
+            s.process (1)
+
+        s.process (SkipEvent ('a'))
+        s2 = cls (writer)
+        s2.update (s)
+        assert s2 == s
+        assert not s2 == 1
 

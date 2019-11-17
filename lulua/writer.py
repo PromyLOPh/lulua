@@ -20,6 +20,7 @@
 
 import json
 from operator import itemgetter
+from typing import Text
 
 from .layout import *
 
@@ -109,7 +110,8 @@ defaultFingermap = {
 class SkipEvent:
     __slots__ = ('char', )
 
-    def __init__ (self, char):
+    def __init__ (self, char: Text):
+        assert len (char) == 1
         self.char = char
 
     def __eq__ (self, other):

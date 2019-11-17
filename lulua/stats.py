@@ -50,6 +50,12 @@ def updateDictOp (a, b, op):
 class Stats:
     name = 'invalid'
 
+    def process (self, event):
+        raise NotImplementedError
+
+    def update (self, other):
+        raise NotImplementedError
+
 class RunlenStats (Stats):
     __slots__ = ('lastHand', 'perHandRunlenDist', 'curPerHandRunlen',
             'fingerRunlen', 'lastFinger', 'fingerRunlenDist', 'writer')
@@ -67,6 +73,11 @@ class RunlenStats (Stats):
         self.fingerRunlenDist = dict (((x, y), defaultdict (int)) for x, y in product (iter (Direction), iter (FingerType)))
         self.fingerRunlen = 0
 
+    def __eq__ (self, other):
+        if not isinstance (other, RunlenStats):
+            return NotImplemented
+        return self.perHandRunlenDist == other.perHandRunlenDist
+        
     def process (self, event):
         if isinstance (event, ButtonCombination):
             assert len (event.buttons) == 1
@@ -90,6 +101,8 @@ class RunlenStats (Stats):
 
             self.lastFinger = None
             self.fingerRunlen = 0
+        else:
+            raise ValueError ()
 
     def update (self, other):
         updateDictOp (self.perHandRunlenDist, other.perHandRunlenDist, operator.add)
@@ -106,6 +119,13 @@ class SimpleStats (Stats):
         self.combinations = defaultdict (int)
         self.unknown = defaultdict (int)
 
+    def __eq__ (self, other):
+        if not isinstance (other, SimpleStats):
+            return NotImplemented
+        return self.buttons == other.buttons and \
+                self.combinations == other.combinations and \
+                self.unknown == other.unknown
+
     def process (self, event):
         if isinstance (event, SkipEvent):
             self.unknown[event.char] += 1
@@ -113,6 +133,8 @@ class SimpleStats (Stats):
             for b in event:
                 self.buttons[b] += 1
             self.combinations[event] += 1
+        else:
+            raise ValueError ()
 
     def update (self, other):
         updateDictOp (self.buttons, other.buttons, operator.add)
@@ -138,6 +160,11 @@ class TriadStats (Stats):
         keyboard = self._writer.layout.keyboard
         self._ignored = frozenset (keyboard[x] for x in ('Fl_space', 'Fr_space', 'CD_ret', 'Cl_tab'))
 
+    def __eq__ (self, other):
+        if not isinstance (other, TriadStats):
+            return NotImplemented
+        return self.triads == other.triads
+
     def process (self, event):
         if isinstance (event, SkipEvent):
             # reset
@@ -154,6 +181,8 @@ class TriadStats (Stats):
                 if len (self._triad) == 3:
                     k = tuple (self._triad)
                     self.triads[k] += 1
+        else:
+            raise ValueError ()
 
     def update (self, other):
         updateDictOp (self.triads, other.triads, operator.add)
@@ -173,6 +202,11 @@ class WordStats (Stats):
         self._currentWord = []
         self.words = defaultdict (int)
 
+    def __eq__ (self, other):
+        if not isinstance (other, WordStats):
+            return NotImplemented
+        return self.words == other.words
+
     def process (self, event):
         if isinstance (event, SkipEvent):
             # reset
@@ -188,6 +222,8 @@ class WordStats (Stats):
                 elif self._currentWord:
                     self.words[''.join (self._currentWord)] += 1
                     self._currentWord = []
+        else:
+            raise ValueError ()
 
     def update (self, other):
         updateDictOp (self.words, other.words, operator.add)
@@ -201,11 +237,15 @@ def unpickleAll (fd):
         except EOFError:
             break
 
-def combine (args):
-    keyboard = defaultKeyboards[args.keyboard]
+def makeCombined (keyboard):
+    """ Create a dict which contains initialized stats, ready for combining (not actual writing!) """
     layout = defaultLayouts['null'].specialize (keyboard)
     w = Writer (layout)
-    combined = dict ((cls.name, cls(w)) for cls in allStats)
+    return dict ((cls.name, cls(w)) for cls in allStats)
+
+def combine (args):
+    keyboard = defaultKeyboards[args.keyboard]
+    combined = makeCombined (keyboard)
     for r in unpickleAll (sys.stdin.buffer):
         for s in allStats:
             combined[s.name].update (r[s.name])

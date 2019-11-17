@@ -37,7 +37,7 @@ from html5lib.filters.base import Filter
 from .keyboard import defaultKeyboards
 from .layout import defaultLayouts
 from .writer import Writer
-from .stats import allStats
+from .stats import allStats, makeCombined
 
 def iterchar (fd):
     batchsize = 1*1024*1024
@@ -244,32 +244,28 @@ charMap = {
     '\u00a0': ' ',
     }
 
-def writeWorker (args, inq, outq):
+def mapChars (text, m):
+    """ For all characters in text, replace if found in map m or keep as-is """
+    return ''.join (map (lambda x: m.get (x, x), text))
+
+def writeWorker (layout, sourceFunc, inq, outq):
     try:
         keyboard = defaultKeyboards['ibmpc105']
-        layout = defaultLayouts['null'].specialize (keyboard)
-        w = Writer (layout)
-        combined = dict ((cls.name, cls(w)) for cls in allStats)
+        combined = makeCombined (keyboard)
         itemsProcessed = 0
 
         while True:
-            keyboard = defaultKeyboards[args.keyboard]
-            layout = defaultLayouts[args.layout].specialize (keyboard)
-            w = Writer (layout)
-
             item = inq.get ()
             if item is None:
                 break
 
             # extract (can be multiple items per source)
-            for text in  sources[args.source] (item):
-                text = ''.join (map (lambda x: charMap.get (x, x), text))
-                # XXX sanity checks, disable
-                for c in charMap.keys ():
-                    if c in text:
-                        #print (c, 'is in text', file=sys.stderr)
-                        assert False, c
+            for text in sourceFunc (item):
+                # map chars
+                text = mapChars (text, charMap)
 
+                # init a new writer for every item
+                w = Writer (layout)
                 # stats
                 stats = [cls(w) for cls in allStats]
                 for match, event in w.type (StringIO (text)):
@@ -309,6 +305,9 @@ def write ():
     else:
         logging.basicConfig (level=logging.INFO)
 
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+
     # limit queue sizes to limit memory usage
     inq = Queue (args.jobs*2)
     outq = Queue (args.jobs+1)
@@ -316,7 +315,10 @@ def write ():
     logging.info (f'using {args.jobs} workers')
     workers = []
     for i in range (args.jobs):
-        p = Process(target=writeWorker, args=(args, inq, outq), daemon=True, name=f'worker-{i}')
+        p = Process(target=writeWorker,
+                args=(layout, sources[args.source], inq, outq),
+                daemon=True,
+                name=f'worker-{i}')
         p.start()
         workers.append (p)
 

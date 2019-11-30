@@ -1,0 +1,7 @@
+source:
+    name: BBC Arabic
+    url: http://www.bbc.com/arabic
+extractor:
+    name: Custom scripts
+date: 2019-07
+count: [149901, articles]

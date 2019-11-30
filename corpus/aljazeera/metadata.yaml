@@ -1,0 +1,7 @@
+source:
+    name: Al-Jazeera
+    url: https://www.aljazeera.net/
+extractor:
+    name: Custom scripts
+date: 2019-07
+count: [547110, articles]

@@ -1,0 +1,5 @@
+source:
+    name: ORPUS OpenSubtitles 2018
+    url: http://opus.nlpl.eu/OpenSubtitles-v2018.php
+date: 2018
+count: [94093, movies]

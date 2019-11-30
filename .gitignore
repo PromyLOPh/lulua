@@ -8,4 +8,3 @@ doc/_temp
 .ninja_*
 build.ninja
 stats/
-corpus/

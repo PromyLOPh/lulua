@@ -1,0 +1,29 @@
+#include "winver.h"
+1 VERSIONINFO
+ FILEVERSION       1,0,0,02
+ PRODUCTVERSION    1,0,0,02
+ FILEFLAGSMASK 0x3fL
+ FILEFLAGS 0x0L
+FILEOS 0x40004L
+ FILETYPE VFT_DLL
+ FILESUBTYPE VFT2_DRV_KEYBOARD
+BEGIN
+   BLOCK "StringFileInfo"
+   BEGIN
+       BLOCK "000004B0"
+       BEGIN
+           VALUE "CompanyName",     "6xq.net\0"
+           VALUE "FileDescription", "Ergonomic Arabic Keyboard Layout lulua\0"
+           VALUE "FileVersion",     "0.2\0"
+           VALUE "InternalName",    "kbdarlulua\0"
+           VALUE "ProductName","lulua\0"
+           VALUE "LegalCopyright",  "see https://opensource.org/licenses/MIT\0"
+           VALUE "OriginalFilename","kbdarlulua\0"
+           VALUE "ProductVersion",  "0.2\0"
+       END
+   END
+   BLOCK "VarFileInfo"
+   BEGIN
+       VALUE "Translation", 0x0000, 0x04B0
+   END
+END

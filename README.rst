@@ -51,6 +51,28 @@ to analyze them and create pretty pictures as well as statistics in ``doc/``.
 
 .. _me: lars+lulua@6xq.net
 
+Building Windows drivers
+------------------------
+
+There is no easy way to build Windows keyboard drivers, but the following
+instructions have worked in the past:
+
+.. code:: bash
+
+    ninja doc/_temp/winkbd/customization.h
+
+Share the folder `doc/_temp/winkbd` with a Windows system, install `Microsoft
+Keyboard Layout Creator 1.4`_ (MSKLC; the Windows Driver Kit (WDK) would work
+too, but is much larger), adjust ``make.bat`` pointing to your MSKLC
+installation and run it. This should generate two directories, ``System32`` and
+``SysWOW64``, which must be copied back to `doc/_temp/winkbd`. Then run:
+
+.. code:: bash
+
+    ninja doc/_build/ar-lulua-w64.zip
+
+.. _Microsoft Keyboard Layout Creator 1.4: https://www.microsoft.com/en-us/download/details.aspx?id=22339
+
 Acknowledgements
 ----------------
 

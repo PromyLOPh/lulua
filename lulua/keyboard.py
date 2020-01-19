@@ -157,6 +157,74 @@ _buttonToKeyman = {
     'Fr_ctrl': 'RCTRL',
     }
 
+# button to symbolic windows scancode usable in keyboard.c
+# see windows header kbd.h (#define TXX _EQ(YY))
+_buttonToWinScancode = {
+    'Bl1': 'T29',
+    'Bl2': 'T02',
+    'Bl3': 'T03',
+    'Bl4': 'T04',
+    'Bl5': 'T05',
+    'Bl6': 'T06',
+    'Bl7': 'T07',
+    'Br6': 'T08',
+    'Br5': 'T09',
+    'Br4': 'T0A',
+    'Br3': 'T0B',
+    'Br2': 'T0C',
+    'Br1': 'T0D',
+    'Br_bs': 'T0E',
+    'Cl_tab': 'T0F',
+    'Cl1': 'T10',
+    'Cl2': 'T11',
+    'Cl3': 'T12',
+    'Cl4': 'T13',
+    'Cl5': 'T14',
+    'Cr7': 'T15',
+    'Cr6': 'T16',
+    'Cr5': 'T17',
+    'Cr4': 'T18',
+    'Cr3': 'T19',
+    'Cr2': 'T1A',
+    'Cr1': 'T1B',
+    'CD_ret': 'T1C',
+    'Dl_caps': 'T3A',
+    'Dl1': 'T1E',
+    'Dl2': 'T1F',
+    'Dl3': 'T20',
+    'Dl4': 'T21',
+    'Dl5': 'T22',
+    'Dr7': 'T23',
+    'Dr6': 'T24',
+    'Dr5': 'T25',
+    'Dr4': 'T26',
+    'Dr3': 'T27',
+    'Dr2': 'T28',
+    'Dr1': 'T2B',
+    'El_shift': 'T2A',
+    'El1': 'T56',
+    'El2': 'T2C',
+    'El3': 'T2D',
+    'El4': 'T2E',
+    'El5': 'T2F',
+    'El6': 'T30',
+    'Er5': 'T31',
+    'Er4': 'T32',
+    'Er3': 'T33',
+    'Er2': 'T34',
+    'Er1': 'T35',
+    'Er_shift': 'T36',
+    'Fl_ctrl': 'T1D',
+    'Fl_win': 'X5B',
+    'Fl_alt': 'T38',
+    'Fl_space': 'T39',
+    'Fr_space': 'T39',
+    'Fr_altgr': 'X38',
+    'Fr_win': 'X5C',
+    'Fr_menu': 'X5D',
+    'Fr_ctrl': 'X1D',
+    }
+
 class Button:
     __slots__ = ('width', 'isMarked', 'i')
     _idToName : Dict[int, Text] = {}
@@ -198,6 +266,10 @@ class Button:
     @property
     def keymanCode (self):
         return _buttonToKeyman[self.name]
+
+    @property
+    def windowsScancode (self):
+        return _buttonToWinScancode[self.name]
 
     @classmethod
     def deserialize (self, data: Dict):

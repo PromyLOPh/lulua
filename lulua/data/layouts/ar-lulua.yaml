@@ -1,5 +1,16 @@
 layout:
 - layer:
+    Bl2: "١"
+    Bl3: "٢"
+    Bl4: "٣"
+    Bl5: "٤"
+    Bl6: "٥"
+    Bl7: "٦"
+    Br6: "٧"
+    Br5: "٨"
+    Br4: "٩"
+    Br_bs: "\b"
+
     Cl_tab: "\t"
     Cl1: "ث"
     Cl2: "ط"

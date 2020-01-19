@@ -101,11 +101,20 @@ rule html
 rule cp
     command = cp \$in \$out
 
+rule cpR
+    command = cp -R \$in \$out
+
 rule gz
     command = gzip -c \$in > \$out
 
 rule configure-make
     command = cd \$in && autoreconf --install && ./configure && make
+
+rule zipR
+    command = ./makezip.sh \$in \$out
+
+rule render-winkbd
+    command = lulua-render -l ar-lulua winkbd \$out
 
 ### build targets ###
 build \$docdir/_build: mkdir
@@ -124,6 +133,22 @@ build \$docdir/_build/fonts/IBMPlexArabic-Thin.woff2: cp \$fontdir/IBMPlexArabic
 
 # build osmconvert
 build \$osmconvert: configure-make 3rdparty/osmctools
+
+# windows drivers
+build \$docdir/_temp/winkbd: cpR lulua/data/winkbd
+build \$docdir/_temp/winkbd/customization.h: render-winkbd || \$docdir/_temp/winkbd
+build \$docdir/_temp/ar-lulua-w64: mkdir
+EOF
+
+w64zipfile="System32/kbdarlulua.dll SysWOW64/kbdarlulua.dll README.txt lulua.reg install.bat"
+deps=""
+for f in $w64zipfile; do
+	echo "build \$docdir/_temp/ar-lulua-w64/$f: cp \$docdir/_temp/winkbd/$f || \$docdir/_temp/ar-lulua-w64"
+	deps+=" \$docdir/_temp/ar-lulua-w64/$f"
+done
+cat <<EOF
+build \$docdir/_build/ar-lulua-w64.zip: zipR \$docdir/_temp/ar-lulua-w64 | $deps
+
 EOF
 
 # targets for every layout

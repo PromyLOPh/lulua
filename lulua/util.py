@@ -80,6 +80,7 @@ def displayText (text):
         '\t': '⭾',
         '\n': '↳',
         ' ': '\u2423',
+        '\b': '⌦',
         '\u200e': '[LRM]', # left to right mark
         '\u061c': '[ALM]', # arabic letter mark
         '\u202c': '[PDF]', # pop directional formatting

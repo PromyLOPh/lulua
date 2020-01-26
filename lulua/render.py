@@ -38,7 +38,7 @@ RendererSettings = namedtuple ('RendererSetting', ['buttonMargin', 'middleGap', 
 class Renderer:
     """ Keyboard to SVG renderer """
 
-    __slots__ = ('keyboard', 'layout', 'settings', 'cursor', 'writer', 'keyHighlight')
+    __slots__ = ('keyboard', 'layout', 'settings', 'writer', 'keyHighlight')
 
     defaultSettings = RendererSettings (
             buttonMargin=20,
@@ -56,53 +56,63 @@ class Renderer:
         self.settings = settings or self.defaultSettings
         self.keyHighlight = keyHighlight or {}
 
-        self.cursor = [0, 0]
-
     def render (self):
-        maxWidth = 0
-        maxHeight = 0
-
+        """ Render the entire layout, return single SVG <g> container and its (width, height) """
         settings = self.settings
-        self.cursor = [0, 0]
 
-        # compute row widths so we can apply margin correction, balancing
-        # out their widths
-        rowWidth = []
-        for l, r in self.keyboard:
-            w = 0
-            for btn in l:
-                w += self.buttonWidth (btn) + settings.buttonMargin
-            w += settings.middleGap
-            for btn in r:
-                w += self.buttonWidth (btn) + settings.buttonMargin
-            w -= settings.buttonMargin
-            rowWidth.append (w)
-        logging.info (f'row width {rowWidth}')
+        btnToPos, (width, height) = self._calcDimensions (self.keyboard)
 
         g = svgwrite.container.Group ()
 
+        for btn in self.keyboard.keys ():
+            g.add (self._createButton (btn, btnToPos[btn]))
+
+        return g, (width, height)
+
+    def _calcDimensions (self, keyboard):
+        """ Create button to position map and keyboard dimensions """
+        m = {}
+
+        settings = self.settings
+        # keyboard dimensions
+        maxWidth = 0
+        maxHeight = 0
+        # current position
+        cursor = [0, 0]
+
+        rowWidth = []
         for l, r in self.keyboard:
             for btn in l:
-                b, width = self._addButton (btn)
-                g.add (b)
-                self.cursor[0] += width + settings.buttonMargin
-            self.cursor[0] += settings.middleGap
-            for btn in r:
-                b, width = self._addButton (btn)
-                g.add (b)
-                self.cursor[0] += width + settings.buttonMargin
-            self.cursor[1] += settings.buttonWidth + settings.buttonMargin
-            maxWidth = max (self.cursor[0], maxWidth)
-            self.cursor[0] = 0
-        maxHeight = self.cursor[1]
+                assert btn not in m
+                m[btn] = tuple (cursor)
+                cursor[0] += self.buttonWidth (btn) + settings.buttonMargin
 
-        return g, (maxWidth, maxHeight)
+            cursor[0] += settings.middleGap
+
+            for btn in r:
+                assert btn not in m
+                m[btn] = tuple (cursor)
+                cursor[0] += self.buttonWidth (btn) + settings.buttonMargin
+
+            # button height is always the same as default width
+            cursor[1] += settings.buttonWidth + settings.buttonMargin
+            maxWidth = max (cursor[0], maxWidth)
+            rowWidth.append (cursor[0])
+            cursor[0] = 0
+        maxHeight = cursor[1]
+
+        logging.info (f'row width {rowWidth}')
+
+        return m, (maxWidth, maxHeight)
 
     def buttonWidth (self, btn):
+        """ Calculate button width """
         return btn.width * self.settings.buttonWidth
 
-    def _addButton (self, btn):
-        xoff, yoff = self.cursor
+    def _createButton (self, btn, position):
+        """ Render a single button """
+
+        xoff, yoff = position
         settings = self.settings
         width = self.buttonWidth (btn)
 
@@ -212,7 +222,7 @@ class Renderer:
                     t.add (svgwrite.text.TSpan (text, class_=style, direction='rtl'))
                 g.add (t)
 
-        return g, width
+        return g
 
 def unique (l, key):
     return dict ((key (v), v) for v in l).values ()

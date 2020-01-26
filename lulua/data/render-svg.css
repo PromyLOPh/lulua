@@ -1,64 +1,64 @@
 /* inkscape-compatibility, explicitly apply font settings to .label */
-svg, .button .label {
+svg, .label {
 	font-family: "IBM Plex Arabic";
 	font-size: 90px;
 	font-weight: 400;
 }
-.button.unused {
+.unused {
 	opacity: 0.6;
 }
-.button .label .layer-1 {
+.label .layer-1 {
 }
-.button.modifier .label .layer-1 {
+.modifier .label .layer-1 {
 	font-size: 80%;
 }
-.button .label .layer-2, .button .label .layer-3, .button .label .layer-4 {
+.label .layer-2, .label .layer-3, .label .layer-4 {
 	font-size: 80%;
 	font-weight: 100;
 }
-.button .label .controlchar {
+.label .controlchar {
 	font-size: 40%;
 	font-family: sans-serif;
 }
-.button .cap {
+.cap rect {
 	fill: #eee8d5;
 }
-.button .cap.highlight {
+.highlight circle {
 	fill: #dc322f; /* red */
-	filter: blur(50px);
+	filter: blur(30px);
 }
-.button.finger-little .cap.shadow {
+.cap-shadow rect.finger-little {
 	fill: #dc322f; /* red */
 }
-.button.finger-ring .cap.shadow {
+.cap-shadow rect.finger-ring {
 	fill: #268bd2; /* blue */
 }
-.button.finger-middle .cap.shadow {
+.cap-shadow rect.finger-middle {
 	fill: #d33682; /* magenta */
 }
-.button.finger-index .cap.shadow {
+.cap-shadow rect.finger-index {
 	fill: #6c71c4; /* violet */
 }
-.button.finger-thumb .cap.shadow {
+.cap-shadow rect.finger-thumb {
 	fill: #2aa198; /* cyan */
 }
-.button .label {
+.label {
 	fill: #657b83;
 }
-.button .label.shadow {
+.label.shadow {
 	fill: #fdf6e3;
 }
-.button .controllabel {
+.controllabel {
 	stroke: #657b83;
 	fill: none;
 }
-.button .controllabel.shadow {
+.controllabel.shadow {
 	stroke: #fdf6e3;
 	fill: none;
 }
-.button .marker {
+.marker line {
 	stroke: #fdf6e3;
 }
-.button .marker.shadow {
+.marker line.shadow {
 	stroke: #93a1a1;
 }

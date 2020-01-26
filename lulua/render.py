@@ -64,8 +64,55 @@ class Renderer:
 
         g = svgwrite.container.Group ()
 
+        # use multiple layers to get overlapping right
+        gCapShadow = svgwrite.container.Group ()
+        gCapShadow.attribs['class'] = 'cap-shadow'
+        g.add (gCapShadow)
+        gCap = svgwrite.container.Group ()
+        gCap.attribs['class'] = 'cap'
+        g.add (gCap)
+        gHighlight = svgwrite.container.Group ()
+        gHighlight.attribs['class'] = 'highlight'
+        g.add (gHighlight)
+        gLabel = svgwrite.container.Group ()
+        gLabel.attribs['class'] = 'label'
+        g.add (gLabel)
+
         for btn in self.keyboard.keys ():
-            g.add (self._createButton (btn, btnToPos[btn]))
+            # map modifier keys to arrows, they cannot have any text
+            mod = frozenset ([btn])
+            isModifier = self.layout.isModifier (mod)
+            if isModifier:
+                layerToArrow = {1: '⭡', 2: '⭧', 3: '⭨'}
+                i, layer = self.layout.modifierToLayer (mod)
+                buttonText = [layerToArrow[i]]
+            else:
+                buttonText = list (map (displayText, self.layout.getButtonText (btn)))
+
+            btnWidth = self.buttonWidth (btn)
+            btnPos = btnToPos[btn]
+
+            if any (buttonText):
+                hand, finger = self.writer.getHandFinger (btn)
+                extraClass = f'finger-{finger.name.lower ()} hand-{hand.name.lower ()}'
+                gCapShadow.add (self._drawCapShadow (btnWidth, btnPos, extraClass))
+
+            o = self._drawCap (btnWidth, btnPos)
+            if not any (buttonText):
+                assert 'class' not in o.attribs
+                o.attribs['class'] = 'unused'
+            gCap.add (o)
+            if btn.isMarked:
+                gCap.add (self._drawMarker (btnWidth, btnPos))
+
+            highlight = self.keyHighlight.get (btn.name, 0)
+            gHighlight.add (self._drawHighlight (highlight, btnWidth, btnPos))
+
+            l = self._drawLabel (buttonText, btnWidth, btnPos)
+            if isModifier:
+                assert 'class' not in l.attribs
+                l.attribs['class'] = 'modifier'
+            gLabel.add (l)
 
         return g, (width, height)
 
@@ -105,85 +152,63 @@ class Renderer:
 
         return m, (maxWidth, maxHeight)
 
-    def buttonWidth (self, btn):
-        """ Calculate button width """
-        return btn.width * self.settings.buttonWidth
-
-    def _createButton (self, btn, position):
-        """ Render a single button """
-
+    def _drawCapShadow (self, width, position, extraClass=''):
         xoff, yoff = position
         settings = self.settings
-        width = self.buttonWidth (btn)
+        return svgwrite.shapes.Rect (
+                insert=((xoff+settings.shadowOffset), (yoff+settings.shadowOffset)),
+                size=(width, settings.buttonWidth),
+                rx=settings.rounded,
+                ry=settings.rounded,
+                class_=extraClass)
 
-        hand, finger = self.writer.getHandFinger (btn)
+    def _drawCap (self, width, position):
+        xoff, yoff = position
+        settings = self.settings
+        return svgwrite.shapes.Rect (
+                insert=(xoff, yoff),
+                size=(width, settings.buttonWidth),
+                rx=settings.rounded,
+                ry=settings.rounded)
 
-        gclass = ['button', f'finger-{finger.name.lower ()}', f'hand-{hand.name.lower ()}']
+    def _drawMarker (self, width, position):
+        xoff, yoff = position
+        settings = self.settings
 
         g = svgwrite.container.Group ()
+        g.attribs['class'] = 'marker'
 
-        # map modifier keys to arrows
-        mod = frozenset ([btn])
-        isModifier = self.layout.isModifier (mod)
-        if isModifier:
-            layerToArrow = {1: '⭡', 2: '⭧', 3: '⭨'}
-            i, layer = self.layout.modifierToLayer (mod)
-            buttonText = [layerToArrow[i]]
-            gclass.append ('modifier')
-        else:
-            buttonText = list (map (displayText, self.layout.getButtonText (btn)))
+        start = (xoff+width*0.3, yoff+settings.buttonWidth*0.9)
+        end = (xoff+width*0.7, yoff+settings.buttonWidth*0.9)
+        # its shadow
+        l = svgwrite.shapes.Line (
+                map (lambda x: (x+settings.shadowOffset), start),
+                map (lambda x: (x+settings.shadowOffset), end),
+                stroke_width=settings.markerStroke,
+                class_='shadow')
+        g.add (l)
+        # the marker itself
+        l = svgwrite.shapes.Line (
+                start,
+                end,
+                stroke_width=settings.markerStroke)
+        g.add (l)
+        return g
 
-        # background rect if any text
-        if any (buttonText):
-            b = svgwrite.shapes.Rect (
-                    insert=((xoff+settings.shadowOffset), (yoff+settings.shadowOffset)),
-                    size=(width, settings.buttonWidth),
-                    rx=settings.rounded,
-                    ry=settings.rounded,
-                    class_='cap shadow')
-            g.add (b)
-        else:
-            gclass.append ('unused')
-        # main key rect
-        b = svgwrite.shapes.Rect (
-                insert=(xoff, yoff),
-                size=(width, settings.buttonWidth),
-                rx=settings.rounded,
-                ry=settings.rounded,
-                class_='cap')
-        g.add (b)
-
-        g.attribs['class'] = ' '.join (gclass)
-
-        # button marker
-        if btn.isMarked:
-            start = (xoff+width*0.3, yoff+settings.buttonWidth*0.9)
-            end = (xoff+width*0.7, yoff+settings.buttonWidth*0.9)
-            # its shadow
-            l = svgwrite.shapes.Line (
-                    map (lambda x: (x+settings.shadowOffset), start),
-                    map (lambda x: (x+settings.shadowOffset), end),
-                    stroke_width=settings.markerStroke,
-                    class_='marker shadow')
-            g.add (l)
-            # the marker itself
-            l = svgwrite.shapes.Line (
-                    start,
-                    end,
-                    stroke_width=settings.markerStroke,
-                    class_='marker')
-            g.add (l)
-
-        # highlight rect
-        highlight = self.keyHighlight.get (btn.name, 0)
-        b = svgwrite.shapes.Rect (
-                insert=(xoff, yoff),
-                size=(width, settings.buttonWidth),
-                rx=settings.rounded,
-                ry=settings.rounded,
-                class_='cap highlight',
+    def _drawHighlight (self, highlight, width, position):
+        xoff, yoff = position
+        settings = self.settings
+        # make the circle slight smaller to reduce overlap
+        r = min (width, settings.buttonWidth)/2*0.9
+        return svgwrite.shapes.Circle (
+                center=(xoff+width/2, yoff+settings.buttonWidth/2),
+                r=r,
                 style=f'opacity: {highlight}')
-        g.add (b)
+
+    def _drawLabel (self, buttonText, width, position):
+        g = svgwrite.container.Group ()
+        xoff, yoff = position
+        settings = self.settings
 
         # clock-wise from bottom-left to bottom-right, offsets are relative to buttonWidth and button center
         textParam = [
@@ -221,8 +246,11 @@ class Renderer:
                 else:
                     t.add (svgwrite.text.TSpan (text, class_=style, direction='rtl'))
                 g.add (t)
-
         return g
+
+    def buttonWidth (self, btn):
+        """ Calculate button width """
+        return btn.width * self.settings.buttonWidth
 
 def unique (l, key):
     return dict ((key (v), v) for v in l).values ()

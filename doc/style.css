@@ -8,6 +8,12 @@ using http://colormind.io/bootstrap/
 	--main-brand: #A48A4E;
 	--dark-accent: #79796D;
 	--dark-shades: #1D251E;
+
+	--finger-little: #dc322f; /* red */
+	--finger-ring: #268bd2; /* blue */
+	--finger-middle: #d33682; /* magenta */
+	--finger-index: #6c71c4; /* violet */
+	--finger-thumb: #2aa198; /* cyan */
 }
 
 @font-face {
@@ -126,19 +132,19 @@ div.fingerhandstats .right {
 }
 /* keep in sync with render-svg.css */
 div.fingerhandstats .fingers .little {
-	border: 0.1em solid #dc322f; /* red */
+	border: 0.1em solid var(--finger-little);
 }
 div.fingerhandstats .fingers .ring {
-	border: 0.1em solid #268bd2; /* blue */
+	border: 0.1em solid var(--finger-ring);
 }
 div.fingerhandstats .fingers .middle  {
-	border: 0.1em solid #d33682; /* magenta */
+	border: 0.1em solid var(--finger-middle);
 }
 div.fingerhandstats .fingers .index {
-	border: 0.1em solid #6c71c4; /* violet */
+	border: 0.1em solid var(--finger-index);
 }
 div.fingerhandstats .fingers .thumb {
-	border: 0.1em solid #2aa198; /* cyan */
+	border: 0.1em solid var(--finger-thumb);
 }
 
 .pure-table td.numint {
@@ -150,5 +156,44 @@ div.fingerhandstats .fingers .thumb {
 	border-left: none;
 	text-align: left;
 	padding-left: 0;
+}
+
+dl.colorcodes dt, dl.colorcodes dd {
+	display: inline;
+	padding: 0;
+	margin: 0;
+}
+
+dl.colorcodes dt:after {
+	content: ":";
+}
+
+dl.colorcodes .finger:before {
+	width: 0.7em;
+	height: 0.7em;
+	display: inline-block;
+	content: " ";
+	margin-right: 0.3em;
+	vertical-align: middle;
+}
+
+dl.colorcodes .finger.little::before {
+	background-color: var(--finger-little);
+}
+
+dl.colorcodes .finger.ring::before {
+	background-color: var(--finger-ring);
+}
+
+dl.colorcodes .finger.middle::before {
+	background-color: var(--finger-middle);
+}
+
+dl.colorcodes .finger.index::before {
+	background-color: var(--finger-index);
+}
+
+dl.colorcodes .finger.thumb::before {
+	background-color: var(--finger-thumb);
 }
 

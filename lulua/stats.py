@@ -400,7 +400,7 @@ def corpusHtml (args):
         print (f'<td><a href="{c["source"]["url"]}">{c["source"]["name"]}</a></td>')
         count = c.get ('count')
         if count:
-            print (f'<td class="numint">{count[0]//1000:d},</td><td class="numfrac">{count[0]%1000:03d}\u202f{count[1]}</td></td>')
+            print (f'<td class="numint">{count[0]//1000:d},</td><td class="numfrac">{count[0]%1000:03d}\u202f{count[1]}</td>')
         else:
             print ('<td class="numint"></td><td class="numfrac"></td>')
 

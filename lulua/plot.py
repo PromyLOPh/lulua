@@ -144,7 +144,7 @@ def triadfreq (args):
             topTriadsWeight += data['weight']
 
     logging.info (f'{len (topTriads)}/{len (stats["triads"].triads)} triads '
-            'contribute to {args.cutoff*100}% of the typing')
+            f'contribute to {args.cutoff*100}% of the typing')
 
     # final output
     sortByEffort = sorted (iter (topTriads), key=sorter[args.sort], reverse=args.reverse)

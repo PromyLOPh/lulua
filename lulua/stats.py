@@ -22,7 +22,6 @@ import sys, operator, pickle, argparse, logging, yaml, math, time
 from operator import itemgetter
 from itertools import chain, groupby, product
 from collections import defaultdict
-from decimal import Decimal
 
 from .layout import *
 from .keyboard import defaultKeyboards
@@ -313,7 +312,7 @@ def keyHeatmap (args):
         buttons[k.name] = v
     yaml.dump (data, sys.stdout)
 
-def fingerHand (args):
+def layoutstats (args):
     stats = pickle.load (sys.stdin.buffer)
 
     keyboard = defaultKeyboards[args.keyboard]
@@ -328,19 +327,14 @@ def fingerHand (args):
         hands[hand] += count
         fingers[(hand, finger)] += count
 
-    print ('<div class="fingerhandstats" dir="ltr" lang="en">')
-    fingerOrder = {LEFT: list (FingerType), RIGHT: reversed (FingerType)}
-    for hand in Direction:
-        handpct = hands[hand]/buttonPresses*100
-        print (f'<div class="{hand.name.lower()}" style="width: {handpct:.3f}%;">\n\t<div class="hand">{handpct:.2f}%</div>')
-        print ('\t<div class="fingers">')
-        for finger in fingerOrder[hand]:
-            fingerpct = fingers[(hand, finger)]/buttonPresses*100
-            # finger width is relative to parent (i.e. hand)
-            fingerwidth = fingers[(hand, finger)]/hands[hand]*100
-            print (f'\t\t<div class="{finger.name.lower()}" style="width: {fingerwidth:.3f}%;">{fingerpct:.2f}</div>')
-        print ('\t</div>\n\t</div>')
-    print ('</div>')
+    asymmetry = hands[LEFT]/buttonPresses - hands[RIGHT]/buttonPresses
+    pickle.dump (dict (
+            layout=args.layout,
+            hands=dict (hands),
+            fingers=dict (fingers),
+            buttonPresses=buttonPresses,
+            asymmetry=asymmetry,
+            ), sys.stdout.buffer)
 
 def latinImeDict (args):
     """
@@ -379,46 +373,6 @@ def corpusStats (args):
     # make document concatable
     print ('---')
 
-def approx (i):
-    """ Get approximate human-readable string for large number """
-
-    units = ['', 'thousand', 'million', 'billion']
-    base = Decimal (1000)
-    i = Decimal (i)
-    while i >= base and len (units) > 1:
-        i /= base
-        units.pop (0)
-    i = round (i, 1)
-    return int (i), int (i%1*10), units[0]
-
-def corpusHtml (args):
-    meta = list (filter (lambda x: x is not None, yaml.safe_load_all (sys.stdin)))
-    total = {'words': 0, 'characters': 0}
-    print ('<table class="pure-table"><thead><tr><th>Source</th><th colspan="2"></th><th colspan="2">Words</th><th colspan="2">Characters</th></thead><tbody>')
-    for c in sorted (meta, key=lambda x: x['source']['name'].lower ()):
-        print ('<tr>')
-        print (f'<td><a href="{c["source"]["url"]}">{c["source"]["name"]}</a></td>')
-        count = c.get ('count')
-        if count:
-            print (f'<td class="numint">{count[0]//1000:d},</td><td class="numfrac">{count[0]%1000:03d}\u202f{count[1]}</td>')
-        else:
-            print ('<td class="numint"></td><td class="numfrac"></td>')
-
-        stats = c.get ('stats')
-        for k in ('words', 'characters'):
-            i = approx (stats[k])
-            print (f'<td class="numint">{i[0]}.</td><td class="numfrac">{i[1]}\u202f{i[2]}</td>')
-        print ('</tr>')
-
-        for k in ('words', 'characters'):
-            total[k] += c['stats'][k]
-    print ('<tr><td>Total</td><td class="numint"></td><td class="numfrac"></td>')
-    for k in ('words', 'characters'):
-        i = approx (total[k])
-        print (f'<td class="numint">{i[0]}.</td><td class="numfrac">{i[1]}\u202f{i[2]}</td>')
-    print ('</tr>')
-    print ('</tbody></table>')
-
 def main ():
     parser = argparse.ArgumentParser(description='Process statistics files.')
     parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
@@ -439,15 +393,13 @@ def main ():
     sp.set_defaults (func=triadfreq)
     sp = subparsers.add_parser('keyheatmap')
     sp.set_defaults (func=keyHeatmap)
-    sp = subparsers.add_parser('fingerhand')
-    sp.set_defaults (func=fingerHand)
+    sp = subparsers.add_parser('layoutstats')
+    sp.set_defaults (func=layoutstats)
     sp = subparsers.add_parser('latinime')
     sp.set_defaults (func=latinImeDict)
     sp = subparsers.add_parser('corpusstats')
     sp.add_argument('metadata', type=argparse.FileType ('r'))
     sp.set_defaults (func=corpusStats)
-    sp = subparsers.add_parser('corpushtml')
-    sp.set_defaults (func=corpusHtml)
 
     logging.basicConfig (level=logging.INFO)
     args = parser.parse_args()

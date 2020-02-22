@@ -9,7 +9,13 @@
 	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:100,400&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css">
-	<script src="https://cdn.pydata.org/bokeh/release/bokeh-1.3.4.min.js"></script>
+	{# bokeh #}
+	{% for f in bokehres.js_files -%}
+		<script src="{{ f }}"></script>
+	{%- endfor %}
+	{% for f in bokehres.css_files -%}
+		<link rel="stylesheet" href="{{ f }}">
+	{%- endfor %}
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -126,7 +132,32 @@
 		The corpus used for the following analysis consists of
 		</p>
 
-		include(`corpus.html')
+		<table class="pure-table"><thead><tr><th>Source</th><th></th><th>Words</th><th>Characters</th></thead><tbody>
+		{% for c in corpus|sort(attribute='source.name') %}
+			<tr>
+			<td><a href="{{ c.source.url }}">{{ c.source.name }}</a></td>
+			{% set count = c.get ('count') %}
+			{% if count %}
+				{# use new style formatting, for some reason %7,d does not work #}
+				<td>{{ '{:7,d}'.format(count[0])|numspace }}&#x202f;{{ count[1] }}</td>
+			{% else %}
+				<td></td>
+			{% endif %}
+
+			{% set stats = c.get ('stats') %}
+			{% for k in ('words', 'characters') %}
+				{% set i = stats[k]|approx %}
+				<td>{{ '%5.1f'|format(i[0])|numspace }}&#x202f;{{ i[1] }}</td>
+			{% endfor %}
+			</tr>
+		{% endfor %}
+		<tr><td>Total</td><td></td>
+		{% for k in ('words', 'characters') %}
+			{% set i = corpustotal[k]|approx %}
+			<td>{{ '%5.1f'|format(i[0])|numspace }}&#x202f;{{ i[1] }}</td>
+		{% endfor %}
+		</tr>
+		</tbody></table>
 
 		<p>
 		The plot below shows <bdo dir="ltr" lang="ar">ا ل ي م و ن</bdo> can be
@@ -175,14 +206,39 @@
 			<dt class="finger thumb">cyan</dt>
 			<dd>thumb</dd>
 		</dl>
+		<p>Asymmetry is defined as the difference between left and right hand usage.</p>
 	</div>
 	</div>
 </div>
 
+{% macro fingerhandstats(stats) %}
+{% set hands = stats.hands %}
+{% set fingers = stats.fingers %}
+<div class="fingerhandstats" dir="ltr" lang="en">
+{% for hand in Direction %}
+	{% set handpct = hands[hand]/stats.buttonPresses*100 %}
+	<div class="{{ hand.name.lower() }}" style="width: {{ '%.3f'|format(handpct) }}%;">
+	<div class="hand">{{ '%.2f'|format(handpct) }}%</div>
+	<div class="fingers">
+	{% for finger in fingerOrder[hand] %}
+		{% set fingerpct = fingers[(hand, finger)]/stats.buttonPresses*100 %}
+		{# finger width is relative to parent (i.e. hand) #}
+		{% set fingerwidth = fingers[(hand, finger)]/hands[hand]*100 %}
+		<div class="{{ finger.name.lower() }}" style="width: {{ '%.3f'|format(fingerwidth) }}%;">{{ '%.2f'|format(fingerpct) }}</div>
+	{% endfor %}
+	</div>
+	</div>
+	{% if loop.first %}
+		<div class="asymm"><small>Asymmetry: {{ '%.3f'|format(stats.asymmetry) }}</small></div>
+	{% endif %}
+{% endfor %}
+</div>
+{% endmacro %}
+
 <figure id="ar-lulua-heat">
 <div class="lbox" lang="en">
 	<img src="ar-lulua-heat.svg">
-	include(`ar-lulua-fingerhand.html')
+	{{ fingerhandstats(layoutstats['ar-lulua']) }}
 </div>
 </figure>
 </section>
@@ -201,7 +257,7 @@
 	<figure id="ar-asmo663">
 	<div class="lbox">
 		<img src="ar-asmo663-heat.svg">
-		include(`ar-asmo663-fingerhand.html')
+		{{ fingerhandstats(layoutstats['ar-asmo663']) }}
 	</div>
 	<figcaption class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
@@ -226,7 +282,7 @@
 	<figure id="ar-linux">
 	<div class="lbox">
 		<img src="ar-linux-heat.svg">
-		include(`ar-linux-fingerhand.html')
+		{{ fingerhandstats(layoutstats['ar-linux']) }}
 	</div>
 	<figcaption class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
@@ -251,7 +307,7 @@
 	<figure id="ar-malas">
 	<div class="lbox">
 		<img src="ar-malas-heat.svg">
-		include(`ar-malas-fingerhand.html')
+		{{ fingerhandstats(layoutstats['ar-malas']) }}
 	</div>
 	<figcaption class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
@@ -282,7 +338,7 @@
 	<figure id="ar-osman">
 	<div class="lbox">
 		<img src="ar-osman-heat.svg">
-		include(`ar-osman-fingerhand.html')
+		{{ fingerhandstats(layoutstats['ar-osman']) }}
 	</div>
 	<figcaption class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
@@ -315,7 +371,7 @@
 	<figure>
 	<div class="lbox">
 		<img src="ar-khorshid-heat.svg">
-		include(`ar-khorshid-fingerhand.html')
+		{{ fingerhandstats(layoutstats['ar-khorshid']) }}
 	</div>
 	<figcaption class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
@@ -345,7 +401,7 @@
 	<figure>
 	<div class="lbox">
 		<img src="ar-phonetic-heat.svg">
-		include(`ar-phonetic-fingerhand.html')
+		{{ fingerhandstats(layoutstats['ar-phonetic']) }}
 	</div>
 	<figcaption class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">

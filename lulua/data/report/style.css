@@ -147,6 +147,9 @@ div.fingerhandstats .fingers .thumb {
 	border: 0.1em solid var(--finger-thumb);
 }
 
+table {
+	font-variant-numeric: tabular-nums;
+}
 .pure-table td.numint {
 	text-align: right;
 	padding-right: 0;

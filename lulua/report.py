@@ -14,7 +14,7 @@ def approx (i):
     units = ['', 'thousand', 'million', 'billion']
     base = Decimal (1000)
     i = Decimal (i)
-    while i >= base and len (units) > 1:
+    while round (i, 1) >= base and len (units) > 1:
         i /= base
         units.pop (0)
     return round (i, 1), units[0]

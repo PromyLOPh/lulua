@@ -275,8 +275,8 @@ def renderSvg (args):
     # which we cannot use since it does not support font-weight
     style = ''
     fonts = [
-            ('IBM Plex Arabic', 100, '3rdparty/plex/IBM-Plex-Arabic/fonts/complete/woff2/IBMPlexArabic-Thin.woff2'),
-            ('IBM Plex Arabic', 400, '3rdparty/plex/IBM-Plex-Arabic/fonts/complete/woff2/IBMPlexArabic-Regular.woff2')
+            ('IBM Plex Sans Arabic', 100, '3rdparty/plex/IBM-Plex-Sans-Arabic/fonts/complete/woff2/IBMPlexSansArabic-Thin.woff2'),
+            ('IBM Plex Sans Arabic', 400, '3rdparty/plex/IBM-Plex-Sans-Arabic/fonts/complete/woff2/IBMPlexSansArabic-Regular.woff2')
             ]
     for font, weight, path in fonts:
         with open (path, 'rb') as fd:

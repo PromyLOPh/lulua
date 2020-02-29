@@ -15,7 +15,7 @@ statsdir=stats
 docdir=doc
 wikiextractor=3rdparty/wikiextractor/WikiExtractor.py
 osmconvert=3rdparty/osmctools/src/osmconvert
-fontdir=3rdparty/plex/IBM-Plex-Arabic/fonts/complete/woff2/
+fontdir=3rdparty/plex/IBM-Plex-Sans-Arabic/fonts/complete/woff2/
 optrounds=100000
 # pin layers, keep hand-optimized numbers, keep top row free
 optpins=0;1;2;0,B*;3,*
@@ -126,8 +126,8 @@ build \$docdir/_temp/lulua.combined: wordlist \$statsdir/ar-lulua/all.pickle || 
 build \$docdir/_build/lulua.combined.gz: gz \$docdir/_temp/lulua.combined || \$docdir/_build
 
 
-build \$docdir/_build/fonts/IBMPlexArabic-Regular.woff2: cp \$fontdir/IBMPlexArabic-Regular.woff2 || \$docdir/_build/fonts
-build \$docdir/_build/fonts/IBMPlexArabic-Thin.woff2: cp \$fontdir/IBMPlexArabic-Thin.woff2 || \$docdir/_build/fonts
+build \$docdir/_build/fonts/IBMPlexSansArabic-Regular.woff2: cp \$fontdir/IBMPlexSansArabic-Regular.woff2 || \$docdir/_build/fonts
+build \$docdir/_build/fonts/IBMPlexSansArabic-Thin.woff2: cp \$fontdir/IBMPlexSansArabic-Thin.woff2 || \$docdir/_build/fonts
 
 # build osmconvert
 build \$osmconvert: configure-make 3rdparty/osmctools

@@ -1,6 +1,6 @@
 /* inkscape-compatibility, explicitly apply font settings to .label */
 svg, .label {
-	font-family: "IBM Plex Arabic";
+	font-family: "IBM Plex Sans Arabic";
 	font-size: 90px;
 	font-weight: 400;
 }

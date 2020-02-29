@@ -93,8 +93,8 @@ def letterfreq (args):
     p.xgrid.grid_line_color = None
     p.xaxis.major_label_text_font_size = "1.5em"
     p.xaxis.major_label_text_font_size = "1.5em"
-    p.xaxis.major_label_text_font = 'IBM Plex Arabic'
-    p.yaxis.major_label_text_font = 'IBM Plex Arabic'
+    p.xaxis.major_label_text_font = 'IBM Plex Sans Arabic'
+    p.yaxis.major_label_text_font = 'IBM Plex Sans Arabic'
     # no border fill
     p.border_fill_color = None
     p.background_fill_alpha = 0.5

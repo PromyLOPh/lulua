@@ -12,9 +12,9 @@ cat <<EOF
 ### settings ###
 reportdir=_build/report
 tempdir=_build/_temp
+statsdir=_build/_stats
 datadir=lulua/data
 corpusdir=${corpusdir}
-statsdir=stats
 wikiextractor=3rdparty/wikiextractor/WikiExtractor.py
 osmconvert=3rdparty/osmctools/src/osmconvert
 fontdir=3rdparty/plex/IBM-Plex-Sans-Arabic/fonts/complete/woff2/

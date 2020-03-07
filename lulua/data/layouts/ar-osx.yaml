@@ -1,0 +1,115 @@
+name: ar-osx
+layout:
+- layer:
+    Bl1: "§"
+    Bl2: "١"
+    Bl3: "٢"
+    Bl4: "٣"
+    Bl5: "٤"
+    Bl6: "٥"
+    Bl7: "٦"
+    Br6: "٧"
+    Br5: "٨"
+    Br4: "٩"
+    Br3: "٠"
+    Br2: "-"
+    Br1: "="
+    Br_bs: "\b"
+
+    Cl_tab: "\t"
+    Cl1: "ض"
+    Cl2: "ص"
+    Cl3: "ث"
+    Cl4: "ق"
+    Cl5: "ف"
+    Cr7: "غ"
+    Cr6: "ع"
+    Cr5: "ه"
+    Cr4: "خ"
+    Cr3: "ح"
+    Cr2: "ج"
+    Cr1: "ة"
+
+    CD_ret: "\n"
+
+    Dl1: "ش"
+    Dl2: "س"
+    Dl3: "ي"
+    Dl4: "ب"
+    Dl5: "ل"
+    Dr7: "ا"
+    Dr6: "ت"
+    Dr5: "ن"
+    Dr4: "م"
+    Dr3: "ك"
+    Dr2: "؛"
+    Dr1: "\\"
+
+    El1: "\u0640" # ARABIC TATWEEL, XXX: not sure
+    El2: "ظ"
+    El3: "ط"
+    El4: "ذ"
+    El5: "د"
+    El6: "ز"
+    Er5: "ر"
+    Er4: "و"
+    Er3: "،"
+    Er2: "."
+    Er1: "/"
+
+    Fl_space: " "
+    Fr_space: " "
+  modifier:
+  - []
+- layer:
+    Bl1: "±"
+    Bl2: "!"
+    Bl3: "@"
+    Bl4: "#"
+    Bl5: "$"
+    Bl6: "%"
+    Bl7: "^"
+    Br6: "&"
+    Br5: "*"
+    Br4: ")"
+    Br3: "("
+    Br2: "-"
+    Br1: "+"
+
+    Cl1: "\u064E" # ARABIC FATHA
+    Cl2: "\u064B" # ARABIC FATHATAN
+    Cl3: "\u0650" # ARABIC KASRA
+    Cl4: "\u064D" # ARABIC KASRATAN
+    Cl5: "\u064F" # ARABIC DAMMA
+    Cr7: "\u064C" # ARABIC DAMMATAN
+    Cr6: "\u0652" # ARABIC SUKUN
+    Cr5: "\u0651" # ARABIC SHADDA
+    Cr4: "]"
+    Cr3: "["
+    Cr2: "}"
+    Cr1: "{"
+
+    #CD_ret: "\n"
+
+    Dl1: "«" # LEFT-POINTING DOUBLE ANGLE QUOTATIONMARK
+    Dl2: "»" # RIGHT-POINTING DOUBLE ANGLE QUOTATIONMARK
+    Dl3: "ى"
+    Dr7: "ا\u0653" # composed: alef + ARABIC MADDAH ABOVE
+    #Dr5: "ى" # unknown
+    #Dr4: "/" # unknown
+    Dr3: ":"
+    Dr2: "\""
+    Dr1: "|"
+
+    El2: "'"
+    El4: "\u064a\u0654" # composed: ئ
+    El5: "ء"
+    El6: "ا\u0654" # composed: أ
+    Er5: "ا\u0655" # composed: إ
+    Er4: "\u0648\u0654" # composed: ؤ
+    Er3: ">"
+    Er2: "<"
+    Er1: "؟"
+  modifier:
+  - [El_shift]
+  - [Er_shift]

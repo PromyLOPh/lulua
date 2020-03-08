@@ -118,18 +118,18 @@
 	</div>
 	<div class="pure-u-1 pure-u-md-1-2" lang="en">
 	<div class="lbox">
-		<h2>The Arabic Alphabet</h2>
+		<h2>The Arabic alphabet</h2>
 		<p>
-		There are 28 letters in the Arabic alphabet, plus quite a few extra
-		symbols required for proper text input, like the hamza in its different
+		28 letters make up the Arabic alphabet and quite a few extra
+		symbols are required for proper text input, like the hamza in its different
 		shapes <bdo dir="ltr" lang="ar">أ إ آ ء ئ ؤ</bdo>, ta marbutah <bdo
 		dir="ltr" lang="ar">ة</bdo>, alif maqsurah <bdo dir="ltr"
 		lang="ar">ى</bdo> and various diacritics for vowelized texts.
 		<!-- -->
-		Since the usability of a keyboard layout depends on the text entered
-		it is necessary to study letter and letter combination frequencies first.
+		Since the performance of a keyboard layout depends on the text entered
+		it is necessary to study its mono-, di- and trigraph frequencies first.
 		<!-- -->
-		The corpus used for the following analysis consists of
+		The novel corpus built for the following analysis consists of
 		</p>
 
 		<table class="pure-table"><thead><tr><th>Source</th><th></th><th>Words</th><th>Characters</th></thead><tbody>
@@ -193,7 +193,7 @@
 	<div class="lbox">
 		<h2>Layout properties</h2>
 
-		<p>The following evaluation uses color coding to identify fingers:</p>
+		<p>Throughout this evaluation color coding is used to identify fingers:</p>
 		<dl class="colorcodes">
 			<dt class="finger little">red</dt>
 			<dd>little finger</dd>
@@ -207,6 +207,44 @@
 			<dd>thumb</dd>
 		</dl>
 		<p>Asymmetry is defined as the difference between left and right hand usage.</p>
+
+		<p>
+		The layout proposed uses four layers and assumes a 102/105 key ISO
+		keyboard common in Europe to accomodate the shift keys necessary.
+		<!-- -->
+		These are in order: <span class="layer second">Shift on the left and
+		right</span>, <span class="layer third">caps lock on the left and the
+		rightmost key in the middle row</span>, <span class="layer fourth">the
+		key right of the left shift key and the key labeled <em>Alt Gr</em> to
+		the right of the spacebar</span>.
+		<!-- -->
+		Symbols are assigned to the four layers by their function: <span
+		class="layer first">characters</span>, <span class="layer
+		second">punctuation</span>, <span class="layer
+		third">diacritics</span>, <span class="layer fourth">other</span>.
+		</p>
+		<p>
+		The first layer was optimized using an extended reimplementation of <a
+		href="http://mkweb.bcgsc.ca/carpalx/?typing_effort">carpalx</a>.
+		<!-- -->
+		From several runs with 100.000 iterations each the layout which had
+		good scores and looked reasonable to the human eye was picked.
+		<!-- -->
+		Optimal arrengement of layers two and up are still under investigation.
+		</p>
+
+		<p>
+		The most frequent letters have all been assigned to the home row, which
+		makes them easily accessible.
+		<!-- -->
+		<bdo lang="ar" dir="ltr">ا</bdo> and <bdo lang="ar" dir="ltr">ل</bdo>
+		are typed with different hands, balancing the load on hands almost
+		evenly.
+		<!-- -->
+		The index and middle finger of both hands share the majority of the
+		typing load, but naturally the left middle finger is used more
+		frequently due to its assignment to the letter alif.
+		</p>
 	</div>
 	</div>
 </div>
@@ -243,103 +281,129 @@
 </figure>
 </section>
 
-<section class="layoutgallery">
+<section id="related">
 	<div class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
 		</div>
 		<div class="pure-u-1 pure-u-md-1-2" lang="en">
 		<div class="lbox">
-			<h2>Related work</h2>
+			<h2><a href="#related">Related work</a></h2>
+			<p>This section explores existing keyboard layouts made for the
+			Arabic language and analyzes their usability.</p>
 		</div>
 		</div>
 	</div>
 
-	<figure id="ar-asmo663">
+	<div id="ar-asmo663" class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<h3><a href="#ar-asmo663">ASMO 663</a></h3>
+			<p>
+			Trying to unify existing layouts, the Arab Standardization and
+			Meterology Organization (<abbr>ASMO</abbr>), now part of
+			<a href="https://www.aidmo.org/"><abbr>AIDMO</abbr></a>, published an Arabic
+			keyboard layout in 1987 as
+			<a href="https://www.aidmo.org/smcacc/ar/index.php?option=com_sobi2&Itemid=2&limitstart=2150">standard 663</a>
+			titled <em>Arabic terminal keyboard layout</em>.
+			<!-- -->
+			The layout has several shortcomings:
+			Most notably it clusters letters by their visual similarity (<bdo
+			dir="ltr" lang="ar">ض ص، س ش، ح ج خ</bdo>) and not frequency.
+			<!-- -->
+			Also it overuses the right index finger by assigning the four
+			high-frequency letters <bdo lang="ar" dir="ltr">ا ت و ة</bdo> to
+			it.
+			</p>
+		</div>
+		</div>
+	</div>
+
+	<figure>
 	<div class="lbox">
 		<img src="ar-asmo663-heat.svg">
 		{{ fingerhandstats(layoutstats['ar-asmo663']) }}
 	</div>
-	<figcaption class="pure-g flexreverse">
+	</figcaption>
+	</figure>
+
+	<div id="ar-osx" class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
 		</div>
 		<div class="pure-u-1 pure-u-md-1-2" lang="en">
 		<div class="lbox">
+			<h3><a href="#ar-osx">Mac OS X</a></h3>
 			<p>
-			Trying to unify existing layouts, the Arab Standardization and
-			Meterology Organization (ASMO), now part of
-			<a href="https://www.aidmo.org/">AIDMO</a>, published an Arabic
-			keyboard layout in 1987 as
-			<a href="https://www.aidmo.org/smcacc/ar/index.php?option=com_sobi2&Itemid=2&limitstart=2150">standard 663</a>.
+			Mac OS X’s Arabic keyboard layout makes a few small changes to ASMO
+			663 by moving the <bdo lang="ar" dir="ltr">ة</bdo> to a hard to
+			reach spot on the right of the top row.
 			<!-- -->
-			This, however, turned out to be a failure, due to lack of adoption by
-			the typewriter industry.
+			It also moves the short vowels from the first to the top row of the
+			second layer and replaces them with symbols.
+			<!-- -->
+			The bottom row keys are aditionally shifted to the right, beginning
+			with <bdo lang="ar" dir="ltr">ر</bdo>.
 			</p>
 		</div>
 		</div>
-	</figcaption>
-	</figure>
+	</div>
 
-	<figure id="ar-osx">
+	<figure>
 	<div class="lbox">
 		<img src="ar-osx-heat.svg">
 		{{ fingerhandstats(layoutstats['ar-osx']) }}
 	</div>
+	</figure>
+
+	<div id="ar-linux" class="pure-g flexreverse">
 	<figcaption class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
 		</div>
 		<div class="pure-u-1 pure-u-md-1-2" lang="en">
 		<div class="lbox">
+			<h3><a href="#ar-linux">Linux</a></h3>
 			<p>
-			Mac OS X’s Arabic keyboard layout makes a few small changes to the
-			layout by moving the <span lang="ar" dir="ltr">ة</span> to a hard
-			to reach spot on the right of the top row.
+			A more common layout is the one used on Linux, which also exists on
+			Windows with minor changes to the first layer.
 			<!-- -->
-			It also moves the short vowels from the first to the second layer
-			and replaces them with punctuation.
+			While its top and center row barely differ from ASMO 663 the
+			bottom row now contains a separate key for the ligature <bdo
+			lang="ar" dir="ltr">ﻻ</bdo>.
 			<!-- -->
-			The bottom row keys are aditionally shifted to the right, beginning
-			with <span lang="ar" dir="ltr">ر</span>.
+			But at the cost of pushing punctuation characters to the second
+			layer, <bdo dir="ltr" lang="ar">د</bdo> into the top and <bdo
+			dir="ltr" lang="ar">ذ</bdo> even further into the number row.
 			</p>
 		</div>
 		</div>
-	</figcaption>
-	</figure>
+	</div>
 
-	<figure id="ar-linux">
+	<figure>
 	<div class="lbox">
 		<img src="ar-linux-heat.svg">
 		{{ fingerhandstats(layoutstats['ar-linux']) }}
 	</div>
-	<figcaption class="pure-g flexreverse">
-		<div class="pure-u-1 pure-u-md-1-2">
-		</div>
-		<div class="pure-u-1 pure-u-md-1-2" lang="en">
-		<div class="lbox">
-			<p>
-			Instead we’re currently using this layout (on Linux), which is
-			similar, but not quite the same.
-			<!-- -->
-			Most notably this layout arranges letters by their visual similarity.
-			<!-- -->
-			Thus it allocates suboptimal or even awkward positions to frequently
-			used letters like <bdo dir="ltr" lang="ar">ا ل</bdo> and
-			<bdo dir="ltr" lang="ar">ذ</bdo>.
-			</p>
-		</div>
-		</div>
-	</figcaption>
 	</figure>
 
-	<figure id="ar-malas">
-	<div class="lbox">
-		<img src="ar-malas-heat.svg">
-		{{ fingerhandstats(layoutstats['ar-malas']) }}
-	</div>
-	<figcaption class="pure-g flexreverse">
+	<div class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
 		</div>
 		<div class="pure-u-1 pure-u-md-1-2" lang="en">
 		<div class="lbox">
+			<p>In contrast to the layouts presented so far the following
+			layouts claim to be optimized for the Arabic language and were, at
+			least partially, created algorithmically.</p>
+		</div>
+		</div>
+	</div>
+
+	<div id="ar-malas" class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<h3><a href="#ar-malas">Malas et al</a></h3>
 			<p>
 			The work by Malas et al. (2008),
 			<a href="https://pdfs.semanticscholar.org/1bf8/74dcaa7f21c2cc3c6c5e526b61a9ee352bba.pdf">Toward Optimal Arabic Keyboard Layout Using Genetic Algorithm</a>,
@@ -358,19 +422,56 @@
 			</p>
 		</div>
 		</div>
-	</figcaption>
+	</div>
+
+	<figure id="ar-malas">
+	<div class="lbox">
+		<img src="ar-malas-heat.svg">
+		{{ fingerhandstats(layoutstats['ar-malas']) }}
+	</div>
 	</figure>
 
-	<figure id="ar-osman">
-	<div class="lbox">
-		<img src="ar-osman-heat.svg">
-		{{ fingerhandstats(layoutstats['ar-osman']) }}
-	</div>
-	<figcaption class="pure-g flexreverse">
+	<div id="ar-khorshid" class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
 		</div>
 		<div class="pure-u-1 pure-u-md-1-2" lang="en">
 		<div class="lbox">
+			<h3><a href="#ar-khorshid">Khorshid et al</a></h3>
+			<p>
+			In figure 8 of the paper
+			<a href="https://www.researchgate.net/publication/264837659_A_new_optimal_Arabic_keyboard_layout_using_genetic_algorithm">A new optimal Arabic keyboard layout using genetic algorithm</a>
+			published in 2010 Khorshid et al. present yet another layout.
+			<!-- -->
+			They reject the idea of using contemporary text sources like
+			newspapers or books and consequently their only input text is a
+			copy of the Quran, whose distribution of mono- and digraphs
+			is quite different from modern, non-religious texts.
+			<!-- -->
+			A 36% improvement over the standard keyboard based on their
+			criteria for ergonomic layouts is claimed in their conclusion as
+			well.
+			<!-- -->
+			However their algorithm seems to favor the bottom row instead of the
+			easier to use top row since it places the letters <bdo dir="ltr"
+			lang="ar">ب ت ر</bdo> there.
+			</p>
+		</div>
+		</div>
+	</div>
+
+	<figure>
+	<div class="lbox">
+		<img src="ar-khorshid-heat.svg">
+		{{ fingerhandstats(layoutstats['ar-khorshid']) }}
+	</div>
+	</figure>
+
+	<div id="ar-osman" class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-md-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-md-1-2" lang="en">
+		<div class="lbox">
+			<h3><a href="#ar-osman">Osman et al</a></h3>
 			<p>
 			In 2015 patent
 			<a href="https://patents.google.com/patent/US9041657B2/en">9,041,657 B2</a>
@@ -391,49 +492,21 @@
 			</p>
 		</div>
 		</div>
-	</figcaption>
+	</div>
+
+	<figure id="ar-osman">
+	<div class="lbox">
+		<img src="ar-osman-heat.svg">
+		{{ fingerhandstats(layoutstats['ar-osman']) }}
+	</div>
 	</figure>
 
-	<figure>
-	<div class="lbox">
-		<img src="ar-khorshid-heat.svg">
-		{{ fingerhandstats(layoutstats['ar-khorshid']) }}
-	</div>
-	<figcaption class="pure-g flexreverse">
+	<div id="ar-phonetic" class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
 		</div>
 		<div class="pure-u-1 pure-u-md-1-2" lang="en">
 		<div class="lbox">
-			<p>
-			In the paper
-			<a href="https://www.researchgate.net/publication/264837659_A_new_optimal_Arabic_keyboard_layout_using_genetic_algorithm">A new optimal Arabic keyboard layout using genetic algorithm</a>
-			Khorshid et al. present yet another
-			layout.
-			<!-- -->
-			They claim a 36% improvement over the standard keyboard based on
-			their criteria for ergonomic layouts.
-			<!-- -->
-			However in their layout from figure 8 the letters <bdo dir="ltr"
-			lang="ar">ل ب ر</bdo> are in suboptimal positions.
-			<!-- -->
-			Also it seems their algorithm favors the bottom row instead of the
-			easier to use top row.
-			</p>
-		</div>
-		</div>
-	</figcaption>
-	</figure>
-
-	<figure>
-	<div class="lbox">
-		<img src="ar-phonetic-heat.svg">
-		{{ fingerhandstats(layoutstats['ar-phonetic']) }}
-	</div>
-	<figcaption class="pure-g flexreverse">
-		<div class="pure-u-1 pure-u-md-1-2">
-		</div>
-		<div class="pure-u-1 pure-u-md-1-2" lang="en">
-		<div class="lbox">
+			<h3><a href="#ar-phonetic">Phonetic</a></h3>
 			<p>
 			The <a href="http://arabic.omaralzabir.com/home">Arabic Phonetic Keyboard</a>
 			simply maps the QWERTY layout to Arabic letters, based on their sound.
@@ -447,14 +520,21 @@
 			</p>
 		</div>
 		</div>
-	</figcaption>
+	</div>
+
+	<figure>
+	<div class="lbox">
+		<img src="ar-phonetic-heat.svg">
+		{{ fingerhandstats(layoutstats['ar-phonetic']) }}
+	</div>
 	</figure>
 
-	<div class="pure-g flexreverse">
+	<div id="intellark" class="pure-g flexreverse">
 		<div class="pure-u-1 pure-u-md-1-2">
 		</div>
 		<div class="pure-u-1 pure-u-md-1-2" lang="en">
 		<div class="lbox">
+			<h3><a href="#intellark">Intellark</a></h3>
 			<p>
 			While technically speaking not a layout but alternative input
 			method, <a href="http://www.intellaren.com/intellark">Intellark</a> by
@@ -484,7 +564,13 @@
 
 		<p>This work would not have been possible without Martin Krzywinski’s
 		work on <a
-		href="http://mkweb.bcgsc.ca/carpalx/?typing_effort">carpalx</a>.</p>
+		href="http://mkweb.bcgsc.ca/carpalx/?typing_effort">carpalx</a>.
+		<!-- -->
+		Neo Layout’s <a
+		href="https://github.com/neo-layout/neo-layout/tree/master/windows/kbdneo2/Quelldateien">kbdneo2</a>
+		Windows driver proved to be an invaluable source for understanding the
+		undocumented nature of Windows keyboard driver development.
+		</p>
 	</div>
 	</div>
 </div>

@@ -76,6 +76,13 @@ a:focus, a:hover {
 	color: var(--light-shades);
 	border-radius: 0.1em;
 }
+h1 a:link, h1 a:visited, h2 a:link, h2 a:visited, h3 a:link, h3 a:visited {
+	color: inherit;
+}
+h1 a:focus, h1 a:hover, h2 a:focus, h2 a:hover, h3 a:focus, h3 a:hover {
+	background-color: inherit;
+	border-radius: inherit;
+}
 div.title-card {
 	background-color: var(--dark-accent);
 	color: var(--light-shades);
@@ -199,4 +206,18 @@ dl.colorcodes .finger.index::before {
 dl.colorcodes .finger.thumb::before {
 	background-color: var(--finger-thumb);
 }
-
+.layer:before {
+	margin-right: 0.3em;
+}
+.layer.first:before {
+	content: "⋅";
+}
+.layer.second:before {
+	content: "⭡";
+}
+.layer.third:before {
+	content: "⭧";
+}
+.layer.fourth:before {
+	content: "⭨";
+}

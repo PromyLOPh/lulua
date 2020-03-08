@@ -91,7 +91,7 @@ testCombs = [
     ), ([
         (tuple (), ('Fl_space', )),
         (tuple (), ('Fr_space', )),
-    ], 0, (('El_shift', ), ('Dr7', ))
+    ], 1, (('El_shift', ), ('Dr7', ))
     ), ([
         (tuple (), ('Fl_space', )),
         (tuple (), ('Fr_space', )),
@@ -102,6 +102,10 @@ testCombs = [
         (('Er_shift', ), ('CD_ret', )),
         (('El_shift', ), ('CD_ret', )),
     ], 0, None),
+    ([
+        (('El_shift', ), ('Cl4', )),
+        (('Er_shift', ), ('Cl4', )),
+    ], 1, (tuple (), ('Fr_space', ))),
     ]
 
 @pytest.mark.parametrize("combs, expect, prev", testCombs)
@@ -114,5 +118,8 @@ def test_writer_chooseComb (combs, expect, prev):
         prev = toButtonComb (keyboard, prev)
         w.press (prev)
     combs = [toButtonComb (keyboard, x) for x in combs]
-    assert w.chooseCombination (combs) == combs[expect]
+    result = w.chooseCombination (combs)
+    assert result == combs[expect]
 
+    if len (result) == 2:
+        assert w.getHandFinger (first (result.modifier))[0] != w.getHandFinger (first (result.buttons))[0]

@@ -152,29 +152,36 @@ class Writer:
         - A key on the right is usually combined with the shift button on the
           left and vice versa.
         - The spacebar is usually hit by the thumb of the previously unused
-          hand or the one on the left if two buttons were pressed at the same
-          time.
+          hand. If two hands were used the one pressing the key (not the
+          modifier) is chosen, since it’ll usually be closer.
         - The combination with the minimum amount of fingers required is chosen
           if multiple options are available
         """
+        if len (combinations) == 1:
+            return combinations[0]
+
         dirToScore = {LEFT: 1, RIGHT: -1}
         def calcEffort (comb):
             prev = self.lastCombination
-            if prev is None:
-                e = 0
-            elif len (prev) > 1:
-                # prefer left side
-                e = dirToScore[RIGHT]
+
+            if prev is not None:
+                prevBalance = 0
+                for b in chain (prev.modifier or prev.buttons, comb.buttons):
+                    pos = self.getHandFinger (b)[0]
+                    prevBalance += dirToScore[pos]
             else:
-                assert len (prev.buttons) == 1
-                e = dirToScore[self.getHandFinger (first (prev.buttons))[0]]
+                # prefer the left side (arbitrary decision)
+                prevBalance = dirToScore[RIGHT]
+
+            balance = 0
             for b in comb:
                 pos = self.getHandFinger (b)[0]
-                e += dirToScore[pos]
-            #print ('score for', buttons, abs (e))
-            return abs (e) + len (comb)
+                balance += dirToScore[pos]
 
-        return min (zip (map (calcEffort, combinations), combinations), key=itemgetter (0))[1]
+            return (len (comb) << 16) | (abs (balance) << 8) | (abs (prevBalance) << 0)
+
+        m = min (zip (map (calcEffort, combinations), combinations), key=itemgetter (0))
+        return m[1]
 
     def press (self, comb):
         self.lastCombination = comb

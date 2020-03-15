@@ -265,6 +265,8 @@ def writeWorker (layout, sourceFunc, inq, outq):
                 # only one character
                 text = mapChars (text, charMap).replace ('\r\n', '\n')
 
+                logging.debug (text)
+
                 # init a new writer for every item
                 w = Writer (layout)
                 # stats

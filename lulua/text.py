@@ -261,8 +261,9 @@ def writeWorker (layout, sourceFunc, inq, outq):
 
             # extract (can be multiple items per source)
             for text in sourceFunc (item):
-                # map chars
-                text = mapChars (text, charMap)
+                # map chars; make sure we’re using unix line endings, which is
+                # only one character
+                text = mapChars (text, charMap).replace ('\r\n', '\n')
 
                 # init a new writer for every item
                 w = Writer (layout)

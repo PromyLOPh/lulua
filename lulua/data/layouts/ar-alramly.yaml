@@ -1,3 +1,5 @@
+# From the article Statistical Distribution of Arabic Letters Aids to the
+# Design of a New Keyboard by El-Ramly et al.
 name: ar-alramly
 layout:
 - layer:
@@ -11,8 +13,9 @@ layout:
     Br6: "٧"
     Br5: "٨"
     Br4: "٩"
-    Br3: "."
+    Br3: "٠"
     Br2: "\u064A\u0654" # composed: ئ
+    Br1: ")"
 
     Cl1: "ض"
     Cl2: "ص"
@@ -26,7 +29,6 @@ layout:
     Cr3: "ح"
     Cr2: "ج"
     Cr1: "؛"
-    #Cr0: "\\"
 
     CD_ret: "\n"
 
@@ -40,7 +42,7 @@ layout:
     Dr5: "ت"
     Dr4: "ب"
     Dr3: "\u0640" # tatweel
-    Dr2: "\u0653" # madda (not sure)
+    Dr2: "\u0653" # madda
     Dr1: "ة"
 
     #El1: ""
@@ -60,82 +62,29 @@ layout:
   modifier:
   - []
 - layer:
-    Bl2: "1"
-    Bl3: "2"
-    Bl4: "3"
-    Bl5: "4"
-    Bl6: "5"
-    Bl7: "6"
-    Br6: "7"
-    Br5: "8"
-    Br4: "9"
-    Br3: "0"
-    Br2: "'"
-    Br1: "("
-
-    Cl1: "q"
-    Cl2: "w"
-    Cl3: "e"
-    Cl4: "r"
-    Cl5: "t"
-    Cr7: "y"
-    Cr6: "u"
-    Cr5: "i"
-    Cr4: "o"
-    Cr3: "p"
-    Cr2: "$"
-    Cr1: ";"
-    #Cr0: "\\"
-
-    CD_ret: "\n"
-
-    Dl1: "a"
-    Dl2: "s"
-    Dl3: "d"
-    Dl4: "f"
-    Dl5: "g"
-    Dr7: "h"
-    Dr6: "j"
-    Dr5: "k"
-    Dr4: "l"
-    #Dr3: "" XXX: no idea what this symbol is
-    Dr2: "@"
-    Dr1: "~"
-
-    #El1: ""
-    El2: "z"
-    El3: "x"
-    El4: "c"
-    El5: "v"
-    El6: "b"
-    Er5: "n"
-    Er4: "m"
-    Er3: "&"
-    Er2: "#"
-    Er1: "?"
-  modifier:
-  - [El_shift]
-  - [Er_shift]
-- layer:
     Bl2: "!"
     Bl3: "\""
-    Bl4: "%"
-    Bl5: "-"
+    Bl4: "٪"
+    Bl5: "\u2212" # minus
     Bl6: "="
     Bl7: "+"
     Br6: "×"
-    Br5: "/"
+    Br5: "\u2215" # division symbol, not a slash
     Br4: "،"
     Br3: "."
     Br2: "_"
-    Br1: ")"
+    Br1: "("
 
+    Cr2: "$"
     Cr1: "<"
 
+    CD_ret: "\n"
+
+    #Dr3: "" XXX: no idea what this symbol is
     Dr2: "*"
     Dr1: ">"
 
     Er1: ":"
   modifier:
-  - [Dl_caps]
-  - [Fr_altgr]
+  - [El_shift]
+  - [Er_shift]

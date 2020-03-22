@@ -269,7 +269,7 @@ def optimize ():
             type=int, default=0, help='Limit number of triads to use')
     parser.add_argument('-n', '--steps', type=int, default=10000, help='Number of iterations')
     parser.add_argument('-r', '--randomize', action='store_true', help='Randomize layout before optimizing')
-    parser.add_argument('-p', '--pin', type=parsePin, help='Pin these layers/buttons')
+    parser.add_argument('-p', '--pin', default=[], type=parsePin, help='Pin these layers/buttons')
     parser.add_argument('-m', '--model', choices=list (models.keys()), default='mod01', help='Carpalx model')
 
     args = parser.parse_args()

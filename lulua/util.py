@@ -73,7 +73,7 @@ def displayText (text):
     control or invisible characters """
     if text is None:
         return text
-    if len (text) == 1 and unicodedata.combining (text) != 0:
+    if all (map (lambda x: unicodedata.combining (x) != 0, text)):
         # add circle if combining
         return '\u25cc' + text
     invMap = {

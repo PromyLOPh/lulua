@@ -1,0 +1,123 @@
+# Figure 3 of the article Design of Arabic Keyboard Layout Based on Statistical
+# Properties of Arabic Characters by Idlebi et al.
+name: ar-idlebi
+layout:
+- layer:
+    Bl1: "@"
+    Bl2: "١"
+    Bl3: "٢"
+    Bl4: "٣"
+    Bl5: "٤"
+    Bl6: "٥"
+    Bl7: "٦"
+    Br6: "٧"
+    Br5: "٨"
+    Br4: "٩"
+    Br3: "٠"
+    Br2: "_" # XXX: not sure
+    #Br1: "="
+
+    Cl_tab: "\t"
+    Cl1: "\u0651\u064e" # shadda+fatha
+    Cl2: "\u0650" # kasra
+    Cl3: "\u064e" # fatha
+    Cl4: "\u064f" # damma
+    Cl5: "ط"
+    Cr7: "ص"
+    Cr6: "ف"
+    Cr5: "ا"
+    Cr4: "ي"
+    Cr3: "ش"
+    Cr2: "س"
+    Cr1: ":"
+
+    CD_ret: "\n"
+
+    Dl1: "ن"
+    Dl2: "ت"
+    Dl3: "ع"
+    Dl4: "م"
+    Dl5: "ب"
+    Dr7: "ا\u0655" # hamza below
+    Dr6: "ل"
+    Dr5: "ه"
+    Dr4: "ر"
+    Dr3: "و"
+    Dr2: "ى"
+    Dr1: "."
+
+    El1: "\u0652" # sukun
+    El2: "ق"
+    El3: "ا\u0654" # hamza above
+    El4: "ج"
+    El5: "ح"
+    El6: "خ"
+    Er5: "ذ"
+    Er4: "ك"
+    Er3: "د"
+    Er2: "ة"
+    Er1: "غ"
+    #Er0: "،"
+
+    Fl_space: " "
+    Fr_space: " "
+  modifier:
+  - []
+- layer:
+    Bl1: "^"
+    Bl2: "!"
+    Bl3: "\""
+    Bl4: "#"
+    #Bl5: "" # unknown symbol
+    Bl6: "٪"
+    Bl7: "&"
+    Br6: "'"
+    Br5: "("
+    Br4: ")"
+    #Br3: "" # unknown symbol
+    Br2: "="
+    #Br1: ""
+
+    Cl1: "ز"
+    Cl2: "\u0651\u064d" # shadda+kasratan
+    Cl3: "\u064b" # fathatan
+    Cl4: "\u064c" # dammatan
+    Cl5: "ظ"
+    Cr7: "ض"
+    #Cr6: ""
+    Cr5: "\u0651\u0650" # shadda+kasra
+    #Cr4: ""
+    Cr3: "["
+    Cr2: "]"
+    Cr1: "<"
+
+    CD_ret: "\n"
+
+    Dl1: "ء"
+    Dl2: "ث"
+    Dl3: "\u0651\u064c" # shadda+dammatan
+    #Dl4: ""
+    #Dl5: ""
+    Dr7: "\u0648\u0654" # composed: ؤ
+    Dr6: "{"
+    Dr5: "}"
+    Dr4: "\\"
+    Dr3: "/"
+    Dr2: "\u064d" # kasratan
+    Dr1: ">"
+
+    El1: "\u0651\u064f" # shadda+damma
+    #El2: ""
+    El3: "\u064a\u0654" # composed: ئ
+    #El4: ""
+    #El5: ""
+    #El6: ""
+    #Er5: ""
+    Er4: "؛"
+    Er3: "ا\u0653" # composed: آ
+    Er2: "|"
+    Er1: "*"
+    #Er0: "؟"
+  modifier:
+  - [El_shift]
+  - [Er_shift]

@@ -263,10 +263,12 @@ def pretty (args):
         print (f'{k} {v:10d} {v/buttonPresses*100:5.1f}%')
 
     combinationTotal = sum (stats['simple'].combinations.values ())
+    items = stats['simple'].combinations.items ()
+    n = len (items)
     print ('combinations', combinationTotal)
-    for k, v in sorted (stats['simple'].combinations.items (), key=itemgetter (1)):
+    for i, (k, v) in enumerate (sorted (items, key=itemgetter (1))):
         t = displayText (layout.getText (k))
-        print (f'{t:4s} {k} {v:10d} {v/combinationTotal*100:5.1f}%')
+        print (f'{n-i: 3d}. {t:4s} {k} {v:10d} {v/combinationTotal*100:7.3f}%')
 
     print ('unknown')
     for k, v in sorted (stats['simple'].unknown.items (), key=itemgetter (1)):

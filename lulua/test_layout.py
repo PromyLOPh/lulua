@@ -24,7 +24,7 @@ from itertools import product
 import pytest
 
 from .layout import defaultLayouts, GenericLayout, ButtonCombination
-from .keyboard import defaultKeyboards
+from .keyboard import defaultKeyboards, LetterButton
 
 @pytest.mark.parametrize("layout", defaultLayouts, ids=[l.name for l in defaultLayouts])
 def test_atomic (layout):
@@ -53,6 +53,21 @@ def test_layout_equality (a, b):
         assert a == b
     else:
         assert a != b
+
+@pytest.mark.parametrize("layout", defaultLayouts, ids=[l.name for l in defaultLayouts])
+def test_layout_text_identity (layout):
+    """ Make sure __call__ and getText work for every layout """
+    keyboard = defaultKeyboards['ibmpc105']
+    layout = layout.specialize (keyboard)
+
+    for match, combinations in layout:
+        # all combinations produce this match
+        for comb in combinations:
+            assert layout.getText (comb) == match
+        # this match produces all combinations
+        newmatch, newcombinations = layout (match)
+        assert newmatch == match
+        assert set (newcombinations) == set (combinations)
 
 def test_layout_isModifier ():
     keyboard = defaultKeyboards['ibmpc105']

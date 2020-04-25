@@ -6,3 +6,6 @@ __pycache__
 .ninja_*
 build.ninja
 _build
+corpus/*/*.tar.br
+corpus/arwiki/*.bz2
+corpus/osm/*.pbf

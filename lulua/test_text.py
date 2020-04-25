@@ -18,7 +18,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from .text import charMap, mapChars
+import brotli
+from io import BytesIO
+
+from .text import charMap, mapChars, BrotliFile
 
 def test_map_chars_mapped ():
     """ Make sure all chars in the map are mapped correctly """
@@ -45,4 +48,13 @@ def test_map_chars_not_mapped ():
 
     outText = mapChars (inText, charMap)
     assert outText == expectText
+
+def test_brotlifile ():
+    compressed = brotli.compress (b'hello world')
+    for chunk in (1, 2, 3, 1024, None):
+        f = BrotliFile (BytesIO (compressed), chunk)
+        s = f.read (1)
+        assert s == b'h'
+        s = f.read ()
+        assert s == b'ello world'
 

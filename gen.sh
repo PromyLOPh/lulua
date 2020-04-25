@@ -47,35 +47,35 @@ rule analyze-heat
     command = lulua-analyze -l \$layout keyheatmap < \$in > \$out
 
 rule write-bbcarabic
-    command = find \$in -type f | lulua-write bbcarabic \$layout | lulua-analyze combine > \$out
+    command = find \$in | lulua-write \$layout file brotli tar bbcarabic | lulua-analyze combine > \$out
     pool = write
 
 rule write-aljazeera
-    command = find \$in -type f | lulua-write aljazeera \$layout | lulua-analyze combine > \$out
+    command = find \$in | lulua-write \$layout file brotli tar aljazeera | lulua-analyze combine > \$out
     pool = write
 
 rule write-epub
-    command = find \$in -type f | lulua-write epub \$layout | lulua-analyze combine > \$out
+    command = find \$in | lulua-write \$layout epub | lulua-analyze combine > \$out
     pool = write
 
 rule write-tanzil
-    command = echo \$in | lulua-write text \$layout | lulua-analyze combine > \$out
+    command = find \$in | lulua-write \$layout file text | lulua-analyze combine > \$out
     pool = write
 
 rule write-tei2
-    command = find \$in -type f -name '*.xml' | lulua-write tei2 \$layout | lulua-analyze combine > \$out
+    command = find \$in | lulua-write \$layout file brotli tar xml tei2 | lulua-analyze combine > \$out
     pool = write
 
 rule write-opensubtitles
-    command = find \$in -type f -name '*.xml' | lulua-write opensubtitles \$layout | lulua-analyze combine > \$out
+    command = find \$in | lulua-write \$layout file brotli tar xml opensubtitles | lulua-analyze combine > \$out
     pool = write
 
 rule write-arwiki
-    command = \$wikiextractor -ns 0 --json -o - \$in 2>/dev/null | jq .text | lulua-write json \$layout | lulua-analyze combine > \$out
+    command = \$wikiextractor -ns 0 --json -o - \$in 2>/dev/null | jq .text | lulua-write \$layout json | lulua-analyze combine > \$out
     pool = write
 
 rule write-osm
-    command = \$osmconvert --csv='name:ar' \$in | sort -u | lulua-write lines \$layout | lulua-analyze combine > \$out
+    command = \$osmconvert --csv='name:ar' \$in | sort -u | lulua-write \$layout lines | lulua-analyze combine > \$out
     pool = write
 
 rule combine
@@ -152,21 +152,27 @@ build \$reportdir/ar-lulua-w64.zip: zipR \$tempdir/ar-lulua-w64 | $deps
 
 EOF
 
+bbcarabicfiles=`find $corpusdir/bbcarabic/ -type f -name '*.tar.br' | tr '\n' ' '`
+aljazeerafiles=`find $corpusdir/aljazeera/ -type f -name '*.tar.br' | tr '\n' ' '`
+unfiles=`find $corpusdir/un-v1.0-tei/ -type f -name '*.tar.br' | tr '\n' ' '`
+opensubtitlesfiles=`find $corpusdir/opensubtitles-2018/ -type f -name '*.tar.br' | tr '\n' ' '`
+hindawifiles=`find $corpusdir/hindawi/ -type f -name '*.epub' | tr '\n' ' '`
+
 # targets for every layout
 for l in $layouts; do
 cat <<EOF
 build \$statsdir/${l}: mkdir
 
-build \$statsdir/${l}/bbcarabic.pickle: write-bbcarabic \$corpusdir/bbcarabic/raw || \$statsdir/${l}
+build \$statsdir/${l}/bbcarabic.pickle: write-bbcarabic $bbcarabicfiles || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/aljazeera.pickle: write-aljazeera \$corpusdir/aljazeera/raw || \$statsdir/${l}
+build \$statsdir/${l}/aljazeera.pickle: write-aljazeera $aljazeerafiles || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/hindawi.pickle: write-epub \$corpusdir/hindawi/raw || \$statsdir/${l}
+build \$statsdir/${l}/hindawi.pickle: write-epub $hindawifiles || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/tanzil-quaran.pickle: write-tanzil \$corpusdir/tanzil-quaran/plain.txt.lz || \$statsdir/${l}
+build \$statsdir/${l}/tanzil-quaran.pickle: write-tanzil \$corpusdir/tanzil-quaran/plain.txt || \$statsdir/${l}
     layout = ${l}
 
 build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-20190701-pages-articles.xml.bz2 || \$statsdir/${l}
@@ -175,10 +181,10 @@ build \$statsdir/${l}/arwiki.pickle: write-arwiki \$corpusdir/arwiki/arwiki-2019
 build \$statsdir/${l}/osm.pickle: write-osm \$corpusdir/osm/planet-191104.osm.pbf || \$statsdir/${l} \$osmconvert
     layout = ${l}
 
-build \$statsdir/${l}/un-v1.0-tei.pickle: write-tei2 \$corpusdir/un-v1.0-tei/raw || \$statsdir/${l}
+build \$statsdir/${l}/un-v1.0-tei.pickle: write-tei2 $unfiles || \$statsdir/${l}
     layout = ${l}
 
-build \$statsdir/${l}/opensubtitles-2018.pickle: write-opensubtitles \$corpusdir/opensubtitles-2018/raw || \$statsdir/${l}
+build \$statsdir/${l}/opensubtitles-2018.pickle: write-opensubtitles $opensubtitlesfiles || \$statsdir/${l}
     layout = ${l}
 
 build \$statsdir/${l}/all.pickle: combine \$statsdir/${l}/bbcarabic.pickle \$statsdir/${l}/aljazeera.pickle \$statsdir/${l}/tanzil-quaran.pickle \$statsdir/${l}/arwiki.pickle \$statsdir/${l}/osm.pickle \$statsdir/${l}/hindawi.pickle \$statsdir/${l}/un-v1.0-tei.pickle \$statsdir/${l}/opensubtitles-2018.pickle || \$statsdir/${l}

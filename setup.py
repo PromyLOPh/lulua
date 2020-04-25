@@ -40,6 +40,7 @@ setup(
         'html5lib',
         'ebooklib',
         'jinja2',
+        'brotli',
     ],
     entry_points={
     'console_scripts': [
@@ -49,6 +50,7 @@ setup(
             'lulua-import = lulua.layout:importFrom',
             'lulua-optimize = lulua.optimize:optimize',
             'lulua-write = lulua.text:write',
+            'lulua-extract-mediawiki = lulua.text:extractMediawiki',
             ],
     },
     package_data = {

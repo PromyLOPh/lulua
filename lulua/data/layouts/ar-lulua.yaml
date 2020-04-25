@@ -54,42 +54,44 @@ layout:
   modifier:
   - []
 - layer:
-    #Bl2: "›" # SINGLE RIGHT-POINTING ANGLE QUOTATIONMARK
-    #Bl7: '$'
-    #Br4: "‹" # SINGLE LEFT-POINTING ANGLE QUOTATIONMARK
-    #Br6: '%'
+    Bl4: '%'
+    Bl6: $
+    Br6: "\u2026" # HORIZONTAL ELLIPSIS
+    Br5: '@'
+    Br4: ^
 
-    #Cl2: '+'
-    #Cl3: ']'
-    Cl4: '-'
-    #Cl5: '*'
-    #Cr6: '['
-    Cr6: '!'
-    #Cr4: '}'
-    Cr3: "…" # HORIZONTAL ELLIPSIS
-    #Cr2: '&'
+    Cl2: +
+    Cl3: ']'
+    Cl4: )
+    Cl5: '}'
+    Cr7: '{'
+    Cr6: (
+    Cr5: '['
+    Cr4: _
+    Cr3: ;
+    Cr1: '?'
 
-    Dl1: ':'
-    Dl2: '('
-    Dl3: "؛" # ARABIC SEMICOLON
-    Dl4: "؟" # ARABIC QUESTION MARK
-    #Dl3: '"'
-    #Dl5: '_'
-    Dl5: "«" # LEFT-POINTING DOUBLE ANGLE QUOTATIONMARK
-    Dr7: "»" # RIGHT-POINTING DOUBLE ANGLE QUOTATIONMARK
-    Dr6: '.'
-    Dr5: "،" # ARABIC COMMA
-    Dr4: ')'
-    #Dr3: '/'
-    #Dr2: '@'
+    Dl1: '"'
+    Dl2: "\u061B" # ARABIC SEMICOLON
+    Dl3: ':'
+    Dl4: "\u061F" # ARABIC QUESTION MARK
+    Dl5: "\xBB"
+    Dr7: "\xAB"
+    Dr6: .
+    Dr5: "\u060C" # ARABIC COMMA
+    Dr4: '!'
+    Dr3: '|'
+    Dr2: \
 
-    #El3: '~'
-    #El4: '>'
-    #El5: '='
-    #El6: '{'
-    #Er5: '#'
-    #Er4: '<'
-    #Er2: '^'
+    El2: '`'
+    El3: '~'
+    El4: '>'
+    El5: ''''
+    El6: "\u203A" # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+    Er5: "\u2039" # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+    Er4: '='
+    Er3: <
+    Er2: '&'
   modifier:
   - [El_shift]
   - [Er_shift]
@@ -107,26 +109,9 @@ layout:
     #Br1: "\u06E2" # ARABIC SMALL HIGH MEEM ISOLATED FORM
 
     #Cl2: "\u06D9" # ARABIC SMALL HIGH LAM ALEF
-    # above ordinary ALEF
-    Cl3: "\u0671" # ARABIC LETTER ALEF WASLA
-    # same key as the dash
-    Cl4: "\u0640" # ARABIC TATWEEL
     #Cr4: "\u06DD" # ARABIC END OF AYAH
     #Cr2: "\u06DA" # ARABIC SMALL HIGH JEEM
     #Cr1: "\u06E5" # ARABIC SMALL WAW
-
-    # above damma, fatha and kasra
-    Cr6: "\u064C" # ARABIC DAMMATAN
-    Cr5: "\u064B" # ARABIC FATHATAN
-    Cr4: "\u064D" # ARABIC KASRATAN
-
-    Dl3: "\u0652" # ARABIC SUKUN
-    Dl4: "\u0651" # ARABIC SHADDA
-    Dl5: "\u0670" # ARABIC LETTER SUPERSCRIPT ALEF
-    Dr7: "\u0653" # ARABIC MADDAH ABOVE
-    Dr6: "\u064F" # ARABIC DAMMA
-    Dr5: "\u064E" # ARABIC FATHA
-    Dr4: "\u0650" # ARABIC KASRA
 
     #Dl1: "\u06DC" # ARABIC SMALL HIGH SEEN
     #Dr3: "\u06D7" # ARABIC SMALL HIGH LIGATURE QAF WITH LAM WITH ALEF MAKSURA
@@ -138,6 +123,20 @@ layout:
     #Er5: "\u06ED" # ARABIC SMALL LOW MEEM
     #Er4: "\u06E9" # ARABIC PLACE OF SAJDAH
     #Er1: "\u06D6" # ARABIC SMALL HIGH LIGATURE SAD WITH LAM WITH ALEF MAKSURA
+
+    Cl3: "\u0670" # ARABIC LETTER SUPERSCRIPT ALEF
+    Cl4: "\u0671" # ARABIC LETTER ALEF WASLA
+    Cr6: "\u0640" # ARABIC TATWEEL
+    Cr5: "\u064C" # ARABIC DAMMATAN
+
+    Dl2: "\u064D" # ARABIC KASRATAN
+    Dl3: "\u0651" # ARABIC SHADDA
+    Dl4: "\u0650" # ARABIC KASRA
+    Dl5: "\u0653" # ARABIC MADDAH ABOVE
+    Dr7: "\u064B" # ARABIC FATHATAN
+    Dr6: "\u064F" # ARABIC DAMMA
+    Dr5: "\u064E" # ARABIC FATHA
+    Dr4: "\u0652" # ARABIC SUKUN
   modifier:
   - [Dl_caps]
   - [Dr1]
@@ -151,7 +150,7 @@ layout:
     Dl2: "٦"
     Dl3: "٥"
     Dl4: "٤"
-    Dl5: "\u2212"
+    Dl5: "\u2212" # MINUS SIGN
     El2: "٬" # ARABIC THOUSANDS SEPARATOR
     El3: "٫" # ARABIC DECIMAL SEPARATOR
     El4: "٩"
@@ -165,5 +164,5 @@ layout:
   - [Fr_altgr]
   - [El1]
 name: ar-lulua
-version: 0.2
-date: 2019-10-06
+version: 0.3
+date: 2020-04-25

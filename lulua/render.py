@@ -231,6 +231,7 @@ class Renderer:
                 t = svgwrite.text.Text ('',
                         insert=((xoff+width/2+txoff), (yoff+settings.buttonWidth/2+tyoff)),
                         text_anchor='middle',
+                        direction='rtl',
                         class_=' '.join (class_))
                 if text.startswith ('[') and text.endswith (']'):
                     # XXX: should find us a font which has glyphs for control chars
@@ -244,7 +245,7 @@ class Renderer:
                             stroke_dasharray='15,8',
                             class_=' '.join (controlclass_)))
                 else:
-                    t.add (svgwrite.text.TSpan (text, class_=style, direction='rtl'))
+                    t.add (svgwrite.text.TSpan (text, class_=style))
                 g.add (t)
         return g
 

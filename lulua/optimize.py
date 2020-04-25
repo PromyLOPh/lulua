@@ -260,6 +260,12 @@ def parsePin (s: Text):
         pins.append ((layer, button))
     return frozenset (pins)
 
+def parseMutation (s: Text):
+    a, b = s.split (':')
+    a1, a2 = a.split (',')
+    b1, b2 = b.split (',')
+    return (int (a1), a2), (int (b1), b2)
+
 def optimize ():
     parser = argparse.ArgumentParser(description='Optimize keyboard layout.')
     parser.add_argument('-l', '--layout', metavar='LAYOUT', help='Keyboard layout name')
@@ -271,6 +277,7 @@ def optimize ():
     parser.add_argument('-r', '--randomize', action='store_true', help='Randomize layout before optimizing')
     parser.add_argument('-p', '--pin', default=[], type=parsePin, help='Pin these layers/buttons')
     parser.add_argument('-m', '--model', choices=list (models.keys()), default='mod01', help='Carpalx model')
+    parser.add_argument('-s', '--mutate', type=parseMutation, default=[], action='append', help='Apply these mutations')
 
     args = parser.parse_args()
 
@@ -308,6 +315,13 @@ def optimize ():
             keys.append ((i, k))
             values.append ((i, k))
     buttonMap = dict (zip (keys, values))
+    
+    # apply mutation
+    for (i, a), (j, b) in args.mutate:
+        logging.info (f'mutating {i},{a} to {j},{b}')
+        a = (i, keyboard[a])
+        b = (j, keyboard[b])
+        buttonMap[b], buttonMap[a] = buttonMap[a], buttonMap[b]
 
     pins = []
     for layer, match in args.pin:
@@ -333,7 +347,7 @@ def optimize ():
     except KeyboardInterrupt:
         logging.info ('interrupted')
         return 1
-
+    
     # plausibility checks: 1:1 mapping for every button
     assert set (optimalButtonMap.keys ()) == set (optimalButtonMap.values ())
     opt._resetEnergy ()
@@ -345,16 +359,20 @@ def optimize ():
     for i, l in enumerate (layout.layers):
         for m in l.modifier:
             layers[i].modifier.append ([k.name for k in m])
-        for k, v in l.layout.items ():
+        for k in keyboard.keys ():
             try:
                 (newLayer, newK) = optimalButtonMap[(i, k)]
             except KeyError:
                 # not found, probably not used and thus not mapped
-                print ('key', i, k, 'not in mapping table, assuming id()', file=sys.stderr)
-                layers[i].layout[k.name] = v
-            else:
-                assert newK not in layers[newLayer].layout
-                layers[newLayer].layout[newK.name] = v
+                logging.warning (f'key {i} {k} not in mapping table, assuming id()')
+                newLayer, newK = i, k
+
+            assert newK not in layers[newLayer].layout
+            try:
+                layers[newLayer].layout[newK.name] = layout.getText (ButtonCombination (layout.layers[i].modifier[0], frozenset ([k])))
+            except KeyError:
+                # key is not used in input layout
+                logging.info (f'key {i} {k} has no mapping in the original layout')
 
     newLayout = GenericLayout (f'{layout.name}-new', layers)
     print (f'# steps: {args.steps}\n# keyboard: {args.keyboard}\n# layout: {args.layout}\n# triads: {len (triads)}\n# energy: {energy}')

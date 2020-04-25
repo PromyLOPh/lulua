@@ -59,7 +59,7 @@ instructions have worked in the past:
 
 .. code:: bash
 
-    ninja doc/_temp/winkbd/customization.h
+    ninja _build/_temp/winkbd/customization.h
 
 Share the folder `doc/_temp/winkbd` with a Windows system, install `Microsoft
 Keyboard Layout Creator 1.4`_ (MSKLC; the Windows Driver Kit (WDK) would work

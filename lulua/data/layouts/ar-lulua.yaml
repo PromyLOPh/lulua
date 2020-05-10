@@ -9,6 +9,7 @@ layout:
     Br6: "٧"
     Br5: "٨"
     Br4: "٩"
+    Br3: "٠"
     Br_bs: "\b"
 
     Cl_tab: "\t"
@@ -54,24 +55,26 @@ layout:
   modifier:
   - []
 - layer:
-    Bl4: '%'
-    Bl6: $
-    Br6: "\u2026" # HORIZONTAL ELLIPSIS
-    Br5: '@'
-    Br4: ^
+    Bl5: $
+    Bl6: '&'
+    Br6: '~'
+    Br5: ^
+    Br4: \
 
-    Cl2: +
+    Cl1: '@'
+    Cl2: '"'
     Cl3: ']'
     Cl4: )
     Cl5: '}'
     Cr7: '{'
     Cr6: (
     Cr5: '['
-    Cr4: _
-    Cr3: ;
-    Cr1: '?'
+    Cr4: '*'
+    Cr3: "\u2026" # HORIZONTAL ELLIPSIS
+    Cr2: '?'
+    Cr1: '%'
 
-    Dl1: '"'
+    Dl1: '-'
     Dl2: "\u061B" # ARABIC SEMICOLON
     Dl3: ':'
     Dl4: "\u061F" # ARABIC QUESTION MARK
@@ -81,17 +84,18 @@ layout:
     Dr5: "\u060C" # ARABIC COMMA
     Dr4: '!'
     Dr3: '|'
-    Dr2: \
+    Dr2: _
 
     El2: '`'
-    El3: '~'
+    El3: +
     El4: '>'
     El5: ''''
     El6: "\u203A" # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
     Er5: "\u2039" # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
     Er4: '='
     Er3: <
-    Er2: '&'
+    Er2: '#'
+    Er1: ;
   modifier:
   - [El_shift]
   - [Er_shift]
@@ -164,5 +168,5 @@ layout:
   - [Fr_altgr]
   - [El1]
 name: ar-lulua
-version: 0.3
+version: 0.4
 date: 2020-04-25

@@ -1,7 +1,7 @@
 #include "winver.h"
 1 VERSIONINFO
- FILEVERSION       1,0,0,02
- PRODUCTVERSION    1,0,0,02
+ FILEVERSION       1,0,0,04
+ PRODUCTVERSION    1,0,0,04
  FILEFLAGSMASK 0x3fL
  FILEFLAGS 0x0L
 FILEOS 0x40004L
@@ -14,12 +14,12 @@ BEGIN
        BEGIN
            VALUE "CompanyName",     "6xq.net\0"
            VALUE "FileDescription", "Ergonomic Arabic Keyboard Layout lulua\0"
-           VALUE "FileVersion",     "0.2\0"
+           VALUE "FileVersion",     "0.4\0"
            VALUE "InternalName",    "kbdarlulua\0"
            VALUE "ProductName","lulua\0"
            VALUE "LegalCopyright",  "see https://opensource.org/licenses/MIT\0"
            VALUE "OriginalFilename","kbdarlulua\0"
-           VALUE "ProductVersion",  "0.2\0"
+           VALUE "ProductVersion",  "0.4\0"
        END
    END
    BLOCK "VarFileInfo"

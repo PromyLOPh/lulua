@@ -1,5 +1,11 @@
 source:
-    name: United Nations Parallel Corpus v1.0
+    name:
+        en: United Nations Parallel Corpus v1.0
+        ar: الأمم المتحدة Parallel Corpus v1.0
     url: https://conferences.unite.un.org/UNCorpus/en/DownloadOverview
 date: 2016
-count: [116754, documents]
+count:
+    num: 116754
+    kind:
+        en: documents
+        ar: ملف

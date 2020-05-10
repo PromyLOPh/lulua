@@ -28,10 +28,11 @@ from bokeh.resources import CDN as bokehres
 
 from .layout import LEFT, RIGHT, Direction, FingerType
 
-def approx (i):
+def approx (i, lang='en'):
     """ Get approximate human-readable string for large number """
 
-    units = ['', 'thousand', 'million', 'billion']
+    units = {'en': ['', 'thousand', 'million', 'billion'],
+            'ar': ['', 'ألف', 'مليون', 'مليار']}[lang]
     base = Decimal (1000)
     i = Decimal (i)
     while round (i, 1) >= base and len (units) > 1:
@@ -42,6 +43,16 @@ def approx (i):
 def numspace (s):
     """ Replace ordinary spaces with unicode FIGURE SPACE """
     return s.replace (' ', '\u2007')
+
+def arabnum (s):
+    """
+    Convert number to arabic-indic ordinals.
+
+    Granted, we could use setlocale and do proper formatting, but who has an
+    arabic locale installed…?
+    """
+    m = {'0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩', ',': '٬', '.': '٫'}
+    return ''.join (map (lambda x: m.get (x, x), s))
 
 def render ():
     parser = argparse.ArgumentParser(description='Create lulua report.')
@@ -55,6 +66,7 @@ def render ():
             )
     env.filters['approx'] = approx
     env.filters['numspace'] = numspace
+    env.filters['arabnum'] = arabnum
 
     corpus = []
     for x in args.corpus:

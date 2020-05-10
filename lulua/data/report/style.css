@@ -39,6 +39,7 @@ body {
 :lang(ar) {
 	direction: rtl;
 	font-family: "IBM Plex Sans Arabic";
+	text-align: right;
 }
 /* inside ltr text */
 :lang(ar)[dir=ltr] {
@@ -47,8 +48,9 @@ body {
 :lang(en) {
 	direction: ltr;
 	font-family: "IBM Plex Sans";
+	text-align: left;
 }
-h1, h2, h3 {
+h1, h2, h3, th {
 	font-weight: 100;
 }
 h1 {
@@ -121,7 +123,6 @@ div.indepth-card {
 }
 /* for hand/finger stats */
 div.fingerhandstats {
-	text-align: center;
 	display: flex;
 }
 div.fingerhandstats div.fingers {
@@ -130,6 +131,9 @@ div.fingerhandstats div.fingers {
 div.fingerhandstats div.fingers div {
 	margin: 0.1em;
 	overflow: hidden;
+}
+div.fingerhandstats div.fingers div, div.fingerhandstats div.asymm, div.fingerhandstats div.hand {
+	text-align: center;
 }
 div.fingerhandstats .left {
 	margin-right: 0.5em;
@@ -154,18 +158,20 @@ div.fingerhandstats .fingers .thumb {
 	border: 0.1em solid var(--finger-thumb);
 }
 
+.table-overflow {
+	overflow-x: auto;
+}
+
 table {
 	font-variant-numeric: tabular-nums;
 }
-.pure-table td.numint {
-	text-align: right;
-	padding-right: 0;
+
+table thead {
+	background-color: inherit !important;
 }
 
-.pure-table td.numfrac {
-	border-left: none;
-	text-align: left;
-	padding-left: 0;
+table.pure-table {
+	border: none;
 }
 
 dl.colorcodes dt, dl.colorcodes dd {
@@ -220,4 +226,7 @@ dl.colorcodes .finger.thumb::before {
 }
 .layer.fourth:before {
 	content: "⭨";
+}
+p.remark {
+	font-size: 0.9em;
 }

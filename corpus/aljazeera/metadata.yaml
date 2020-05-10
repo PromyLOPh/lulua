@@ -1,7 +1,13 @@
 source:
-    name: Al-Jazeera
+    name:
+        en: Al-Jazeera
+        ar: الجزيرة
     url: https://www.aljazeera.net/
 extractor:
     name: Custom scripts
 date: 2019-07
-count: [547110, articles]
+count:
+    num: 547110
+    kind:
+        en: articles
+        ar: مقالة

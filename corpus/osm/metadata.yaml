@@ -1,5 +1,11 @@
 source:
-    name: OpenStreetMap Arabic Labels
+    name:
+        en: OpenStreetMap Arabic Labels
+        ar: خريطة الشارع المفتوحة Arabic Labels
     url: https://planet.openstreetmap.org/
 date: 2019-11-04
-count: [376148, labels]
+count:
+    num: 376148
+    kind:
+        en: labels
+        ar: labels

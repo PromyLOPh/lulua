@@ -1,5 +1,11 @@
 source:
-    name: hindawi.org
+    name:
+        en: hindawi.org
+        ar: هنداوي
     url: https://www.hindawi.org/books
 date: 2019-10-02
-count: [1709, books]
+count:
+    num: 1709
+    kind:
+        en: books
+        ar: كتاب

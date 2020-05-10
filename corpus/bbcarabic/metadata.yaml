@@ -1,7 +1,13 @@
 source:
-    name: BBC Arabic
+    name:
+        en: BBC Arabic
+        ar: بي بي سي العربية
     url: http://www.bbc.com/arabic
 extractor:
     name: Custom scripts
 date: 2019-07
-count: [149901, articles]
+count:
+    num: 149901
+    kind:
+        en: articles
+        ar: مقالة

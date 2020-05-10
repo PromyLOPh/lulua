@@ -1,8 +1,14 @@
 source:
-    name: Arabic Wikipedia
+    name:
+        en: Arabic Wikipedia
+        ar: ويكيبيديا العربية
     url: https://ar.wikipedia.org/
 extractor:
     name: wikiextractor
     url: https://github.com/attardi/wikiextractor/tree/3162bb6c3c9ebd2d15be507aa11d6fa818a454ac
 date: 2019-07-01
-count: [857386, articles]
+count:
+    num: 857386
+    kind:
+        en: articles
+        ar: مقالة

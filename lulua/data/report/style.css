@@ -157,6 +157,11 @@ div.fingerhandstats .fingers .index {
 div.fingerhandstats .fingers .thumb {
 	border: 0.1em solid var(--finger-thumb);
 }
+div.sentencestats ul {
+	list-style-type: none;
+	margin: 1em 0;
+	padding: 0;
+}
 
 .table-overflow {
 	overflow-x: auto;

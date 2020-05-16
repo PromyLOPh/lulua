@@ -22,6 +22,7 @@ import sys, operator, pickle, argparse, logging, yaml, math, time
 from operator import itemgetter
 from itertools import chain, groupby, product
 from collections import defaultdict
+from io import StringIO
 
 from .layout import *
 from .keyboard import defaultKeyboards
@@ -314,7 +315,53 @@ def keyHeatmap (args):
         buttons[k.name] = v
     yaml.dump (data, sys.stdout)
 
+def sentenceStats (keyboard, layout, text):
+    """
+    Calculate effort for every character (button) in a text
+    """
+
+    writer = Writer (layout)
+   
+    effort = Carpalx (models['mod01'], writer)
+    _ignored = frozenset (keyboard[x] for x in ('Fl_space', 'Fr_space', 'CD_ret', 'Cl_tab'))
+    writtenText = []
+    skipped = 0
+    for match, event in writer.type (StringIO (text)):
+        if isinstance (event, SkipEvent):
+            skipped += 1
+            writtenText.append ([event.char, None, 0])
+        if not isinstance (event, ButtonCombination):
+            continue
+
+        writtenText.append ([match, event, 0])
+
+        triad = list (filter (lambda x: x[1] is not None and first (x[1].buttons) not in _ignored, writtenText))[-3:]
+        if len (triad) == 3:
+            matchTriad, buttonTriad, _ = zip (*triad)
+            triadEffort = effort._triadEffort (tuple (buttonTriad))
+
+            # now walk the existing text backwards to find the original matches and add the computed effort
+            writtenTextIt = iter (reversed (writtenText))
+            matchTriad = list (matchTriad)
+            while matchTriad:
+                t = next (writtenTextIt)
+                if t[0] == matchTriad[-1]:
+                    matchTriad.pop ()
+                    t[2] += triadEffort
+
+            effort.addTriad (buttonTriad, 1)
+
+    # normalize efforts to [0, 1]
+    s = max (map (lambda x: x[2], writtenText))
+    writtenText = list (map (lambda x: (x[0], x[2]/s if x[1] is not None else None), writtenText))
+    return (writtenText, effort.effort, skipped)
+
+from .text import mapChars, charMap
+
 def layoutstats (args):
+    """
+    Statistics for the report
+    """
     stats = pickle.load (sys.stdin.buffer)
 
     keyboard = defaultKeyboards[args.keyboard]
@@ -330,12 +377,20 @@ def layoutstats (args):
         fingers[(hand, finger)] += count
 
     asymmetry = hands[LEFT]/buttonPresses - hands[RIGHT]/buttonPresses
+
+    sentences = [
+        'أَوْ كَصَيِّبٍ مِّنَ السَّمَاءِ فِيهِ ظُلُمَاتٌ وَرَعْدٌ وَبَرْقٌ يَجْعَلُونَ أَصَابِعَهُمْ فِي آذَانِهِم مِّنَ الصَّوَاعِقِ حَذَرَ الْمَوْتِ وَاللَّهُ مُحِيطٌ بِالْكَافِرِينَ',
+        'اللغة العربية هي أكثرُ اللغاتِ السامية تحدثاً، وإحدى أكثر اللغات انتشاراً في العالم، يتحدثُها أكثرُ من 467 مليون نسمة.',
+        ]
+    sentences = [sentenceStats (keyboard, layout, mapChars (s, charMap).replace ('\r\n', '\n')) for s in sentences]
+
     pickle.dump (dict (
             layout=args.layout,
             hands=dict (hands),
             fingers=dict (fingers),
             buttonPresses=buttonPresses,
             asymmetry=asymmetry,
+            sentences=sentences,
             ), sys.stdout.buffer)
 
 def latinImeDict (args):
@@ -374,6 +429,7 @@ def corpusStats (args):
     yaml.dump (meta, sys.stdout)
     # make document concatable
     print ('---')
+
 
 def main ():
     parser = argparse.ArgumentParser(description='Process statistics files.')

@@ -1,7 +1,7 @@
 لؤلؤة
 =====
 
-.. image:: https://github.com/PurpleSym/lulua/workflows/ci/badge.svg
+.. image:: https://github.com/PromyLOPh/lulua/workflows/CI/badge.svg
 
 Ergonomic Arabic Keyboard layout. See website_ for details.
 

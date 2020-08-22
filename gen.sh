@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Generate build.ninja that builds the docs/stats/…
 
 corpusdir=corpus

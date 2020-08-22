@@ -39,7 +39,6 @@ import brotli
 from .keyboard import defaultKeyboards
 from .layout import defaultLayouts
 from .writer import Writer
-from .stats import allStats, makeCombined
 
 def iterchar (fd):
     batchsize = 1*1024*1024
@@ -323,6 +322,8 @@ def apply (fs, items):
         return items
     else:
         return apply (fs[1:], chain.from_iterable (map (fs[0], items)))
+
+from .stats import allStats, makeCombined
 
 def writeWorker (layout, funcs, inq, outq, statusq, benchmark):
     try:

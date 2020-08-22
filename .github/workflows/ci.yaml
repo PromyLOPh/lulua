@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, pypy3]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install .
+        pip install flake8 pytest pytest-cov
+    - name: Lint with flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Test with pytest
+      run: |
+        pytest lulua
+    - name: Upload coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: htmlcov/
+    - name: Build layouts
+      # Due to the lack of corpora, we can’t run the entire thing here.
+      run: |
+        ./gen.sh > build.ninja
+        ninja _build/report/ar-lulua.svg _build/report/ar-lulua.xmodmap
+    - name: Upload results
+      uses: actions/upload-artifact@v2
+      with:
+        name: report
+        path: _build/report/
+

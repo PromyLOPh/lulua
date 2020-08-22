@@ -19,9 +19,10 @@
 # THE SOFTWARE.
 
 import brotli
-from io import BytesIO
+from io import BytesIO, StringIO
+import html5lib
 
-from .text import charMap, mapChars, BrotliFile
+from .text import charMap, mapChars, BrotliFile, HTMLSerializer
 
 def test_map_chars_mapped ():
     """ Make sure all chars in the map are mapped correctly """
@@ -57,4 +58,13 @@ def test_brotlifile ():
         assert s == b'h'
         s = f.read ()
         assert s == b'ello world'
+
+def test_htmlserialized ():
+    document = html5lib.parse (StringIO ("""<html><body>
+<p>Hello &amp; World!</p>
+</body></html>"""))
+    walker = html5lib.getTreeWalker("etree")
+    stream = walker (document)
+    s = HTMLSerializer()
+    assert ''.join (s.serialize(stream)) == ' Hello & World!\n\n '
 

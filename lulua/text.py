@@ -105,7 +105,7 @@ class HTMLSerializer(object):
                 key = name + ";"
                 if key not in html5lib.constants.entities:
                     self.serializeError("Entity %s not recognized" % name)
-                yield entities[key]
+                yield html5lib.constants.entities[key]
             else:
                 assert False
 

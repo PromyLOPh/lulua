@@ -37,6 +37,12 @@ rule opt
 rule render-svg
     command = lulua-render -l \$layout svg \$out
 
+rule render-svg-print
+    command = lulua-render -l \$layout svg -s lulua/data/render-svg-print.css \$out
+
+rule svg2pdf
+    command = rsvg-convert -f pdf \$in > \$out
+
 rule render-svg-heat
     command = lulua-render -l \$layout svg --heatmap=\$in \$out
 
@@ -197,6 +203,11 @@ build \$tempdir/${l}-heat.yaml: analyze-heat \$statsdir/${l}/all.pickle || \$tem
 
 build \$reportdir/${l}-heat.svg: render-svg-heat \$tempdir/${l}-heat.yaml || \$reportdir
     layout = ${l}
+
+build \$tempdir/${l}-print.svg: render-svg-print || \$tempdir
+    layout = ${l}
+
+build \$reportdir/${l}.pdf: svg2pdf \$tempdir/${l}-print.svg || \$reportdir
 
 build \$tempdir/${l}-layoutstats.pickle: analyze-layoutstats \$statsdir/${l}/all.pickle || \$tempdir
     layout = ${l}

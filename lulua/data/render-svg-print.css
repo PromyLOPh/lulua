@@ -1,0 +1,60 @@
+/* Style for printing with outlines instead of solid color faces */
+
+/* inkscape-compatibility, explicitly apply font settings to .label */
+svg, .label {
+	font-family: "IBM Plex Sans Arabic";
+	font-size: 90px;
+	font-weight: 400;
+}
+.unused {
+	opacity: 0.6;
+}
+.label .layer-1 {
+}
+.modifier .label .layer-1 {
+	font-size: 80%;
+}
+.label .layer-2, .label .layer-3, .label .layer-4 {
+	font-size: 80%;
+	font-weight: 100;
+}
+.label .controlchar {
+	font-size: 40%;
+	font-family: sans-serif;
+}
+.cap rect {
+	fill: white;
+	stroke: gray;
+	stroke-width: 2;
+}
+.highlight circle {
+}
+.cap-shadow rect.finger-little,
+.cap-shadow rect.finger-ring,
+.cap-shadow rect.finger-middle,
+.cap-shadow rect.finger-index,
+.cap-shadow rect.finger-thumb {
+	fill: white;
+}
+
+.label {
+	fill: black;
+}
+.label.shadow {
+	fill: white;
+}
+.controllabel {
+	stroke: black;
+	fill: none;
+}
+.controllabel.shadow {
+	stroke: white;
+	fill: none;
+}
+.marker line {
+	stroke: gray;
+}
+.marker line.shadow {
+	stroke: white;
+}
+

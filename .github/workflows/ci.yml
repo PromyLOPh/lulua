@@ -18,7 +18,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        sudo apt install ninja-build libxml2-dev libxslt1-dev
+        sudo apt install ninja-build libxml2-dev libxslt1-dev mingw-w64
         pip install .
         pip install flake8 pytest pytest-cov
     - name: Lint with flake8
@@ -37,7 +37,7 @@ jobs:
       # Due to the lack of corpora, we can’t run the entire thing here.
       run: |
         ./gen.sh > build.ninja
-        ninja _build/report/ar-lulua.svg _build/report/ar-lulua.xmodmap
+        ninja _build/report/ar-lulua.svg _build/report/ar-lulua.xmodmap _build/report/ar-lulua-w64.zip
     - name: Upload results
       uses: actions/upload-artifact@v2
       with:

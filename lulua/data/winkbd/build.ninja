@@ -1,0 +1,32 @@
+# based on https://github.com/reactos/reactos/blob/893a3c9d030fd8b078cbd747eeefd3f6ce57e560/dll/keyboard/CMakeLists.txt
+imageBase=0x5FFF0000
+ldflags=-shared -nostartfiles -nodefaultlibs -s -Wl,--subsystem,native:5.01 -Wl,--image-base,$imageBase -Wl,-entry,0 -Wl,-T,linker.ld
+cflags=
+
+rule mkdir
+    command = mkdir -p $out
+    description = mkdir $out
+
+rule res
+    command = x86_64-w64-mingw32-windres --target=$target $in $out
+    description = res $out
+
+rule cc
+    command = x86_64-w64-mingw32-gcc -m$bits $cflags $ldflags -o $out $in
+    description = cc $out
+
+build System32/kbdarlulua.dll: cc keyboard.c keyboard.def rc64.o | linker.ld || System32
+    bits = 64
+
+build SysWOW64/kbdarlulua.dll: cc keyboard.c keyboard.def rc32.o | linker.ld || SysWOW64
+    bits = 32
+
+build rc64.o: res keyboard.rc
+    target = pe-x86-64
+
+build rc32.o: res keyboard.rc
+    target = pe-i386
+
+build System32: mkdir
+build SysWOW64: mkdir
+

@@ -108,9 +108,6 @@ rule report
 rule cp
     command = cp \$in \$out
 
-rule cpR
-    command = cp -R \$in \$out
-
 rule gz
     command = gzip -c \$in > \$out
 
@@ -122,6 +119,9 @@ rule zipR
 
 rule render-winkbd
     command = lulua-render -l ar-lulua winkbd \$out
+
+rule ninjaC
+    command = ninja -C \$dir
 
 ### build targets ###
 build \$reportdir: mkdir
@@ -142,9 +142,19 @@ build \$reportdir/fonts/IBMPlexSansArabic-Thin.woff2: cp \$fontdir/IBMPlexSansAr
 build \$osmconvert: configure-make 3rdparty/osmctools
 
 # windows drivers
-build \$tempdir/winkbd: cpR lulua/data/winkbd
+build \$tempdir/winkbd: mkdir lulua/data/winkbd
+EOF
+# Create dependencies for the non-customized files
+for f in $(ls lulua/data/winkbd/); do
+    echo "build \$tempdir/winkbd/$f: cp lulua/data/winkbd/$f || \$tempdir/winkbd"
+    w64infiles+=" \$tempdir/winkbd/$f"
+done
+w64infiles+=" \$tempdir/winkbd/customization.h"
+cat <<EOF
 build \$tempdir/winkbd/customization.h: render-winkbd || \$tempdir/winkbd
 build \$tempdir/ar-lulua-w64: mkdir
+build \$tempdir/winkbd/System32/kbdarlulua.dll \$tempdir/winkbd/SysWOW64/kbdarlulua.dll: ninjaC | $w64infiles
+    dir = \$tempdir/winkbd
 EOF
 
 w64zipfile="System32/kbdarlulua.dll SysWOW64/kbdarlulua.dll README.txt lulua.reg install.bat"

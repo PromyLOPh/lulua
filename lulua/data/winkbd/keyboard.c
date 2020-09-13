@@ -7,7 +7,6 @@
 * KBDTOOL v3.40 - Created  Sat Jan 04 14:19:07 2020
 \***************************************************************************/
 
-#include <windows.h>
 #include "kbd.h"
 #include "keyboard.h"
 

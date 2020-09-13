@@ -667,8 +667,9 @@ def renderWinKbd (args):
             lines.append (f'#undef {k}')
             if len (v) == 1:
                 # character value if not symbolic
-                v = f"'{v}'"
-            lines.append (f'#define {k} _EQ({v})')
+                lines.append (f'#define {k} \'{v}\'')
+            else:
+                lines.append (f'#define {k} _EQ({v})')
         lines.append ('')
 
         lines.append ('#define VK_TO_WCH6 \\')

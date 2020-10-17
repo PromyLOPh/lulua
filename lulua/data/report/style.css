@@ -232,6 +232,14 @@ dl.colorcodes .finger.thumb::before {
 .layer.fourth:before {
 	content: "⭨";
 }
-p.remark {
-	font-size: 0.9em;
+details.remarks {
+	font-size: 0.8em;
+	margin: -1em 0;
+}
+details[open].remarks {
+	margin-bottom: 1em;
+}
+details.remarks summary {
+	list-style-type: "+";
+	cursor: pointer;
 }

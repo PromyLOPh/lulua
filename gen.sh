@@ -149,9 +149,9 @@ for f in $(ls lulua/data/winkbd/); do
     echo "build \$tempdir/winkbd/$f: cp lulua/data/winkbd/$f || \$tempdir/winkbd"
     w64infiles+=" \$tempdir/winkbd/$f"
 done
-w64infiles+=" \$tempdir/winkbd/customization.h"
+w64infiles+=" \$tempdir/winkbd/keyboard.c"
 cat <<EOF
-build \$tempdir/winkbd/customization.h: render-winkbd || \$tempdir/winkbd
+build \$tempdir/winkbd/keyboard.c: render-winkbd || \$tempdir/winkbd
 build \$tempdir/ar-lulua-w64: mkdir
 build \$tempdir/winkbd/System32/kbdarlulua.dll \$tempdir/winkbd/SysWOW64/kbdarlulua.dll: ninjaC | $w64infiles
     dir = \$tempdir/winkbd

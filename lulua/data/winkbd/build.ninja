@@ -1,7 +1,7 @@
 # based on https://github.com/reactos/reactos/blob/893a3c9d030fd8b078cbd747eeefd3f6ce57e560/dll/keyboard/CMakeLists.txt
 imageBase=0x5FFF0000
 ldflags=-shared -nostartfiles -nodefaultlibs -s -Wl,--subsystem,native:5.01 -Wl,--image-base,$imageBase -Wl,-entry,0 -Wl,-T,linker.ld
-cflags=
+cflags=-Wall -Wextra -Werror
 
 rule mkdir
     command = mkdir -p $out

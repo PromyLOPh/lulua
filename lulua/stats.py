@@ -360,7 +360,7 @@ from .text import mapChars, charMap
 
 def layoutstats (args):
     """
-    Statistics for the report
+    Various statistics for the report
     """
     stats = pickle.load (sys.stdin.buffer)
 
@@ -384,6 +384,27 @@ def layoutstats (args):
         ]
     sentences = [sentenceStats (keyboard, layout, mapChars (s, charMap).replace ('\r\n', '\n')) for s in sentences]
 
+    # Impact of hamza
+    yah = '\u064a'
+    waw = '\u0648'
+    alef = 'ا'
+    hamzaAbove = '\u0654'
+    hamzaBelow = '\u0655'
+    # list of combination counts for each match
+    combPerGroup = defaultdict (int)
+    combStats = stats['simple'].combinations
+    letterWithHamza = [alef+hamzaAbove, alef+hamzaBelow, yah+hamzaAbove, waw+hamzaAbove]
+    for letter in [alef] + letterWithHamza:
+        match, combinations = layout (letter)
+        if match != letter:
+            # not a single key or single combination
+            continue
+        combPerGroup[letter] += sum (map (lambda x: combStats[x], combinations))
+    combinations = sum (stats['simple'].combinations.values ())
+    hamzaImpact = sum (map (lambda x: combPerGroup[x], letterWithHamza))/combinations
+    x = combPerGroup[alef+hamzaAbove] + combPerGroup[alef+hamzaBelow]
+    hamzaOnAlef = x/(x+combPerGroup[alef])
+
     pickle.dump (dict (
             layout=args.layout,
             hands=dict (hands),
@@ -391,6 +412,8 @@ def layoutstats (args):
             buttonPresses=buttonPresses,
             asymmetry=asymmetry,
             sentences=sentences,
+            hamzaImpact=hamzaImpact,
+            hamzaOnAlef=hamzaOnAlef,
             ), sys.stdout.buffer)
 
 def latinImeDict (args):

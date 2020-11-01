@@ -240,6 +240,12 @@ details[open].remarks {
 	margin-bottom: 1em;
 }
 details.remarks summary {
-	list-style-type: "+";
+	list-style-type: "↳ Remarks";
 	cursor: pointer;
+	opacity: 0.4;
 }
+
+details.remarks p {
+	margin-top: 0;
+}
+

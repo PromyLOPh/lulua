@@ -21,6 +21,7 @@
 import sys, argparse, logging, pickle, math
 from gettext import GNUTranslations, NullTranslations
 from decimal import Decimal
+from fractions import Fraction
 
 import yaml
 from jinja2 import Environment, PackageLoader
@@ -39,6 +40,11 @@ def approx (i, lang='en'):
         i /= base
         units.pop (0)
     return round (i, 1), units[0]
+
+def fraction (n, maxdenom=10):
+    """ Turn floating number n into a human-digestable fraction """
+    f = Fraction (n).limit_denominator (maxdenom)
+    return f'{f.numerator}\u2044{f.denominator}'
 
 def numspace (s):
     """ Replace ordinary spaces with unicode FIGURE SPACE """
@@ -83,6 +89,7 @@ def render ():
     env.filters['numspace'] = numspace
     env.filters['arabnum'] = arabnum
     env.filters['blendn'] = blendn
+    env.filters['fraction'] = fraction
 
     corpus = []
     for x in args.corpus:

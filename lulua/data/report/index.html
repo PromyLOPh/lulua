@@ -268,13 +268,18 @@
 		$$a = \frac{b_{left}}{b_{total}} - \frac{b_{right}}{b_{total}}$$
 
 		<p>
-		The layout proposed uses four layers and assumes a 102/105 key ISO
-		keyboard common in Europe to accomodate the shift keys necessary.
+		The layout proposed uses four shift layers in a way inspired by <a
+		href="https://neo-layout.org/">Neo2</a>.
+		<!-- -->
+		Thus it assumes a <a
+		href="https://en.wikipedia.org/wiki/IBM_PC_keyboard#Keyboard_layouts">102/105
+		key ISO keyboard</a> common in Europe – but also available in Arab
+		countries – to accommodate for the necessary shift keys.
 		<!-- -->
 		These are in order: <span class="layer second">Shift on the left and
 		right</span>, <span class="layer third">caps lock on the left and the
 		rightmost key in the middle row</span>, <span class="layer fourth">the
-		key right of the left shift key and the key labeled <em>Alt Gr</em> to
+		key right to the left shift key and the key labeled <em>Alt Gr</em> to
 		the right of the spacebar</span>.
 		<!-- -->
 		Symbols are assigned to the four layers by their function: <span
@@ -282,6 +287,15 @@
 		second">punctuation</span>, <span class="layer
 		third">diacritics</span>, <span class="layer fourth">other</span>.
 		</p>
+		<details class="remarks">
+		<summary></summary>
+		<p>Apple, for instance, provides an <a
+		href="https://www.apple.com/shop/product/MLA22AC/A/magic-keyboard-arabic">Arabic
+		hardware keyboard</a> with this physical layout. But both variants,
+		101/104 key and 102/105 key devices, seem to exist in the Arab
+		world.</p>
+		</details>
+
 		<p>
 		The first layer was optimized using an extended reimplementation of <a
 		href="http://mkweb.bcgsc.ca/carpalx/?typing_effort">carpalx</a>.
@@ -299,10 +313,10 @@
 		</p>
 		<details class="remarks">
 		<summary></summary>
-		<p>(This is <a
+		<p>This is <a
 		href="https://github.com/mw8/white_keyboard_layout/blob/master/README.md#finding-the-optimal-layout">a
 		common way</a> of arranging brackets, because most algorithms ignore
-		human desire for symmetry.)</p>
+		human desire for symmetry.</p>
 		</details>
 
 		<p>
@@ -317,6 +331,59 @@
 		typing load, but naturally the left middle finger is used more
 		frequently due to its assignment to the letter alif.
 		</p>
+
+		<p>
+		The layout targets Quaranic and Modern Standard Arabic (MSA), also called Fusha
+		(<bdo lang="ar">الفصحى</bdo>), only.
+		<!-- -->
+		Dialectical Arabic (<bdo lang="ar">العامية</bdo>) is mainly a spoken
+		language, although with the rise of social media sites like Twitter and
+		Facebook this is changing.
+		<!-- -->
+		For now however it’s not an optimization target due to the lack of a
+		good, representative corpus.
+		</p>
+
+		<p>
+		Designing the layout to be compose-based has both benefits and
+		disadvantages.
+		<!-- -->
+		Compose-based mainly means the hamza <bdo lang="ar" dir="ltr">ء</bdo>
+		is treated like an optional diacritic for Alef, Waw and Yah instead of
+		viewing Alef-Hamza, Waw-Hamza and Yah-Hamza as precombined, atomic
+		units.
+		<!-- -->
+		Although <bdo lang="ar" dir="ltr">أ</bdo> and <bdo lang="ar"
+		dir="ltr">ا</bdo> are not the same, the hamza can be dropped if the
+		writer’s intention is unambigiously inferable from context.
+		<!-- -->
+		Thus it makes sense to provide hamza as a combining character on the
+		keyboard.
+		<!-- -->
+		Additionally it uses two keys less than precombining it with its stems,
+		allowing the entire alphabet plus hamza diacritic to fit on a single
+		keyboard layer.
+		<!-- -->
+		However, there is a cost to this approach:
+		All hamza variants account for {{
+		'%.1f'|format(layoutstats['ar-osx'].hamzaImpact*100) }}% of button
+		combinations.
+		<!-- -->
+		Splitting hamza and from its stem means doubling the total number of
+		button combinations and thus button presses, decreasing scores like
+		words per minute (WPM) slightly.
+		<!-- -->
+		Splitting Alef and Alef-Hamza could also reduce pressure on left middle
+		finger and allow for more even distribution, since {{
+		layoutstats['ar-osx'].hamzaOnAlef|fraction }}<sup>th</sup> of all Alef
+		uses are with Hamza.
+		</p>
+		<details class="remarks">
+		<summary></summary>
+		<p>See for example section 3.3 of <a
+		href="https://doi.org/10.1007/978-1-4020-6046-5_3">Buckwalter’s <em>Issues in Arabic Morphological Analysis</em></a>.
+		</p>
+		</details>
 	</div>
 	</div>
 </div>

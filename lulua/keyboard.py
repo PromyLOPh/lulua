@@ -225,6 +225,73 @@ _buttonToWinScancode = {
     'Fr_ctrl': (0xe0, 0x1D, ),
     }
 
+# see https://eastmanreference.com/complete-list-of-applescript-key-codes
+_buttonToOsxKeycode = {
+    'Bl1': 50,
+    'Bl2': 18,
+    'Bl3': 19,
+    'Bl4': 20,
+    'Bl5': 21,
+    'Bl6': 23,
+    'Bl7': 22,
+    'Br6': 26,
+    'Br5': 28,
+    'Br4': 25,
+    'Br3': 29,
+    'Br2': 27,
+    'Br1': 24,
+    'Br_bs': 51,
+    'Cl_tab': 48,
+    'Cl1': 12,
+    'Cl2': 13,
+    'Cl3': 14,
+    'Cl4': 15,
+    'Cl5': 17,
+    'Cr7': 16,
+    'Cr6': 32,
+    'Cr5': 34,
+    'Cr4': 31,
+    'Cr3': 35,
+    'Cr2': 33,
+    'Cr1': 30,
+    'CD_ret': 36,
+    'Dl_caps': 57,
+    'Dl1': 0,
+    'Dl2': 1,
+    'Dl3': 2,
+    'Dl4': 3,
+    'Dl5': 5,
+    'Dr7': 4,
+    'Dr6': 38,
+    'Dr5': 40,
+    'Dr4': 37,
+    'Dr3': 41,
+    'Dr2': 39,
+    #'Dr1': 51,
+    'El_shift': 57,
+    #'El1': 6,
+    'El2': 6,
+    'El3': 7,
+    'El4': 8,
+    'El5': 9,
+    'El6': 11,
+    'Er5': 45,
+    'Er4': 46,
+    'Er3': 43,
+    'Er2': 47,
+    'Er1': 44,
+    'Er_shift': 60,
+    'Fl_ctrl': 59,
+    'Fl_win': 55,
+    'Fl_alt': 58,
+    'Fl_space': 49,
+    'Fr_space': 49,
+    'Fr_altgr': 61,
+    'Fr_win': 55,
+    #'Fr_menu': ,
+    #'Fr_ctrl': 105,
+    }
+
 class Button:
     __slots__ = ('width', 'isMarked', 'i')
     _idToName : Dict[int, Text] = {}
@@ -270,6 +337,10 @@ class Button:
     @property
     def windowsScancode (self):
         return _buttonToWinScancode[self.name]
+
+    @property
+    def osxKeycode (self):
+        return _buttonToOsxKeycode[self.name]
 
     @classmethod
     def deserialize (self, data: Dict):

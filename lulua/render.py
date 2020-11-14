@@ -23,7 +23,7 @@ from collections import namedtuple, defaultdict
 from itertools import chain
 from operator import attrgetter
 from datetime import datetime
-from xml.etree import ElementTree
+from xml.etree import ElementTree as ET
 
 import svgwrite
 import yaml
@@ -410,7 +410,6 @@ def renderAsk (args):
     keyboard = defaultKeyboards[args.keyboard]
     layout = defaultLayouts[args.layout].specialize (keyboard)
 
-    ET = ElementTree
     namespaces = {
             'xmlns:android': 'http://schemas.android.com/apk/res/android',
             'xmlns:ask': 'http://schemas.android.com/apk/res-auto',
@@ -508,6 +507,50 @@ def renderWinKbd (args):
 
         fd.write (makeDriverSources (scancodeToVk, wcharMap))
 
+def renderKeylayout (args):
+    """
+    For macOS
+
+    See:
+    https://developer.apple.com/library/archive/technotes/tn2056/_index.html#//apple_ref/doc/uid/DTS10003085
+    """
+
+    logging.info ('MacOS does not support custom modifiers and thus your layout '
+            'is probably not going to work.')
+
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+    nextId = 0
+
+    docroot = ET.Element('keyboard', group="0", id="14242", name=layout.name, maxout="3")
+
+    # fixed modifiers (XXX)
+    modmapId = nextId
+    modmap = ET.SubElement (docroot, 'modifierMap', id=str (modmapId), defaultIndex='0')
+    nextId += 1
+    for i, keys in enumerate (('', 'anyShift caps?', 'caps', 'anyOption')):
+        keymapSelect = ET.SubElement (modmap, 'keyMapSelect', mapIndex=str (i))
+        modifier = ET.SubElement (keymapSelect, 'modifier', keys=keys)
+
+    # keymaps
+    keymapSetId = nextId
+    keymapSet = ET.SubElement (docroot, 'keyMapSet', id=str (keymapSetId))
+    nextId += 1
+    for i, l in enumerate (layout.layers):
+        keymap = ET.SubElement (keymapSet, 'keyMap', index=str (i))
+        for btn, text in l.layout.items ():
+            ET.SubElement (keymap, 'key', code=str (btn.osxKeycode), output=text)
+
+    layouts = ET.SubElement (docroot, 'layouts')
+    layout = ET.SubElement (layouts, 'layout', first='0', last='0', modifiers=str (modmapId), mapSet=str (keymapSetId))
+
+    decl = b"""<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE keyboard PUBLIC "" "file://localhost/System/Library/DTDs/KeyboardLayout.dtd">
+"""
+    with open (args.output, 'wb') as fd:
+        fd.write (decl)
+        fd.write (ET.tostring (docroot, encoding='utf-8'))
+
 def yamlload (s):
     try:
         with open (s) as fd:
@@ -542,6 +585,8 @@ def render ():
     sp.set_defaults (func=renderAsk)
     sp = subparsers.add_parser('winkbd')
     sp.set_defaults (func=renderWinKbd)
+    sp = subparsers.add_parser('keylayout')
+    sp.set_defaults (func=renderKeylayout)
     parser.add_argument('output', metavar='FILE', help='Output file')
 
     logging.basicConfig (level=logging.INFO)

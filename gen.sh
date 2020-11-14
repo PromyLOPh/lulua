@@ -120,6 +120,9 @@ rule zipR
 rule render-winkbd
     command = lulua-render -l ar-lulua winkbd \$out
 
+rule render-klavaro
+    command = lulua-render -l ar-lulua klavaro \$out
+
 rule ninjaC
     command = ninja -C \$dir
 
@@ -140,6 +143,10 @@ build \$reportdir/fonts/IBMPlexSansArabic-Thin.woff2: cp \$fontdir/IBMPlexSansAr
 
 # build osmconvert
 build \$osmconvert: configure-make 3rdparty/osmctools
+
+# Klavaro keyboard
+build \$reportdir/lulua_ar.kbd: render-klavaro || \$reportdir
+    layout = ${l}
 
 # windows drivers
 build \$tempdir/winkbd: mkdir lulua/data/winkbd

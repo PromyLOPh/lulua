@@ -551,6 +551,35 @@ def renderKeylayout (args):
         fd.write (decl)
         fd.write (ET.tostring (docroot, encoding='utf-8'))
 
+def renderKlavaro (args):
+    keyboard = defaultKeyboards[args.keyboard]
+    layout = defaultLayouts[args.layout].specialize (keyboard)
+
+    layers = [[], []]
+
+    for l, r in keyboard:
+        # exclude special buttons
+        buttons = list (filter (lambda x: isinstance (x, LetterButton), chain (l, r)))
+        if not buttons:
+            continue
+
+        for btn in buttons:
+            # cannot process multiple characters per button, thus find a
+            # composed version (NFC) if possible
+            buttonText = [unicodedata.normalize ('NFC', x) if x is not None else '' for x in layout.getButtonText (btn)]
+
+            # only two layers supported
+            for i in (0, 1):
+                # empty buttons must be spaces
+                layers[i].append (buttonText[i] or ' ')
+        for i in (0, 1):
+            layers[i].append ('\n')
+
+    with open (args.output, 'w') as fd:
+        for l in layers:
+            fd.write (''.join (l).strip ('\n'))
+            fd.write ('\n')
+
 def yamlload (s):
     try:
         with open (s) as fd:
@@ -587,6 +616,8 @@ def render ():
     sp.set_defaults (func=renderWinKbd)
     sp = subparsers.add_parser('keylayout')
     sp.set_defaults (func=renderKeylayout)
+    sp = subparsers.add_parser('klavaro')
+    sp.set_defaults (func=renderKlavaro)
     parser.add_argument('output', metavar='FILE', help='Output file')
 
     logging.basicConfig (level=logging.INFO)

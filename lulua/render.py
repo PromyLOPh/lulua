@@ -302,6 +302,8 @@ def renderXmodmap (args):
     keyboard = defaultKeyboards[args.keyboard]
     layout = defaultLayouts[args.layout].specialize (keyboard)
 
+    xorgGetter = lambda x: x.scancode['xorg']
+
     with open (args.output, 'w') as fd:
         # inspired by https://neo-layout.org/neo_de.xmodmap
         fd.write ('\n'.join ([
@@ -321,12 +323,12 @@ def renderXmodmap (args):
         # layers: 1, 2, 3, 5, 4, None, 6, 7
         for i in (0, 1, 2, 4, 3, 99999, 5, 6):
             if i >= len (layout.layers):
-                for btn in unique (keyboard.keys (), key=attrgetter ('xorgKeycode')):
+                for btn in unique (keyboard.keys (), key=xorgGetter):
                     keycodeMap[btn].append ('NoSymbol')
                 continue
             l = layout.layers[i]
             # space button shares the same keycode and must be removed
-            for btn in unique (keyboard.keys (), key=attrgetter ('xorgKeycode')):
+            for btn in unique (keyboard.keys (), key=xorgGetter):
                 if not layout.isModifier (frozenset ([btn])):
                     text = l.layout.get (btn)
                     if not text:
@@ -359,7 +361,7 @@ def renderXmodmap (args):
 
         for btn, v in keycodeMap.items ():
             v = '\t'.join (v)
-            fd.write (f'!! {btn.name}\nkeycode {btn.xorgKeycode} = {v}\n')
+            fd.write (f'!! {btn.name}\nkeycode {xorgGetter (btn)} = {v}\n')
         fd.write ('\n'.join (['add Mod3 = ISO_First_Group', 'add Mod5 = ISO_Level3_Shift', '']))
 
 def renderKeyman (args):
@@ -388,11 +390,12 @@ def renderKeyman (args):
         for i, l in enumerate (layout.layers):
             for m in l.modifier:
                 for x in m:
-                    if x.keymanCode.startswith ('K_') or x.keymanCode == 'CAPS':
+                    keymanCode = x.scancode['keyman']
+                    if keymanCode.startswith ('K_') or keymanCode == 'CAPS':
                         logging.error (f'Keyman does not support custom modifier like {m}. Your layout will not work correctly.')
                         break
                 for btn, text in l.layout.items ():
-                    comb = ' '.join ([x.keymanCode for x in m] + [btn.keymanCode])
+                    comb = ' '.join ([x.scancode['keyman'] for x in m] + [btn.scancode['keyman']])
                     text = ' '.join ([f'U+{ord (x):04X}' for x in text])
                     fd.write (f'+ [{comb}] > {text}\n')
 
@@ -494,7 +497,7 @@ def renderWinKbd (args):
                 s = '\r'
             return s
         wcharMap = []
-        for btn in unique (keyboard.keys (), key=attrgetter ('windowsScancode')):
+        for btn in unique (keyboard.keys (), key=lambda x: x.scancode['windows']):
             text = list (layout.getButtonText (btn))
 
             # skip unused keys
@@ -502,7 +505,7 @@ def renderWinKbd (args):
                 continue
 
             mappedText = [toWindows (s) for s in text]
-            vk = next (filter (lambda x: isinstance (x, VirtualKey), scancodeToVk[btn.windowsScancode]))
+            vk = next (filter (lambda x: isinstance (x, VirtualKey), scancodeToVk[btn.scancode['windows']]))
             wcharMap.append ((vk, 0, mappedText))
 
         fd.write (makeDriverSources (scancodeToVk, wcharMap))
@@ -539,7 +542,7 @@ def renderKeylayout (args):
     for i, l in enumerate (layout.layers):
         keymap = ET.SubElement (keymapSet, 'keyMap', index=str (i))
         for btn, text in l.layout.items ():
-            ET.SubElement (keymap, 'key', code=str (btn.osxKeycode), output=text)
+            ET.SubElement (keymap, 'key', code=str (btn.scancode['macos']), output=text)
 
     layouts = ET.SubElement (docroot, 'layouts')
     layout = ET.SubElement (layouts, 'layout', first='0', last='0', modifiers=str (modmapId), mapSet=str (keymapSetId))

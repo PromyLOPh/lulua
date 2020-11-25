@@ -20,7 +20,8 @@
 
 import pytest
 
-from .keyboard import defaultKeyboards, Button
+from .keyboard import defaultKeyboards, Button, dataDirectory
+from .util import YamlLoader
 
 def test_defaults ():
     k = defaultKeyboards['ibmpc105']
@@ -54,6 +55,9 @@ def test_keyboard_getattr ():
     assert k['CD_ret'] == k.find ('CD_ret')
     assert k['Cr1'] != k.find ('El1')
 
+    with pytest.raises (KeyError):
+        k['nonexistent_button']
+
 def test_button_uniqname ():
     a = Button ('a')
     assert a.name == 'a'
@@ -76,4 +80,16 @@ def test_button_uniqname ():
     assert c in d
     d[b] = 2
     assert b in d
+
+    # make sure we can only compare to Buttons
+    assert a != 'hello'
+    assert a != 1
+    assert a != dict ()
+
+def test_serialize ():
+    """ Make sure serialize (deserialize (x)) of keyboards is identity """
+
+    rawKeyboards = YamlLoader (dataDirectory, lambda x: x)
+    name = 'ibmpc105'
+    assert defaultKeyboards[name].serialize () == rawKeyboards[name]
 

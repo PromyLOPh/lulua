@@ -3,130 +3,558 @@ description: Standard IBM PC 105 key layout (European)
 rows:
 - - - kind: letter
       name: Bl1
+      scancode:
+        keyman: K_BKSLASH
+        macos: 50
+        windows:
+        - 41
+        xorg: 49
+      width: 1
     - kind: letter
       name: Bl2
+      scancode:
+        keyman: K_1
+        macos: 18
+        windows:
+        - 2
+        xorg: 10
+      width: 1
     - kind: letter
       name: Bl3
+      scancode:
+        keyman: K_2
+        macos: 19
+        windows:
+        - 3
+        xorg: 11
+      width: 1
     - kind: letter
       name: Bl4
+      scancode:
+        keyman: K_3
+        macos: 20
+        windows:
+        - 4
+        xorg: 12
+      width: 1
     - kind: letter
       name: Bl5
+      scancode:
+        keyman: K_4
+        macos: 21
+        windows:
+        - 5
+        xorg: 13
+      width: 1
     - kind: letter
       name: Bl6
+      scancode:
+        keyman: K_5
+        macos: 23
+        windows:
+        - 6
+        xorg: 14
+      width: 1
     - kind: letter
       name: Bl7
+      scancode:
+        keyman: K_6
+        macos: 22
+        windows:
+        - 7
+        xorg: 15
+      width: 1
   - - kind: letter
       name: Br6
+      scancode:
+        keyman: K_7
+        macos: 26
+        windows:
+        - 8
+        xorg: 16
+      width: 1
     - kind: letter
       name: Br5
+      scancode:
+        keyman: K_8
+        macos: 28
+        windows:
+        - 9
+        xorg: 17
+      width: 1
     - kind: letter
       name: Br4
+      scancode:
+        keyman: K_9
+        macos: 25
+        windows:
+        - 10
+        xorg: 18
+      width: 1
     - kind: letter
       name: Br3
+      scancode:
+        keyman: K_0
+        macos: 29
+        windows:
+        - 11
+        xorg: 19
+      width: 1
     - kind: letter
       name: Br2
+      scancode:
+        keyman: K_LBRKT
+        macos: 27
+        windows:
+        - 12
+        xorg: 20
+      width: 1
     - kind: letter
       name: Br1
+      scancode:
+        keyman: K_RBRKT
+        macos: 24
+        windows:
+        - 13
+        xorg: 21
+      width: 1
     - name: Br_bs
+      scancode:
+        keyman: K_BKSP
+        macos: 51
+        windows:
+        - 14
+        xorg: 22
       width: 1.75
 - - - name: Cl_tab
+      scancode:
+        keyman: K_TAB
+        macos: 48
+        windows:
+        - 15
+        xorg: 23
       width: 1.75
     - kind: letter
       name: Cl1
+      scancode:
+        keyman: K_Q
+        macos: 12
+        windows:
+        - 16
+        xorg: 24
+      width: 1
     - kind: letter
       name: Cl2
+      scancode:
+        keyman: K_W
+        macos: 13
+        windows:
+        - 17
+        xorg: 25
+      width: 1
     - kind: letter
       name: Cl3
+      scancode:
+        keyman: K_E
+        macos: 14
+        windows:
+        - 18
+        xorg: 26
+      width: 1
     - kind: letter
       name: Cl4
+      scancode:
+        keyman: K_R
+        macos: 15
+        windows:
+        - 19
+        xorg: 27
+      width: 1
     - kind: letter
       name: Cl5
+      scancode:
+        keyman: K_T
+        macos: 17
+        windows:
+        - 20
+        xorg: 28
+      width: 1
   - - kind: letter
       name: Cr7
+      scancode:
+        keyman: K_Z
+        macos: 16
+        windows:
+        - 21
+        xorg: 29
+      width: 1
     - kind: letter
       name: Cr6
+      scancode:
+        keyman: K_U
+        macos: 32
+        windows:
+        - 22
+        xorg: 30
+      width: 1
     - kind: letter
       name: Cr5
+      scancode:
+        keyman: K_I
+        macos: 34
+        windows:
+        - 23
+        xorg: 31
+      width: 1
     - kind: letter
       name: Cr4
+      scancode:
+        keyman: K_O
+        macos: 31
+        windows:
+        - 24
+        xorg: 32
+      width: 1
     - kind: letter
       name: Cr3
+      scancode:
+        keyman: K_P
+        macos: 35
+        windows:
+        - 25
+        xorg: 33
+      width: 1
     - kind: letter
       name: Cr2
+      scancode:
+        keyman: K_COLON
+        macos: 33
+        windows:
+        - 26
+        xorg: 34
+      width: 1
     - kind: letter
       name: Cr1
+      scancode:
+        keyman: K_EQUAL
+        macos: 30
+        windows:
+        - 27
+        xorg: 35
+      width: 1
     - kind: multi
       name: CD_ret
+      scancode:
+        keyman: K_ENTER
+        macos: 36
+        windows:
+        - 28
+        xorg: 36
       span: 2
+      width: 1
 - - - name: Dl_caps
+      scancode:
+        keyman: CAPS
+        macos: 57
+        windows:
+        - 58
+        xorg: 66
       width: 2
     - kind: letter
       name: Dl1
+      scancode:
+        keyman: K_A
+        macos: 0
+        windows:
+        - 30
+        xorg: 38
+      width: 1
     - kind: letter
       name: Dl2
+      scancode:
+        keyman: K_S
+        macos: 1
+        windows:
+        - 31
+        xorg: 39
+      width: 1
     - kind: letter
       name: Dl3
-    - kind: letter
-      isMarked: true
+      scancode:
+        keyman: K_D
+        macos: 2
+        windows:
+        - 32
+        xorg: 40
+      width: 1
+    - isMarked: true
+      kind: letter
       name: Dl4
+      scancode:
+        keyman: K_F
+        macos: 3
+        windows:
+        - 33
+        xorg: 41
+      width: 1
     - kind: letter
       name: Dl5
+      scancode:
+        keyman: K_G
+        macos: 5
+        windows:
+        - 34
+        xorg: 42
+      width: 1
   - - kind: letter
       name: Dr7
-    - kind: letter
-      isMarked: true
+      scancode:
+        keyman: K_H
+        macos: 4
+        windows:
+        - 35
+        xorg: 43
+      width: 1
+    - isMarked: true
+      kind: letter
       name: Dr6
+      scancode:
+        keyman: K_J
+        macos: 38
+        windows:
+        - 36
+        xorg: 44
+      width: 1
     - kind: letter
       name: Dr5
+      scancode:
+        keyman: K_K
+        macos: 40
+        windows:
+        - 37
+        xorg: 45
+      width: 1
     - kind: letter
       name: Dr4
+      scancode:
+        keyman: K_L
+        macos: 37
+        windows:
+        - 38
+        xorg: 46
+      width: 1
     - kind: letter
       name: Dr3
+      scancode:
+        keyman: K_BKQUOTE
+        macos: 41
+        windows:
+        - 39
+        xorg: 47
+      width: 1
     - kind: letter
       name: Dr2
+      scancode:
+        keyman: K_QUOTE
+        macos: 39
+        windows:
+        - 40
+        xorg: 48
+      width: 1
     - kind: letter
       name: Dr1
+      scancode:
+        keyman: K_SLASH
+        windows:
+        - 43
+        xorg: 51
+      width: 1
 - - - name: El_shift
+      scancode:
+        keyman: SHIFT
+        macos: 57
+        windows:
+        - 42
+        xorg: 50
       width: 1.5
     - kind: letter
       name: El1
+      scancode:
+        keyman: K_oE2
+        windows:
+        - 86
+        xorg: 94
+      width: 1
     - kind: letter
       name: El2
+      scancode:
+        keyman: K_Y
+        macos: 6
+        windows:
+        - 44
+        xorg: 52
+      width: 1
     - kind: letter
       name: El3
+      scancode:
+        keyman: K_X
+        macos: 7
+        windows:
+        - 45
+        xorg: 53
+      width: 1
     - kind: letter
       name: El4
+      scancode:
+        keyman: K_C
+        macos: 8
+        windows:
+        - 46
+        xorg: 54
+      width: 1
     - kind: letter
       name: El5
+      scancode:
+        keyman: K_V
+        macos: 9
+        windows:
+        - 47
+        xorg: 55
+      width: 1
     - kind: letter
       name: El6
+      scancode:
+        keyman: K_B
+        macos: 11
+        windows:
+        - 48
+        xorg: 56
+      width: 1
   - - kind: letter
       name: Er5
+      scancode:
+        keyman: K_N
+        macos: 45
+        windows:
+        - 49
+        xorg: 57
+      width: 1
     - kind: letter
       name: Er4
+      scancode:
+        keyman: K_M
+        macos: 46
+        windows:
+        - 50
+        xorg: 58
+      width: 1
     - kind: letter
       name: Er3
+      scancode:
+        keyman: K_COMMA
+        macos: 43
+        windows:
+        - 51
+        xorg: 59
+      width: 1
     - kind: letter
       name: Er2
+      scancode:
+        keyman: K_PERIOD
+        macos: 47
+        windows:
+        - 52
+        xorg: 60
+      width: 1
     - kind: letter
       name: Er1
+      scancode:
+        keyman: K_HYPHEN
+        macos: 44
+        windows:
+        - 53
+        xorg: 61
+      width: 1
     - name: Er_shift
+      scancode:
+        keyman: SHIFT
+        macos: 60
+        windows:
+        - 54
+        xorg: 62
       width: 2.35
 - - - name: Fl_ctrl
+      scancode:
+        keyman: LCTRL
+        macos: 59
+        windows:
+        - 29
+        xorg: 37
       width: 1.75
     - name: Fl_win
+      scancode:
+        keyman: K_?5B
+        macos: 55
+        windows:
+        - 224
+        - 91
+        xorg: 133
       width: 1.25
     - name: Fl_alt
+      scancode:
+        keyman: LALT
+        macos: 58
+        windows:
+        - 56
+        xorg: 64
       width: 1.25
     - name: Fl_space
+      scancode:
+        keyman: K_SPACE
+        macos: 49
+        windows:
+        - 57
+        xorg: 65
       width: 3
   - - name: Fr_space
+      scancode:
+        keyman: K_SPACE
+        macos: 49
+        windows:
+        - 57
+        xorg: 65
       width: 3
     - name: Fr_altgr
+      scancode:
+        keyman: RALT
+        macos: 61
+        windows:
+        - 224
+        - 56
+        xorg: 108
       width: 1.25
     - name: Fr_win
+      scancode:
+        keyman: K_?5C
+        macos: 55
+        windows:
+        - 224
+        - 92
+        xorg: 105
       width: 1.25
     - name: Fr_menu
+      scancode:
+        keyman: K_?5D
+        windows:
+        - 224
+        - 93
+        xorg: 135
       width: 1.25
     - name: Fr_ctrl
+      scancode:
+        keyman: RCTRL
+        windows:
+        - 224
+        - 29
+        xorg: 105
       width: 1.25

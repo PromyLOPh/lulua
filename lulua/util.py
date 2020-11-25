@@ -30,7 +30,10 @@ def limit (l, n):
     """ Limit the number of items drawn from iterable l to n. """
     it = iter (l)
     for i in range (n):
-        yield next (it)
+        try:
+            yield next (it)
+        except StopIteration:
+            break
 
 class YamlLoader:
     """

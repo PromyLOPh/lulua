@@ -20,7 +20,7 @@
 
 import pytest
 
-from .util import displayText
+from .util import displayText, limit, first
 
 @pytest.mark.parametrize("s,expected", [
     ('foobar', False),
@@ -32,4 +32,20 @@ from .util import displayText
     ])
 def test_displayTextCombining (s, expected):
     assert displayText (s).startswith ('\u25cc') == expected
+
+@pytest.mark.parametrize("l,n,expected", [
+    ([], 1, []),
+    (range (3), 0, []),
+    (range (3), 3, list (range (3))),
+    (range (1), 100, list (range (1))),
+    (range (10000), 3, list (range (3))),
+    ])
+def test_limit (l, n, expected):
+    assert list (limit (l, n)) == expected
+
+def test_first ():
+    assert first ([1, 2, 3]) == 1
+    assert first (range (5)) == 0
+    with pytest.raises (StopIteration):
+        first ([])
 

@@ -22,7 +22,7 @@ import brotli
 from io import BytesIO, StringIO
 import html5lib
 
-from .text import charMap, mapChars, BrotliFile, HTMLSerializer
+from .text import charMap, mapChars, BrotliFile, HTMLSerializer, apply, iterchar
 
 def test_map_chars_mapped ():
     """ Make sure all chars in the map are mapped correctly """
@@ -61,10 +61,27 @@ def test_brotlifile ():
 
 def test_htmlserialized ():
     document = html5lib.parse (StringIO ("""<html><body>
-<p>Hello &amp; World!</p>
+<p>Hello &amp; <!-- comment -->W&#xf6;rld! &clubs; &Backslash;</p>
 </body></html>"""))
     walker = html5lib.getTreeWalker("etree")
     stream = walker (document)
     s = HTMLSerializer()
-    assert ''.join (s.serialize(stream)) == ' Hello & World!\n\n '
+    assert ''.join (s.serialize(stream)) == ' Hello & Wörld! ♣ \u2216\n\n '
+
+def test_apply ():
+    def f1 (x):
+        yield x*3
+
+    def f2 (x):
+        yield x*5
+        yield x*7
+
+    funcs = [f1, f2]
+    data = [1, 2]
+    assert list (apply (funcs, data)) == [1*3*5, 1*3*7, 2*3*5, 2*3*7]
+
+def test_iterchar ():
+    s = 'Hello World!'*100
+    with StringIO (s) as fd:
+        assert ''.join (iterchar (fd)) == s
 

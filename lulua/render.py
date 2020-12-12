@@ -107,7 +107,8 @@ class Renderer:
                 gCap.add (self._drawMarker (btnWidth, btnPos))
 
             highlight = self.keyHighlight.get (btn.name, 0)
-            gHighlight.add (self._drawHighlight (highlight, btnWidth, btnPos))
+            if highlight > 0:
+                gHighlight.add (self._drawHighlight (highlight, btnWidth, btnPos))
 
             l = self._drawLabel (buttonText, btnWidth, btnPos)
             if isModifier:

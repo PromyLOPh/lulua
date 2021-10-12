@@ -22,7 +22,7 @@
 Misc utilities
 """
 
-import os, yaml, pkg_resources, unicodedata
+import os, yaml, pkg_resources, unicodedata, re
 
 first = lambda x: next (iter (x))
 
@@ -79,16 +79,20 @@ def displayText (text):
     if all (map (lambda x: unicodedata.combining (x) != 0, text)):
         # add circle if combining
         return '\u25cc' + text
+    if len (text) == 1 and unicodedata.category (text) == 'Cf':
+        stopwords = re.compile('\WTO\W', re.I)
+        try:
+            cleanName = unicodedata.name (text).replace ('-', ' ')
+            short = ''.join (map (lambda x: x[0], stopwords.sub(' ', cleanName).split (' ')))
+            return f'[{short}]'
+        except ValueError:
+            # No such name.
+            pass
     invMap = {
         '\t': '⭾',
         '\n': '↳',
         ' ': '\u2423',
         '\b': '⌦',
-        '\u200e': '[LRM]', # left to right mark
-        '\u061c': '[ALM]', # arabic letter mark
-        '\u202c': '[PDF]', # pop directional formatting
-        "\u2066": '[LRI]', # left-to-right isolate (lri)
-        "\u2067": '[RLI]', # right-to-left isolate (rli)
-        "\u2069": '[PDI]', # pop directional isolate (pdi)
+        '\u202f': '[NNBSP]',
         }
     return invMap.get (text, text)

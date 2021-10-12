@@ -1,0 +1,168 @@
+name: ar-ergoarabic
+layout:
+- layer:
+    Bl1: "`"
+    Bl2: "1"
+    Bl3: "2"
+    Bl4: "3"
+    Bl5: "4"
+    Bl6: "5"
+    Bl7: "6"
+    Br6: "7"
+    Br5: "8"
+    Br4: "9"
+    Br3: "0"
+    Br2: "-"
+    Br1: "="
+    Br_bs: "\b"
+
+    Cl_tab: "\t"
+    Cl1: "د"
+    Cl2: "ص"
+    Cl3: "ث"
+    Cl4: "ق"
+    Cl5: "ف"
+    Cr7: "ء"
+    Cr6: "ع"
+    Cr5: "ه"
+    Cr4: "و"
+    Cr3: "ة"
+    Cr2: "]"
+    Cr1: "["
+
+    CD_ret: "\n"
+
+    Dl1: "ش"
+    Dl2: "س"
+    Dl3: "ي"
+    Dl4: "ب"
+    Dl5: "ل"
+    Dr7: "ا"
+    Dr6: "ت"
+    Dr5: "ن"
+    Dr4: "م"
+    Dr3: "ك"
+    Dr2: "'"
+    Dr1: "\\"
+
+    El2: "\u064a\u0654" # composed: ئ
+    El3: "ى"
+    El4: "ط"
+    El5: "ر"
+    El6: "خ"
+    Er5: "ح"
+    Er4: "ج"
+    Er3: "،"
+    Er2: "."
+    Er1: "/"
+
+    Fl_space: " "
+    Fr_space: " "
+  modifier:
+  - []
+- layer:
+    Bl1: "~" # shadda
+    Bl2: "!"
+    Bl3: "@"
+    Bl4: "#"
+    Bl5: "$"
+    Bl6: "%"
+    Bl7: "^"
+    Br6: "&"
+    Br5: "*"
+    Br4: ")"
+    Br3: "("
+    Br2: "_"
+    Br1: "+"
+
+    Cl1: "ذ"
+    Cl2: "ض"
+    Cl3: "\u064f" # damma
+    Cl4: "\u064c" # dammatan
+    Cl5: "\u0651" # shadda
+    Cr7: "ا\u0655" # composed: إ
+    Cr6: "غ"
+    Cr5: "÷"
+    Cr4: "\u0648\u0654" # composed: ؤ
+    Cr3: "؛"
+    Cr2: "}"
+    Cr1: "{"
+
+    Dl1: "\u0650" # kasra
+    Dl2: "\u064d" # kasratan
+    Dl3: "\u064e" # fatha
+    Dl4: "\u064b" # fathatan
+    Dl5: "ا\u0653" # composed: آ
+    Dr7: "ا\u0654" # composed: أ
+    Dr6: "\u0640" # tatweel
+    Dr5: "×"
+    Dr4: ","
+    Dr3: ":"
+    Dr2: '"'
+
+    El3: "\u0652" # sukun
+    El4: "ظ"
+    El5: "ز"
+    El6: "…"
+    Er5: "»"
+    Er4: "«"
+    Er3: ">"
+    Er2: "<"
+    Er1: "؟"
+  modifier:
+  - [El_shift]
+  - [Er_shift]
+- layer:
+    Bl2: "١"
+    Bl3: "٢"
+    Bl4: "٣"
+    Bl5: "٤"
+    Bl6: "٥"
+    Bl7: "٦"
+    Br6: "٧"
+    Br5: "٨"
+    Br4: "٩"
+    Br3: "٠"
+    Br1: "≠"
+
+    Cl5: "ڤ"
+
+    Dl4: "پ"
+    Dl5: "\u0670" # superscript alef
+    Dr7: "\u0671" # alef wasla
+    Dr5: "\u066b" # decimal separator
+    Dr3: "گ‎"
+    Dr2: '⟩'
+    Dr1: "⟨"
+
+    El2: "›"
+    El3: "‹"
+    El5: "ژ"
+    Er4: "چ"
+    Er1: "\u066d" # five pointed star
+  modifier:
+  - [Fr_altgr]
+- layer:
+    Bl6: "‰"
+    Br2: "\u2011" # non-breaking hyphen
+    Br1: "≈"
+
+    Cl1: "\u2066" # LRI
+    Cl2: "\u2067" # RLI
+    Cl3: "\u2068" # first strong isolate
+    Cl4: "\u2069" # PDI
+    Cr7: "\u202a" # LRE
+    Cr6: "\u202b" # RLE
+    Cr5: "\u202c" # PDF
+    Cr3: "\u200e" # LRM
+    Cr2: "\u200f" # RLM
+    Cr1: "\u061c" # ALM
+
+    Dr2: "\u200d" # ZWJ
+    Dr1: "\u202f" # NNBSP
+
+    Er1: "\u200c" # ZWNJ
+  modifier:
+  - [Fr_altgr, El_shift]
+  - [Fr_altgr, Er_shift]
+

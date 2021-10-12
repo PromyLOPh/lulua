@@ -2,7 +2,7 @@
 # Generate build.ninja that builds the docs/stats/…
 
 corpusdir=corpus
-layouts="ar-lulua ar-asmo663 ar-linux ar-malas ar-phonetic ar-osman ar-khorshid ar-osx ar-idlebi ar-alramly"
+layouts="ar-lulua ar-asmo663 ar-linux ar-malas ar-phonetic ar-osman ar-khorshid ar-osx ar-idlebi ar-alramly ar-ergoarabic"
 layoutsXmodmap="ar-lulua"
 corpora="`ls ${corpusdir}`"
 

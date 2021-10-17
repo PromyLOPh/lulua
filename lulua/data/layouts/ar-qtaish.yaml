@@ -1,0 +1,64 @@
+name: ar-qtaish
+layout:
+- layer:
+    Bl2: "١"
+    Bl3: "٢"
+    Bl4: "٣"
+    Bl5: "٤"
+    Bl6: "٥"
+    Bl7: "٦"
+    Br6: "٧"
+    Br5: "٨"
+    Br4: "٩"
+    Br3: "٠"
+
+    Cl_tab: "\t"
+    Cl1: "ق"
+    Cl2: "ى"
+    Cl3: "ة"
+    Cl4: "د"
+    Cl5: "ف"
+    Cr7: "ك"
+    Cr6: "ص"
+    Cr5: "س"
+    Cr4: "ح"
+    Cr3: "ذ"
+    Cr2: "ش"
+    Cr1: "ج"
+
+    CD_ret: "\n"
+
+    Dl1: "ر"
+    Dl2: "و"
+    Dl3: "ن"
+    Dl4: "ل"
+    Dl5: "ب"
+    Dr7: "ت"
+    Dr6: "ا"
+    Dr5: "ع"
+    Dr4: "ي"
+    Dr3: "م"
+    Dr2: "ه"
+
+    El2: "ض"
+    El3: "خ"
+    El4: "ز"
+    El5: "ظ"
+    El6: "غ"
+    Er5: "ا\u0654" # composed: أ
+    Er4: "ء"
+    Er3: "ط"
+    Er2: "ث"
+    Er1: "\u064a\u0654" # composed: ئ
+
+    Fl_space: " "
+    Fr_space: " "
+  modifier:
+  - []
+- layer:
+    Dl2: "\u0648\u0654" # composed: ؤ
+    Dr6: "ا\u0653" # composed: آ
+    Er5: "ا\u0655" # composed: إ
+  modifier:
+  - [El_shift]
+  - [Er_shift]

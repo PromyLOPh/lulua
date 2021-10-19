@@ -415,23 +415,6 @@
 	{% endif %}
 {% endfor %}
 </div>
-<div class="sentencestats">
-<p lang="en">Examples:</p>
-<ul lang="ar">
-{% for sentence in stats.sentences %}
-	<li>
-	{% for match, weight in sentence[0] -%}
-		{%- if weight is none -%}
-			<span>{{ match }}</span>
-		{%- else -%}
-			{%- set c = weight|blendn((38, 139, 210), (108, 113, 196), (211, 54, 130), (220, 50, 47)) -%}
-			<span style="color: rgb({{ c[0] }}, {{ c[1] }}, {{ c[2] }});" title="{{ '%5.5f'|format(weight) }}">{{ match }}</span>
-		{%- endif -%}
-	{%- endfor %}
-	</li>
-{% endfor %}
-</ul>
-</div>
 {% endmacro %}
 
 <figure id="ar-lulua-heat">

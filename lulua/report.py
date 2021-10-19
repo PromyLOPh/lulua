@@ -60,21 +60,6 @@ def arabnum (s):
     m = {'0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩', ',': '٬', '.': '٫'}
     return ''.join (map (lambda x: m.get (x, x), s))
 
-def clamp (v, lower, upper):
-    return max (min (v, upper), lower)
-
-def blend (v, a, b):
-    v = clamp (v, 0, 1)
-    return (b-a)*v+a
-
-def blendn (v, *l):
-    assert 0 <= v <= 1
-    n = len (l)
-    step = 1/(n-1)
-    i = min (int (math.floor (v/step)), n-2)
-    stretchedv = (v-i*step)/step
-    return [blend (stretchedv, x, y) for x, y in zip (l[i], l[i+1])]
-
 def render ():
     parser = argparse.ArgumentParser(description='Create lulua report.')
     parser.add_argument('-c', '--corpus', nargs='+', metavar='FILE', help='Corpus metadata files')
@@ -88,7 +73,6 @@ def render ():
     env.filters['approx'] = approx
     env.filters['numspace'] = numspace
     env.filters['arabnum'] = arabnum
-    env.filters['blendn'] = blendn
     env.filters['fraction'] = fraction
 
     corpus = []

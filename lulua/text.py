@@ -193,6 +193,10 @@ def filterEpub (item):
         stream = walker (document)
         s = HTMLSerializer()
         yield ''.join (s.serialize (stream))
+    # It looks like ebooklib is leaking ZipFile instances somewhere, which
+    # can be prevented by resetting the book before the GC grabs it.
+    book.reset ()
+    del book
 
 def filterText (fd):
     yield fd.read ().decode ('utf-8')

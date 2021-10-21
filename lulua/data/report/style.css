@@ -30,6 +30,12 @@ using http://colormind.io/bootstrap/
 	src: local('IBM Plex Sans Arabic Regular'), local('IBMPlexSansArabic-Regular'), url('fonts/IBMPlexSansArabic-Regular.woff2') format('woff2');
 }
 
+html {
+	/* Increase line-height, because Arabic font is taller than Latin and
+	* we need some space between lines for descenders/ascenders */
+	line-height: 1.33;
+}
+
 body {
 	font-size: 14pt;
 	background-color: var(--light-shades);

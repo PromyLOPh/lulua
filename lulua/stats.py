@@ -28,7 +28,7 @@ from .layout import *
 from .keyboard import defaultKeyboards
 from .writer import SkipEvent, Writer
 from .carpalx import Carpalx, models
-from .plot import letterfreq, triadfreq
+from .plot import letterfreq, triadfreq, triadEffortPlot, triadEffortData
 from .util import displayText
 
 def updateDictOp (a, b, op):
@@ -424,6 +424,12 @@ def main ():
     sp.add_argument('-s', '--sort', choices={'weight', 'effort', 'combined'}, default='weight', help='Sorter')
     sp.add_argument('-n', '--limit', type=int, default=0, help='Sorter')
     sp.set_defaults (func=triadfreq)
+
+    sp = subparsers.add_parser('triadeffortdata')
+    sp.set_defaults (func=triadEffortData)
+    sp = subparsers.add_parser('triadeffortplot')
+    sp.set_defaults (func=triadEffortPlot)
+
     sp = subparsers.add_parser('keyheatmap')
     sp.set_defaults (func=keyHeatmap)
     sp = subparsers.add_parser('layoutstats')

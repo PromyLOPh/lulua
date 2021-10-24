@@ -102,6 +102,12 @@ rule analyze-corpusstats
 rule wordlist
     command = lulua-analyze -l ar-lulua latinime < \$in > \$out
 
+rule analyze-triadeffortdata
+    command = lulua-analyze -l \$layout triadeffortdata < \$in > \$out
+
+rule analyze-triadeffortplot
+    command = cat \$in | lulua-analyze -l ar-lulua triadeffortplot > \$out
+
 rule report
     command = lulua-report -c \$corpus -l \$layoutstats > \$out
 
@@ -218,6 +224,9 @@ build \$reportdir/${l}.svg: render-svg || \$reportdir
 build \$tempdir/${l}-heat.yaml: analyze-heat \$statsdir/${l}/all.pickle || \$tempdir
     layout = ${l}
 
+build \$tempdir/${l}-triadeffort.pickle: analyze-triadeffortdata \$statsdir/${l}/all.pickle || \$tempdir
+    layout = ${l}
+
 build \$reportdir/${l}-heat.svg: render-svg-heat \$tempdir/${l}-heat.yaml || \$reportdir
     layout = ${l}
 
@@ -254,6 +263,12 @@ build \$tempdir/metadata-$c.yaml: analyze-corpusstats \$statsdir/ar-lulua/$c.pic
 EOF
 metafiles+=" \$tempdir/metadata-$c.yaml"
 done
+
+echo -n "build \$reportdir/triadeffort.json: analyze-triadeffortplot "
+for l in $layouts; do
+    echo -n "\$tempdir/${l}-triadeffort.pickle "
+done
+echo "|| \$reportdir"
 
 # dependencies are not properly modeled, always rebuild
 cat <<EOF

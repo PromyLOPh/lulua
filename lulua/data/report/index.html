@@ -433,7 +433,63 @@
 		<div class="lbox">
 			<h2><a href="#related">Related work</a></h2>
 			<p>This section explores existing keyboard layouts made for the
-			Arabic language and analyzes their usability.</p>
+			Arabic language and analyzes their usability.
+			<!-- -->
+			Comparing them with the proposed layout above is difficult at best,
+			because the layouts presented below cover different character sets.
+			<!-- -->
+			Some lack numbers, some do not include short vowels and others provide
+			no way to type symbols.
+			<!-- -->
+			Therefore no individual score is assigned to each layout, but an analysis
+			of each layout’s features is given.
+			</p>
+		</div>
+		</div>
+	</div>
+
+	<figure id="triadeffort">
+	<div class="lbox" lang="en">
+		<div id="triadeffort-div"></div>
+	</div>
+	<figcaption class="pure-g flexreverse">
+	</figcaption>
+	</figure>
+
+	<div class="pure-g flexreverse">
+		<div class="pure-u-1 pure-u-xl-1-2">
+		</div>
+		<div class="pure-u-1 pure-u-xl-1-2" lang="en">
+		<div class="lbox">
+			<p>
+				Carpalx tries to minimize the effort of typing in blocks of three
+				consecutive keystrokes, triads, and thus a good layout in that sense
+				should make typing frequent triads easy.
+				<!-- -->
+				The figure above plots cumulative triad frequency on the x-axis and
+				weighted cumulative effort on the y-axis.
+				<!-- -->
+				Thus, at an x value of 0.5 the y-axis is the sum of triad frequencies
+				multiplied by their effort for all triads responsible for 50% of the
+				typing process.
+				<!-- -->
+				Standard layouts are the layouts from <a href="#ar-asmo663">ASMO</a>,
+				<a href="#ar-linux">Linux</a> and <a href="#ar-osx">OSX</a> whereas
+				<em>usable</em> lists only those which are actually relevant for typing.
+				<!-- -->
+				As we can see the layout presented above meets the optimization goal.
+				<!-- -->
+				Only the top 5% of all triads are “easier” to type with <a
+				href="#ar-malas">Malas’ layout</a>, because lulua splits hamza
+				<bdo lang="ar" dir="rtl">(ء)</bdo> from its alef <bdo lang="ar"
+				dir="rtl">(ا)</bdo> stem.
+				<!-- -->
+				As expected the <a href="#ar-phonetic">phonetic layout</a> is one of the
+				worst ones, because QWERTY is not optimized for Arabic letter frequencies.
+			</p>
+			<p>
+				The following sections provide details about these layouts.
+			</p>
 		</div>
 		</div>
 	</div>
@@ -901,9 +957,12 @@
 </section>
 
 <script>
-fetch('letterfreq.json')
-    .then(function(response) { return response.json(); })
-    .then(function(item) { Bokeh.embed.embed_item(item, 'letterfreq-div'); })
+const plots = ['letterfreq', 'triadeffort'];
+for (const p of plots) {
+    fetch(p + '.json')
+        .then(function(response) { return response.json(); })
+        .then(function(item) { Bokeh.embed.embed_item(item, p + '-div'); });
+}
 </script>
 
 </body>

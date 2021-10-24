@@ -5,15 +5,23 @@
   <title>لؤلؤة: لوحة مفاتيح عربية</title>
   <!--<meta name="description" content="">-->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+	{# Fonts #}
 	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans:100,400&display=swap" rel="stylesheet">
+
+	{# Pure.css #}
 	<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/grids-responsive-min.css" integrity="sha384-+lKLtMyKzY/ZdqRXlhw2whazop7duDxgP+oWPB+EGry5wK+vJnZwSsgMnAmDS/39" crossorigin="anonymous">
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script>
-	<script id="MathJax-script" async src="https://www.unpkg.com/mathjax@3.1.0/es5/tex-mml-chtml.js" integrity="sha384-ynpCZozLxgqK3wrgBu8qH8qPG3eD8mME8z0zugAX26UMb5HfLp2PtvtDH4vdmgkm" crossorigin="anonymous"></script>
+
+	{# TeX support #}
+	<link rel="stylesheet" href="https://unpkg.com/katex@0.13.18/dist/katex.min.css" integrity="sha384-zTROYFVGOfTw7JV7KUu8udsvW2fx4lWOsCEDqhBreBwlHI4ioVRtmIvEThzJHGET" crossorigin="anonymous">
+	<script defer src="https://unpkg.com/katex@0.13.18/dist/katex.min.js" integrity="sha384-GxNFqL3r9uRJQhR+47eDxuPoNE7yLftQM8LcxzgS4HT73tp970WS/wV5p8UzCOmb" crossorigin="anonymous"></script>
+
+	<script defer src="https://unpkg.com/katex@0.13.18/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+
 	{# bokeh #}
+	{# Defer loading bokeh, so it does not block rendering #}
 	{% for f in bokehres.js_files -%}
-		<script src="{{ f }}"></script>
+		<script defer crossorigin="anonymous" src="{{ f }}"></script>
 	{%- endfor %}
 	{% for f in bokehres.css_files -%}
 		<link rel="stylesheet" href="{{ f }}">
@@ -957,12 +965,16 @@
 </section>
 
 <script>
-const plots = ['letterfreq', 'triadeffort'];
-for (const p of plots) {
-    fetch(p + '.json')
-        .then(function(response) { return response.json(); })
-        .then(function(item) { Bokeh.embed.embed_item(item, p + '-div'); });
+function loadPlots () {
+	const plots = ['letterfreq', 'triadeffort'];
+	for (const p of plots) {
+	    fetch(p + '.json')
+	        .then(function(response) { return response.json(); })
+	        .then(function(item) { Bokeh.embed.embed_item(item, p + '-div'); });
+	}
 }
+if (document.readyState != "loading") loadPlots ();
+else document.addEventListener("DOMContentLoaded", loadPlots);
 </script>
 
 </body>

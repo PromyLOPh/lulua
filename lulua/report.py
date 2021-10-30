@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import sys, argparse, logging, pickle, math
+import sys, argparse, logging, pickle, math, unicodedata
 from gettext import GNUTranslations, NullTranslations
 from decimal import Decimal
 from fractions import Fraction
@@ -74,6 +74,39 @@ def render ():
     env.filters['numspace'] = numspace
     env.filters['arabnum'] = arabnum
     env.filters['fraction'] = fraction
+
+    # Map global variables to Arabic letter romanizations, so we can use
+    # them easily in text.
+    # Taken from Abu-Chacra’s Arabic – An Essential Grammar. It’s
+    # too difficult for now to write a general-purpose romanization
+    # function, because it would need a dictionary.
+    letterNames = {
+        'Hamzah': ('Hamzah', 'ء'),
+        'Alif': ('ᵓAlif', 'ا'),
+        'Alifhamzah': ('ᵓAlif-hamzah', 'أ'),
+        'Wawhamzah': ('Wa\u0304w-hamzah', 'ؤ'),
+        'Yahamzah': ('Ya\u0304ᵓ-hamzah', 'ئ'),
+        'Ba': ('Baᵓ', 'ب'),
+        'Ta': ('Taᵓ', 'ت'),
+        'Tha': ('T\u0331aᵓ', 'ث'),
+        'Ra': ('Raᵓ', 'ر'),
+        'Dal': ('Da\u0304l', 'د'),
+        'Dhal': ('D\u0331a\u0304l', 'ذ'),
+        'Qaf': ('Qa\u0304f', 'ق'),
+        'Lam': ('La\u0304m', 'ل'),
+        'Lamalif': ('La\u0304m-ᵓalif', 'لا'),
+        'Mim': ('Mi\u0304m', 'م'),
+        'Nun': ('Nu\u0304n', 'ن'),
+        'Waw': ('Wa\u0304w', 'و'),
+        'Ya': ('Ya\u0304ᵓ', 'ي'),
+        'Tamarbutah': ('Ta\u0304ᵓ marbu\u0304t\u0323ah', 'ة'),
+        'Alifmaqsurah': ('ᵓAlif maqs\u0323u\u0304rah', 'ى'),
+        }
+    for k, (romanized, arabic) in letterNames.items ():
+        env.globals[k] = f'{romanized} <bdo lang="ar">({arabic})</bdo>'
+        env.globals[k.lower ()] = env.globals[k].lower ()
+        env.globals[k + '_'] = romanized
+        env.globals[k.lower () + '_'] = romanized.lower ()
 
     corpus = []
     for x in args.corpus:

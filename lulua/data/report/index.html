@@ -137,11 +137,10 @@
 	<div class="lbox">
 		<h2>The Arabic alphabet</h2>
 		<p>
-		28 letters make up the Arabic alphabet and quite a few extra
-		symbols are required for proper text input, like the hamza in its different
-		shapes <bdo dir="ltr" lang="ar">أ إ آ ء ئ ؤ</bdo>, ta marbutah <bdo
-		dir="ltr" lang="ar">ة</bdo>, alif maqsurah <bdo dir="ltr"
-		lang="ar">ى</bdo> and various diacritics for vowelized texts.
+		28 letters make up the Arabic alphabet and quite a few extra symbols are
+		required for proper text input, like the {{ hamzah }} in its different
+		shapes <bdo dir="ltr" lang="ar">أ إ آ ء ئ ؤ</bdo>, {{ tamarbutah
+		}}, {{ alifmaqsurah }} and various diacritics for vowelized texts.
 		<!-- -->
 		Since the performance of a keyboard layout depends on the text entered
 		it is necessary to study its mono-, di- and trigraph frequencies first.
@@ -230,8 +229,9 @@
 		</details>
 
 		<p>
-		The plot below shows <bdo dir="ltr" lang="ar">ا ل ي م و ن</bdo> can be
-		considered the most frequently used letters in the Arabic language.
+		The plot below shows {{ alif }}, {{ lam }},  {{ ya }}, {{ mim }}, {{
+		waw }} and {{ nun }} can be considered the most frequently used letters
+		in the Arabic language.
 		<!-- -->
 		Together they account for more than 55% of all letters in the corpus.
 		</p>
@@ -336,17 +336,17 @@
 		The most frequent letters have all been assigned to the home row, which
 		makes them easily accessible.
 		<!-- -->
-		<bdo lang="ar" dir="ltr">ا</bdo> and <bdo lang="ar" dir="ltr">ل</bdo>
+		{{ Alif }} and {{ lam }}
 		are typed with different hands, balancing the load on hands almost
 		evenly.
 		<!-- -->
 		The index and middle finger of both hands share the majority of the
 		typing load, but naturally the left middle finger is used more
-		frequently due to its assignment to the letter alif.
+		frequently due to its assignment to the letter {{ alif }}.
 		</p>
 
 		<p>
-		The layout targets Quaranic and Modern Standard Arabic (MSA), also called Fusha
+		The layout targets Quaranic and Modern Standard Arabic (MSA), also called Fuṣḥa
 		(<bdo lang="ar">الفصحى</bdo>), only.
 		<!-- -->
 		Dialectical Arabic (<bdo lang="ar">العامية</bdo>) is mainly a spoken
@@ -361,35 +361,35 @@
 		Designing the layout to be compose-based has both benefits and
 		disadvantages.
 		<!-- -->
-		Compose-based mainly means the hamza <bdo lang="ar" dir="ltr">ء</bdo>
-		is treated like an optional diacritic for Alef, Waw and Yah instead of
-		viewing Alef-Hamza, Waw-Hamza and Yah-Hamza as precombined, atomic
-		units.
+		Compose-based mainly means the {{ hamzah }} is treated like an optional
+		diacritic for {{ alif }}, {{ waw }} and {{ ya }} instead of viewing
+		{{ alifhamzah }}, {{ wawhamzah }} and {{ yahamzah }} as precombined,
+		atomic units.
 		<!-- -->
-		Although <bdo lang="ar" dir="ltr">أ</bdo> and <bdo lang="ar"
-		dir="ltr">ا</bdo> are not the same, the hamza can be dropped if the
-		writer’s intention is unambigiously inferable from context.
+		Although {{ alifhamzah_ }} and {{ alif_ }} are not the same, the {{
+		hamzah_ }} can be dropped if the writer’s intention is unambigiously
+		inferable from context.
 		<!-- -->
-		Thus it makes sense to provide hamza as a combining character on the
-		keyboard.
+		Thus it makes sense to provide {{ hamzah_ }} as a combining character
+		on the keyboard.
 		<!-- -->
 		Additionally it uses two keys less than precombining it with its stems,
-		allowing the entire alphabet plus hamza diacritic to fit on a single
+		allowing the entire alphabet plus hamzah diacritic to fit on a single
 		keyboard layer.
 		<!-- -->
 		However, there is a cost to this approach:
-		All hamza variants account for {{
+		All {{ hamzah_ }} variants account for {{
 		'%.1f'|format(layoutstats['ar-osx'].hamzaImpact*100) }}% of button
 		combinations.
 		<!-- -->
-		Splitting hamza and from its stem means doubling the total number of
-		button combinations and thus button presses, decreasing scores like
+		Splitting {{ hamzah_ }} and from its stem means doubling the total number
+		of button combinations and thus button presses, decreasing scores like
 		words per minute (WPM) slightly.
 		<!-- -->
-		Splitting Alef and Alef-Hamza could also reduce pressure on left middle
-		finger and allow for more even distribution, since {{
-		layoutstats['ar-osx'].hamzaOnAlef|fraction }}<sup>th</sup> of all Alef
-		uses are with Hamza.
+		Splitting {{ alif }} and {{ alifhamzah }} could also reduce pressure
+		on left middle finger and allow for more even distribution, since {{
+		layoutstats['ar-osx'].hamzaOnAlef|fraction }}<sup>th</sup> of all {{
+		alif }} uses are with {{ hamzah }}.
 		</p>
 		<details class="remarks">
 		<summary></summary>
@@ -488,9 +488,8 @@
 				As we can see the layout presented above meets the optimization goal.
 				<!-- -->
 				Only the top 5% of all triads are “easier” to type with <a
-				href="#ar-malas">Malas’ layout</a>, because lulua splits hamza
-				<bdo lang="ar" dir="rtl">(ء)</bdo> from its alef <bdo lang="ar"
-				dir="rtl">(ا)</bdo> stem.
+				href="#ar-malas">Malas’ layout</a>, because lulua splits {{ hamzah }}
+				from its {{ alif }} stem.
 				<!-- -->
 				As expected the <a href="#ar-phonetic">phonetic layout</a> is one of the
 				worst ones, because QWERTY is not optimized for Arabic letter frequencies.
@@ -521,8 +520,8 @@
 			dir="ltr" lang="ar">ض ص، س ش، ح ج خ</bdo>) and not frequency.
 			<!-- -->
 			Also it overuses the right index finger by assigning the four
-			high-frequency letters <bdo lang="ar" dir="ltr">ا ت و ة</bdo> to
-			it.
+			high-frequency letters {{ alif }}, {{ ta }}, {{ waw }} and {{ tamarbutah
+			}} to it.
 			</p>
 		</div>
 		</div>
@@ -544,14 +543,14 @@
 			<h3><a href="#ar-osx">Mac OS X</a></h3>
 			<p>
 			Mac OS X’s Arabic keyboard layout makes a few small changes to ASMO
-			663 by moving the <bdo lang="ar" dir="ltr">ة</bdo> to a hard to
+			663 by moving the {{ tamarbutah }} to a hard to
 			reach spot on the right of the top row.
 			<!-- -->
 			It also moves the short vowels from the first to the top row of the
 			second layer and replaces them with symbols.
 			<!-- -->
 			The bottom row keys are aditionally shifted to the right, beginning
-			with <bdo lang="ar" dir="ltr">ر</bdo>.
+			with {{ ra }}.
 			</p>
 		</div>
 		</div>
@@ -575,15 +574,14 @@
 			A more common layout is the one used on Linux, which also exists on
 			Windows with minor changes to the first layer.
 			<!-- -->
-			While its top and center row barely differ from ASMO 663 the
-			bottom row now contains a separate key for the ligature <bdo
-			lang="ar" dir="ltr">ﻻ</bdo>, likely inherited from <a
+			While its top and center row barely differ from
+			ASMO 663 the bottom row now contains a separate key
+			for the ligature {{ lamalif }} , likely inherited from <a
 			href="https://oztypewriter.blogspot.com/2014/10/the-arabic-typewriter-keyboard-and.html">early
 			typewriter layouts</a>.
 			<!-- -->
 			But at the cost of pushing punctuation characters to the second
-			layer, <bdo dir="ltr" lang="ar">د</bdo> into the top and <bdo
-			dir="ltr" lang="ar">ذ</bdo> even further into the number row.
+			layer, {{ dal }} into the top and {{ dhal }} even further into the number row.
 			</p>
 		</div>
 		</div>
@@ -638,10 +636,10 @@
 			</p>
 			<p>
 			While the layout distributes load between fingers quite well it
-			favors the left hand by assigning <bdo dir="ltr" lang="ar">ا</bdo>
-			and <bdo dir="ltr" lang="ar">ل</bdo> to it.
+			favors the left hand by assigning {{ alif }}
+			and {{ lam }} to it.
 			<!-- -->
-			The decision to place <bdo dir="ltr" lang="ar">ث</bdo> in a very
+			The decision to place {{ tha }} in a very
 			prominent spot seems weird, given it only accounts for 0.5% of all
 			symbols, even in their own analysis.
 			</p>
@@ -683,15 +681,13 @@
 			<!-- -->
 			Probably due to their unusual assumption that middle- and
 			ring-finger rest in the top row their results are suboptimal,
-			placing both <bdo dir="ltr" lang="ar">ا</bdo> and <bdo dir="ltr"
-			lang="ar">ي</bdo> in the top row.
+			placing both {{ alif }} and {{ ya }} in the top row.
 			<!-- -->
 			Their analysis notices this and suggests improved positions for
 			both characters, but these are not actually implemented.
 			<!-- -->
-			The big asymmetry is caused by placing <bdo dir="ltr" lang="ar">ا
-			ل ي</bdo> and <bdo dir="ltr" lang="ar">و</bdo>, four of the five
-			most frequent letters, on the right hand side.
+			The big asymmetry is caused by placing {{ alif }}, {{ lam }}, {{ ya }} and
+			{{ waw }}, four of the five most frequent letters, on the right hand side.
 			</p>
 		</div></div>
 	</div>
@@ -719,11 +715,11 @@
 			optimized for typing speed only, claiming 35% faster typing compared
 			to the <a href="#ar-linux">currently used layouts</a>.
 			<!-- -->
-			However the decision to put <bdo dir="ltr" lang="ar">ي</bdo> in the top
+			However the decision to put {{ ya }} in the top
 			row seems odd.
 			<!-- -->
-			Assigning the same left index finger to <bdo dir="ltr" lang="ar">ا
-			ي و</bdo>, which are three of the most frequent letters, heavily
+			Assigning the same left index finger to {{ alif }},
+			{{ ya }} and {{ waw }}, which are three of the most frequent letters, heavily
 			strains this particular finger.
 			</p>
 		</div>
@@ -758,8 +754,8 @@
 			well.
 			<!-- -->
 			However their algorithm seems to favor the bottom row instead of the
-			easier to use top row since it places the letters <bdo dir="ltr"
-			lang="ar">ب ت ر</bdo> there.
+			easier to use top row since it places the letters {{ ba }}, {{ ta }}
+			and {{ ra }} there.
 			</p>
 		</div>
 		</div>
@@ -793,7 +789,7 @@
 			provide <em>three</em> single-quote marks ’ and <em>two</em> Arabic
 			semicolon <bdo dir="ltr" lang="ar">؛</bdo>.
 			<!-- -->
-			Additionally it places <bdo dir="ltr" lang="ar">ي</bdo> in an even
+			Additionally it places {{ ya }} in an even
 			worse position than Malas’ layout.
 			</p>
 		</div>
@@ -898,7 +894,7 @@
 			<p>
 			The <a href="http://arabic.omaralzabir.com/home">Arabic Phonetic Keyboard</a>
 			simply maps the QWERTY layout to Arabic letters, based on their sound.
-			Thus Q becomes <bdo dir="ltr" lang="ar">ق</bdo>, Y becomes <bdo dir="ltr" lang="ar">ي</bdo> and so on.
+			Thus Q becomes {{ qaf }}, Y becomes {{ ya }} and so on.
 			It claims to be optimized for writing vowelized texts, especially
 			Quranic Arabic, and thus includes quite a few combining characters and
 			special symbols.

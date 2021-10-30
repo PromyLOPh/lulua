@@ -20,7 +20,7 @@
 
 from decimal import Decimal
 
-from .report import approx, blend, blendn
+from .report import approx
 
 def test_approx ():
     assert approx (0) == (Decimal ('0'), '')
@@ -36,14 +36,4 @@ def test_approx ():
     assert approx (10**6) == (Decimal ('1'), 'million')
     assert approx (10**9) == (Decimal ('1'), 'billion')
     assert approx (10**12) == (Decimal ('1000'), 'billion')
-
-def test_blend ():
-    assert blend (0.5, 0, 1) == 0.5
-    assert blend (0.5, 0, 2) == 1
-
-    assert blend (0.1, 0, 1) == 0.1
-    assert blend (0.9, 0, 1) == 0.9
-
-    assert blendn (0.5, (0, ), (1, )) == [0.5]
-    assert blendn (0.5, (0, ), (0.7, ), (1, )) == [0.7]
 

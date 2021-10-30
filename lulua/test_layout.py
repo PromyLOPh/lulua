@@ -35,7 +35,7 @@ def test_atomic (layout):
         for char in text:
             d = unicodedata.decomposition (char)
             # allow compat decompositions like … -> ...
-            if not d.startswith ('<compat> ') and not d.startswith ('<isolated> ') and not d.startswith ('<medial> ') and not d.startswith ('<initial> '):
+            if d.split (' ', 1)[0] not in {'<compat>', '<isolated>', '<medial>', '<initial>', '<noBreak>'}:
                 assert d == '', (char, btn)
 
 @pytest.mark.parametrize("layout", defaultLayouts, ids=[l.name for l in defaultLayouts])
